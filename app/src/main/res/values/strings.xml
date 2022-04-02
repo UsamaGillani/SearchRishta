@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">SearchRishta</string>
+
+    <string-array name="profile_creator">
+
+        <item>Self</item>
+        <item>Parent</item>
+        <item>Sibling</item>
+        <item>Relative</item>
+        <item>Friend</item>
+
+    </string-array>
+
+
+    <string-array name="gender">
+
+        <item>Male</item>
+        <item>Female</item>
+
+    </string-array>
+
+    <string-array name="marital_status">
+
+        <item>Unmarried</item>
+        <item>Widower</item>
+        <item>Divorced</item>
+        <item>Separated</item>
+        <item>Married</item>
+
+    </string-array>
+
+    <string-array name="physical_status">
+
+        <item>Normal</item>
+        <item>Physically Challenged</item>
+
+    </string-array>
+
+    <string-array name="phone_number">
+
+        <item>(PK) +92</item>
+
+    </string-array>
+
+    <string-array name="mother_tongue">
+
+        <item>Urdu</item>
+        <item>Pushto</item>
+        <item>Punjabi</item>
+        <item>English</item>
+
+
+    </string-array>
+
+    <string-array name="Relegion">
+
+        <item>Islam</item>
+        <item>Christian</item>
+        <item>Hindu</item>
+        <item>Sikh</item>
+
+
+    </string-array>
+
+    <string-array name="ClanIslam">
+
+        <item>Sunni Berailvi</item>
+        <item>Sunni Deobandi</item>
+        <item>Sunni Ahle Hadees </item>
+        <item>Shia</item>
+
+
+    </string-array>
+
+    <string-array name="Education">
+
+        <item>ph.D.</item>
+        <item>Masters</item>
+        <item>Bachelors </item>
+        <item>Civil Service</item>
+        <item>Professional Certifications</item>
+        <item>Diploma</item>
+        <item>Higher Secondar/Secondary</item>
+
+    </string-array>
+
+    <string-array name="Location">
+
+        <item>UAE</item>
+        <item>America</item>
+        <item>Germany </item>
+        <item>Pakistan</item>
+
+
+    </string-array>
+
+
+    <string name="title_activity_register3">RegisterActivity3</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

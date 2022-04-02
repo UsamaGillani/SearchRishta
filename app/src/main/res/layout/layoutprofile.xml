@@ -1,0 +1,1363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/firstview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_call"
+            android:layout_width="20dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="90dp"
+            android:src="@drawable/call"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/label_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:text=" edit number"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_call" />
+
+        <ImageView
+            android:id="@+id/img_mail"
+            android:layout_width="20dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="90dp"
+            android:src="@drawable/email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+
+        <TextView
+            android:id="@+id/label_mail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="60dp"
+            android:text=" edit mail"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_mail" />
+
+        <androidx.legacy.widget.Space
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/grey"
+            app:layout_constraintTop_toBottomOf="@+id/label_mail" />
+
+        <TextView
+            android:id="@+id/label_personal_information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:text="Personal Information"
+            android:textColor="@color/accentColor"
+            android:textSize="25sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/space" />
+
+        <TextView
+            android:id="@+id/label_about_myself"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="A Few lines about myself"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_personal_information" />
+
+        <TextView
+            android:id="@+id/tv_about_myself"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="A Few lines about myself"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_about_myself" />
+
+        <TextView
+            android:id="@+id/label_basic_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Basic Details"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_about_myself" />
+
+        <ImageView
+            android:id="@+id/edit"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/edit"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_about_myself" />
+
+        <TextView
+            android:id="@+id/label_Name"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Name :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_basic_details" />
+
+        <TextView
+            android:id="@+id/label_Age"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Age  :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_Name" />
+
+        <TextView
+            android:id="@+id/label_Profile_created_for"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Profile Created For :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_Age" />
+
+        <TextView
+            android:id="@+id/label_gender"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Gender  :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_Profile_created_for" />
+
+
+        <TextView
+            android:id="@+id/label_height"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Height  :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_gender" />
+
+        <TextView
+            android:id="@+id/label_marital_status"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Marital Status  :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_height" />
+
+        <TextView
+            android:id="@+id/label_mother_tongue"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Mother Tongue  :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_marital_status" />
+
+        <TextView
+            android:id="@+id/label_physical_status"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Physical Status  :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_mother_tongue" />
+
+        <TextView
+            android:id="@+id/tv_Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Name"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_basic_details" />
+
+        <TextView
+            android:id="@+id/tv_Age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_Age"
+            app:layout_constraintTop_toBottomOf="@+id/label_Name" />
+
+        <TextView
+            android:id="@+id/tv_Profile_created"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_Profile_created_for"
+            app:layout_constraintTop_toBottomOf="@+id/label_Age" />
+
+        <TextView
+            android:id="@+id/tv_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="male"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_Profile_created_for"
+            app:layout_constraintTop_toBottomOf="@+id/label_Profile_created_for" />
+
+
+        <TextView
+            android:id="@+id/tv_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_height"
+            app:layout_constraintTop_toBottomOf="@+id/tv_gender" />
+
+        <TextView
+            android:id="@+id/tv_marital_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_marital_status"
+            app:layout_constraintTop_toBottomOf="@+id/tv_height" />
+
+        <TextView
+            android:id="@+id/tv_mother_tongue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_mother_tongue"
+            app:layout_constraintTop_toBottomOf="@+id/tv_marital_status" />
+
+        <TextView
+            android:id="@+id/tv_physical_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_physical_status"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mother_tongue" />
+
+        <TextView
+            android:id="@+id/label_professional_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Professional Information"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_physical_status" />
+
+        <ImageView
+            android:id="@+id/edit_professional_details"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_physical_status" />
+
+        <TextView
+            android:id="@+id/label_education"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Education :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_professional_information" />
+
+        <TextView
+            android:id="@+id/label_education_details"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Education Details:"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_education" />
+
+        <TextView
+            android:id="@+id/label_Employed_in"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Employed In :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_education_details" />
+
+        <TextView
+            android:id="@+id/label_occupation"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Occupation :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_Employed_in" />
+
+
+        <TextView
+            android:id="@+id/occupation_details"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Occupation Details :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_occupation" />
+
+        <TextView
+            android:id="@+id/label_annual_income"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Annual Income  :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/occupation_details" />
+
+        <TextView
+            android:id="@+id/tv_education"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_education"
+            app:layout_constraintTop_toBottomOf="@+id/label_professional_information" />
+
+        <TextView
+            android:id="@+id/tv_education_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Non Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_education_details"
+            app:layout_constraintTop_toBottomOf="@+id/label_education" />
+
+        <TextView
+            android:id="@+id/tv_employed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_Employed_in"
+            app:layout_constraintTop_toBottomOf="@+id/tv_education_details" />
+
+        <TextView
+            android:id="@+id/tv_occupation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_occupation"
+            app:layout_constraintTop_toBottomOf="@+id/tv_employed" />
+
+
+        <TextView
+            android:id="@+id/tv_occupation_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Not Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/occupation_details"
+            app:layout_constraintTop_toBottomOf="@+id/tv_occupation" />
+
+
+        <TextView
+            android:id="@+id/tv_annual_income"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="20dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_annual_income"
+            app:layout_constraintTop_toBottomOf="@+id/tv_occupation_details" />
+
+        <!--location layout-->
+        <TextView
+            android:id="@+id/label_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Location"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_annual_income" />
+
+        <ImageView
+            android:id="@+id/edit_location"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_annual_income" />
+
+
+        <TextView
+            android:id="@+id/label_country"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Country"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_location" />
+
+        <TextView
+            android:id="@+id/label_citizenship"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="CitizenShip :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_country" />
+
+        <TextView
+            android:id="@+id/label_state"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="State :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_citizenship" />
+
+
+        <TextView
+            android:id="@+id/label_city"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="City :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_state" />
+
+        <TextView
+            android:id="@+id/tv_country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_country"
+            app:layout_constraintTop_toBottomOf="@+id/label_location" />
+
+        <TextView
+            android:id="@+id/tv_citizenship"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Non Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_citizenship"
+            app:layout_constraintTop_toBottomOf="@+id/tv_country" />
+
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_city"
+            app:layout_constraintTop_toBottomOf="@+id/tv_citizenship" />
+
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_state"
+            app:layout_constraintTop_toBottomOf="@+id/tv_city" />
+
+        <!--relegious information-->
+
+
+        <TextView
+            android:id="@+id/label_relegious_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Relegious Information"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_city" />
+
+        <ImageView
+            android:id="@+id/edit_relegious_information"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_state" />
+
+
+        <TextView
+            android:id="@+id/label_relegion"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Relegion"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_relegious_information" />
+
+        <TextView
+            android:id="@+id/label_relegious_values"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Relegious Values :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_relegion" />
+
+        <TextView
+            android:id="@+id/label_sect"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Sect :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_relegious_values" />
+
+        <TextView
+            android:id="@+id/tv_relegion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_relegion"
+            app:layout_constraintTop_toBottomOf="@+id/label_relegious_information" />
+
+        <TextView
+            android:id="@+id/tv_relegious_values"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Non Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_relegious_values"
+            app:layout_constraintTop_toBottomOf="@+id/label_relegion" />
+
+        <TextView
+            android:id="@+id/tv_sect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_sect"
+            app:layout_constraintTop_toBottomOf="@+id/tv_relegious_values" />
+
+
+        <TextView
+            android:id="@+id/label_hobbies_interests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Hobbies and Interests"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_sect" />
+
+        <ImageView
+            android:id="@+id/edit_hobbies_and_interest"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_sect" />
+
+
+        <!--family details-->
+
+        <TextView
+            android:id="@+id/label_family_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Family Details"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_hobbies_interests" />
+
+        <ImageView
+            android:id="@+id/edit_label_family_details"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_hobbies_interests" />
+
+
+        <TextView
+            android:id="@+id/label_fathers_occupation"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Fathers Occupation :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_family_details" />
+
+        <TextView
+            android:id="@+id/label_mothers_occupation"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Mothers Occupation:"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_fathers_occupation" />
+
+        <TextView
+            android:id="@+id/label_Family_Orogin"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Employed In :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_mothers_occupation" />
+
+        <TextView
+            android:id="@+id/label_no_of_sisters"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Number of Sisters :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_Family_Orogin" />
+
+
+        <TextView
+            android:id="@+id/label_no_of_brothers"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Number of Brothers :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_no_of_sisters" />
+
+
+        <TextView
+            android:id="@+id/tv_fathers_occupation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Not Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_fathers_occupation"
+            app:layout_constraintTop_toBottomOf="@+id/edit_label_family_details" />
+
+        <TextView
+            android:id="@+id/tv_mother_occupation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Non Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_mothers_occupation"
+            app:layout_constraintTop_toBottomOf="@+id/label_fathers_occupation" />
+
+        <TextView
+            android:id="@+id/tv_family_origin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_Family_Orogin"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mother_occupation" />
+
+        <TextView
+            android:id="@+id/tv_no_of_sisters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_no_of_sisters"
+            app:layout_constraintTop_toBottomOf="@+id/tv_family_origin" />
+
+
+        <TextView
+            android:id="@+id/tv_no_brothers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Not Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_no_of_brothers"
+            app:layout_constraintTop_toBottomOf="@+id/label_no_of_sisters" />
+
+        <View
+            android:id="@+id/view_partner_preferences"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/grey"
+            app:layout_constraintTop_toBottomOf="@+id/label_no_of_brothers"/>
+
+          <!--partner preferences-->
+
+        <TextView
+            android:id="@+id/partner_preferences"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Partner Preferences"
+            android:textColor="@color/accentColor"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_partner_preferences" />
+
+        <TextView
+            android:id="@+id/label_partner_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="A Few Lines About My Partner"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/partner_preferences" />
+
+        <ImageView
+            android:id="@+id/edit_partner_description"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/partner_preferences" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Not Specified:"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_partner_description" />
+
+
+        <!--basicdetails partner-->
+
+
+        <TextView
+            android:id="@+id/label_basic_details_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Basic Details"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+
+        <ImageView
+            android:id="@+id/edit_basic_details_prf"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+        <TextView
+            android:id="@+id/label_Age_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Age :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_basic_details_prf" />
+
+        <TextView
+            android:id="@+id/label_Height_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Height  :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_Age_prf" />
+
+        <TextView
+            android:id="@+id/label_marital_status_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Profile Created For :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_Height_prf" />
+
+        <TextView
+            android:id="@+id/label_physical_status_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Physical Status  :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_marital_status_prf" />
+
+
+        <TextView
+            android:id="@+id/label_mother_tongue_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Mother Tongue  :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_physical_status_prf" />
+
+
+
+        <TextView
+            android:id="@+id/tv_age_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Not Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_Age_prf"
+            app:layout_constraintTop_toBottomOf="@+id/label_basic_details_prf" />
+
+        <TextView
+            android:id="@+id/tv_height_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Non Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_Height_prf"
+            app:layout_constraintTop_toBottomOf="@+id/label_Age_prf" />
+
+        <TextView
+            android:id="@+id/tv_marital_status_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="not specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_marital_status_prf"
+            app:layout_constraintTop_toBottomOf="@+id/tv_height_prf" />
+
+        <TextView
+            android:id="@+id/tv_physical_status_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="21"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_physical_status_prf"
+            app:layout_constraintTop_toBottomOf="@+id/tv_marital_status_prf" />
+
+
+        <TextView
+            android:id="@+id/tv_mother_tongue_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Not Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_mother_tongue_prf"
+            app:layout_constraintTop_toBottomOf="@+id/tv_physical_status_prf" />
+
+
+       <!-- relegious preferences-->
+
+        <TextView
+            android:id="@+id/label_relegious_information_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Relegion Preferences"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mother_tongue_prf" />
+
+        <ImageView
+            android:id="@+id/edit_relegious_information_prf"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_mother_tongue_prf" />
+
+        <TextView
+            android:id="@+id/label_relegious_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Relegion :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_relegious_information_prf" />
+
+
+
+        <TextView
+            android:id="@+id/tv_relegion_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Not Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_relegious_prf"
+            app:layout_constraintTop_toBottomOf="@+id/label_relegious_information_prf" />
+
+        <!--professional preferences-->
+
+
+        <TextView
+            android:id="@+id/label_professional_information_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Professional Preferences"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_relegious_prf" />
+
+        <ImageView
+            android:id="@+id/edit_professional_details_preferences_prf"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_relegion_prf" />
+
+
+        <TextView
+            android:id="@+id/label_occupation_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="occupation"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_professional_information_prf" />
+
+        <TextView
+            android:id="@+id/label_education_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="education :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_occupation_prf" />
+
+        <TextView
+            android:id="@+id/label_annual_income_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Annual Income :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_education_prf" />
+
+        <TextView
+            android:id="@+id/tv_occupation_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="not specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_occupation_prf"
+            app:layout_constraintTop_toBottomOf="@+id/edit_professional_details_preferences_prf" />
+
+        <TextView
+            android:id="@+id/tv_education_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Non Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_education_prf"
+            app:layout_constraintTop_toBottomOf="@+id/label_occupation_prf" />
+
+        <TextView
+            android:id="@+id/tv_annual_income_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Non Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_annual_income_prf"
+            app:layout_constraintTop_toBottomOf="@+id/tv_education_prf" />
+
+        <!--location preferences-->
+
+
+
+        <TextView
+            android:id="@+id/label_location_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Location Preferences"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_annual_income_prf" />
+
+        <ImageView
+            android:id="@+id/edit_professional_location_prf"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_annual_income_prf" />
+
+
+        <TextView
+            android:id="@+id/label_country_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Country"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_location_prf" />
+
+        <TextView
+            android:id="@+id/label_citizenship_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Citizenship :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_country_prf" />
+
+        <TextView
+            android:id="@+id/label_resident_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Resident Status :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_citizenship_prf" />
+
+        <TextView
+            android:id="@+id/tv_country_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="not specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_country_prf"
+            app:layout_constraintTop_toBottomOf="@+id/edit_professional_location_prf" />
+
+        <TextView
+            android:id="@+id/tv_citizenship_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Non Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_citizenship_prf"
+            app:layout_constraintTop_toBottomOf="@+id/label_country_prf" />
+
+        <TextView
+            android:id="@+id/tv_resident_status_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Non Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_resident_prf"
+            app:layout_constraintTop_toBottomOf="@+id/tv_citizenship_prf" />
+
+<!--habits preferences-->
+
+
+
+
+
+
+
+
+        <TextView
+            android:id="@+id/label_habits_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Location Preferences"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_resident_prf" />
+
+        <ImageView
+            android:id="@+id/edit_habits_prf"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_resident_status_prf" />
+
+
+        <TextView
+            android:id="@+id/label_eating_habits_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Eating Habits"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_habits_prf" />
+
+        <TextView
+            android:id="@+id/label_drinking_habits_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Drinking Habits :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_eating_habits_prf" />
+
+        <TextView
+            android:id="@+id/label_smoking_habits_prf"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Resident Status :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_drinking_habits_prf" />
+
+        <TextView
+            android:id="@+id/tv_eating_habits_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="doesn't matter"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_eating_habits_prf"
+            app:layout_constraintTop_toBottomOf="@+id/edit_habits_prf" />
+
+        <TextView
+            android:id="@+id/tv_drinking_habits_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="doesn't matter"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_drinking_habits_prf"
+            app:layout_constraintTop_toBottomOf="@+id/label_eating_habits_prf" />
+
+        <TextView
+            android:id="@+id/tv_smoking_habits_prf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Non Specified"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_smoking_habits_prf"
+            app:layout_constraintTop_toBottomOf="@+id/tv_drinking_habits_prf" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.core.widget.NestedScrollView>
+
+
+
