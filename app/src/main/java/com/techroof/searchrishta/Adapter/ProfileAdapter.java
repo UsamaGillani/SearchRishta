@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.techroof.searchrishta.Authentication.LoginActivity;
 import com.techroof.searchrishta.ChatBot.ConvActivity;
 import com.techroof.searchrishta.EditProfileActivity;
 import com.techroof.searchrishta.R;
@@ -28,10 +29,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
     // Create a static inner class and provide references to all the Views for each data item.
     // This is particularly useful for caching the Views within the item layout for fast access.
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         // Declare member variables for all the Views in a row
         TextView rowName;
         ImageView rowImage;
+
         // Create a constructor that accepts the entire row and search the View hierarchy to find each subview
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -40,8 +42,9 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             rowImage = itemView.findViewById(R.id.img_icons);
         }
     }
+
     // Provide a suitable constructor
-    public ProfileAdapter(Context context, String[] programNameList, int[] images){
+    public ProfileAdapter(Context context, String[] programNameList, int[] images) {
         // Initialize the class scope variables with values received from constructor
         this.context = context;
         this.programNameList = programNameList;
@@ -56,21 +59,30 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         // Inflate the custom layout
         View view = inflater.inflate(R.layout.custom_recyclerview_profile, parent, false);
         // To attach OnClickListener
+
+        mAuth = FirebaseAuth.getInstance();
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextView rowName = v.findViewById(R.id.tv_icon);
                 Toast.makeText(context, "Clicked Item: " + rowName.getText().toString(), Toast.LENGTH_SHORT).show();
 
-                if(rowName.getText().toString()=="Edit Profile"){
+                if (rowName.getText().toString() == "Edit Profile") {
 
-                    Intent intent=new Intent(context.getApplicationContext(), EditProfileActivity.class);
+                    Intent intent = new Intent(context.getApplicationContext(), EditProfileActivity.class);
                     context.startActivity(intent);
                 }
 
-                if(rowName.getText().toString()=="Chat"){
+                if (rowName.getText().toString() == "Chat") {
 
-                    Intent intent=new Intent(context.getApplicationContext(), ConvActivity.class);
+                    Intent intent = new Intent(context.getApplicationContext(), ConvActivity.class);
+                    context.startActivity(intent);
+                }
+
+                if (rowName.getText().toString() == "log out") {
+                    mAuth.signOut();
+
+                    Intent intent = new Intent(context.getApplicationContext(), LoginActivity.class);
                     context.startActivity(intent);
                 }
 

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.techroof.searchrishta.Adapter.MessagesAdapter;
 import com.techroof.searchrishta.Model.Messages;
 import com.techroof.searchrishta.R;
@@ -106,7 +108,46 @@ public class ChatActivity extends AppCompatActivity {
                 sendMessage();
             }
         });
+
+
+        //mTitleView.setText(name);
+
+        mRootRef.child("chat").child(mCurrentUserId).addValueEventListener
+                (new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.hasChild(mChatUser)) {
+
+                            Map chatAddMap = new HashMap();
+                            chatAddMap.put("seen", false);
+                            chatAddMap.put("timestamp", ServerValue.TIMESTAMP);
+                            Map mChatUserMap = new HashMap();
+                            mChatUserMap.put("chat/" + mCurrentUserId + "/" + mChatUser, chatAddMap);
+                            mChatUserMap.put("chat/" + mChatUser + "/" + mCurrentUserId, chatAddMap);
+                            mRootRef.updateChildren(mChatUserMap,
+                                    new DatabaseReference.CompletionListener() {
+                                        @Override
+                                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                            if (databaseError != null) {
+
+                                                Log.d("CHAT_LOG", databaseError.getMessage().toString());
+
+                                            }
+                                        }
+                                    });
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                });
+
     }
+
 
 
 

@@ -54,21 +54,70 @@
 
     <string-array name="Relegion">
 
-        <item>Islam</item>
         <item>Christian</item>
         <item>Hindu</item>
-        <item>Sikh</item>
+        <item>Muslim-Abbasi</item>
+        <item>Muslim-Brailvi</item>
+        <item>Muslim-Deobandi</item>
+        <item>Muslim-Others</item>
+        <item>Muslim-Shia</item>
+        <item>Muslim-Sunnis</item>
+        <item>Muslim-Wahabi</item>
+        <item>Parsi</item>
 
 
     </string-array>
 
     <string-array name="ClanIslam">
 
-        <item>Sunni Berailvi</item>
-        <item>Sunni Deobandi</item>
-        <item>Sunni Ahle Hadees </item>
-        <item>Shia</item>
+        <item>Aheer</item>
+        <item>Arain</item>
+        <item>Awan </item>
+        <item>Baloch</item>
+        <item>Chaudhry</item>
+        <item>Dogar</item>
+        <item>Ghakar</item>
+        <item>Gondal</item>
+        <item>Gujjars</item>
+        <item>Hashmi</item>
+        <item>Jatt</item>
+        <item>Khateek</item>
+        <item>Khattar</item>
+        <item>Khokkar</item>
+        <item>Maliar</item>
+        <item>Mughal</item>
+        <item>Paracha</item>
+        <item>Pashtuns</item>
+        <item>Qureshi</item>
+        <item>Rajput</item>
+        <item>Rawns</item>
+        <item>Rehmanis and Maliks</item>
+        <item>Sheikh</item>
+        <item>Syed</item>
 
+    </string-array>
+
+    <string-array name="ClanChristian">
+
+        <item>Catholic</item>
+        <item>Orthodox</item>
+        <item>Protestant</item>
+
+    </string-array>
+
+    <string-array name="ClanParsi">
+
+        <item>Irani</item>
+        <item>Parsi</item>
+        <item>Intercaste</item>
+
+    </string-array>
+
+    <string-array name="ClanHindu">
+
+        <item>Surya</item>
+        <item>Chandra</item>
+        <item>Rathore</item>
 
     </string-array>
 

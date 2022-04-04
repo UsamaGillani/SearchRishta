@@ -88,8 +88,9 @@ public class RegisterActivity extends AppCompatActivity {
     private String gender, profileCreator, name, dob, email, password, confirmPass, phone, religion,
             maritalStatus, clan, country, state, city, citizenShip, height, education, employedIn, occupation, salary,
             physicalStatus, religiousValue, ethnicity, aboutMe, motherTongue,activatedstatus="normal";
-    private String currentDate, strmotherTongue, strRelegionlist, strClanislam;
-    private String[] motherTonguelist, relegionList, clanIslam, educationalBackground;
+    private String currentDate, strmotherTongue, strRelegionlist, strClanislam,strClanchristian,strClanhindu,
+            strClanparsi;
+    private String[] motherTonguelist, relegionList, clanIslam, educationalBackground,clanCristian,clanHindu,clanParsi;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -105,6 +106,9 @@ public class RegisterActivity extends AppCompatActivity {
         motherTonguelist = getResources().getStringArray(R.array.mother_tongue);
         relegionList = getResources().getStringArray(R.array.Relegion);
         clanIslam = getResources().getStringArray(R.array.ClanIslam);
+        clanCristian= getResources().getStringArray(R.array.ClanChristian);
+        clanParsi=getResources().getStringArray(R.array.ClanParsi);
+        clanHindu=getResources().getStringArray(R.array.ClanHindu);
         educationalBackground = getResources().getStringArray(R.array.Education);
         genderArrayList = Arrays.asList(getResources().getStringArray(R.array.gender));
         profileCreatorArrayList = Arrays.asList(getResources().getStringArray(R.array.profile_creator));
@@ -268,21 +272,87 @@ public class RegisterActivity extends AppCompatActivity {
         clanEt.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Clan")
-                        .setSingleChoiceItems(clanIslam, 0, null)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-                            public void onClick(DialogInterface dialog, int whichButton) {
+                if(strRelegionlist.equals("Christian")){
 
-                                dialog.dismiss();
+                    new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Clan")
+                            .setSingleChoiceItems(clanCristian, 0, null)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-                                int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                                clanEt.getEditText().setText(clanIslam[selectedPosition]);
-                                strClanislam = relegionList[selectedPosition];
-                            }
-                        })
-                        .show();
-            }
+                                public void onClick(DialogInterface dialog, int whichButton) {
+
+                                    dialog.dismiss();
+
+                                    int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                    clanEt.getEditText().setText(clanCristian[selectedPosition]);
+                                    strClanchristian = relegionList[selectedPosition];
+                                }
+                            })
+                            .show();
+
+
+                    Toast.makeText(getApplicationContext(), "yes", Toast.LENGTH_SHORT).show();
+                }else if(strRelegionlist.equals("Muslim-Abbasi")||strRelegionlist.equals("Muslim-Brailvi")
+                ||strRelegionlist.equals("Muslim-Deobandi")||strRelegionlist.equals("Muslim-Others")
+                ||strRelegionlist.equals("Muslim-Shia")||strRelegionlist.equals("Muslim-Wahabi")
+                ){
+
+                    new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Clan")
+                            .setSingleChoiceItems(clanIslam, 0, null)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+
+                                    dialog.dismiss();
+
+                                    int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                    clanEt.getEditText().setText(clanIslam[selectedPosition]);
+                                    strClanislam = relegionList[selectedPosition];
+                                }
+                            })
+                            .show();
+
+                }else if(strRelegionlist.equals("Hindu")){
+
+                    new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Clan")
+                            .setSingleChoiceItems(clanHindu, 0, null)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+
+                                    dialog.dismiss();
+
+                                    int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                    clanEt.getEditText().setText(clanHindu[selectedPosition]);
+                                    strClanhindu = relegionList[selectedPosition];
+                                }
+                            })
+                            .show();
+
+
+
+                }else if(strClanparsi.equals("Parsi")){
+
+                    new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Clan")
+                            .setSingleChoiceItems(clanParsi, 0, null)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+
+                                    dialog.dismiss();
+
+                                    int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                    clanEt.getEditText().setText(clanParsi[selectedPosition]);
+                                    strClanparsi = relegionList[selectedPosition];
+                                }
+                            })
+                            .show();
+
+
+
+
+                }
+                           }
         });
 
         educationEt.getEditText().setOnClickListener(new View.OnClickListener() {

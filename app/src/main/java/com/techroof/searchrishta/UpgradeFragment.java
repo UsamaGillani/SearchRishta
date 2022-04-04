@@ -56,7 +56,7 @@ public class UpgradeFragment extends Fragment {
     StorageReference storageReference;
     DatabaseReference databaseReference;
     ProgressDialog progressDialog;
-    private String activationStatus = "";
+    private String activationStatus = "normal";
     String price, accountNumber, accountName, bankName, uId, proofImg,name, Status = "Applied";
     private FirebaseUser currentFirebaseUser;
 
