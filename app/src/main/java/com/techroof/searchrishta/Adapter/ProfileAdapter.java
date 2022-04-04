@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.techroof.searchrishta.ChatBot.ConvesationActivity;
+import com.techroof.searchrishta.ChatBot.ConvActivity;
 import com.techroof.searchrishta.EditProfileActivity;
 import com.techroof.searchrishta.R;
 
@@ -70,7 +70,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
                 if(rowName.getText().toString()=="Chat"){
 
-                    Intent intent=new Intent(context.getApplicationContext(), ConvesationActivity.class);
+                    Intent intent=new Intent(context.getApplicationContext(), ConvActivity.class);
                     context.startActivity(intent);
                 }
 

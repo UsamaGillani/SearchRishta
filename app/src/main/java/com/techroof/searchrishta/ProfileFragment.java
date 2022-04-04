@@ -56,7 +56,6 @@ public class ProfileFragment extends Fragment {
         adapter = new ProfileAdapter(getContext(), name, images);
         rvProfile.setAdapter(adapter);
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signOut();
         return view;
     }
 }

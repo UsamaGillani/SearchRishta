@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,8 +61,19 @@ public class ChatActivity extends AppCompatActivity {
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
         mCurrentUserId = mAuth.getCurrentUser().getUid();
-        mChatUser = getIntent().getStringExtra("userId");
-        otherUserName=getIntent().getStringExtra("userName");
+
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null){
+
+            mChatUser = getIntent().getStringExtra("userId");
+            otherUserName=getIntent().getStringExtra("userName");
+            Toast.makeText(getApplicationContext(), ""+otherUserName, Toast.LENGTH_SHORT).show();
+
+        }else{
+
+            Toast.makeText(getApplicationContext(), "no", Toast.LENGTH_SHORT).show();
+        }
+
 
         mTitleView.setText(otherUserName);
 

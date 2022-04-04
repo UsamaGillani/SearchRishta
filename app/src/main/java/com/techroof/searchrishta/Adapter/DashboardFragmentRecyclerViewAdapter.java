@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.auth.User;
+import com.techroof.searchrishta.ChatBot.ChatActivity;
 import com.techroof.searchrishta.Interfaces.ClickListener;
 import com.techroof.searchrishta.Interfaces.DasboardClickListener;
 import com.techroof.searchrishta.Model.Users;
@@ -214,6 +215,28 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
             }
         });
 
+        holder.imgChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String userId = ld.getUserId();
+                String name = ld.getName();
+                String dob = ld.getDob();
+                String height = ld.getHeight();
+                String relegion = ld.getReligion();
+                String education = ld.getEducation();
+                String maritalstatus = ld.getMaritalStatus();
+                String city = ld.getCity();
+                String province = ld.getState();
+                String country = ld.getCountry();
+
+                Intent moveChat=new Intent(context.getApplicationContext(), ChatActivity.class);
+                moveChat.putExtra("userId",userId);
+                moveChat.putExtra("userName",name);
+                context.startActivity(moveChat);
+            }
+        });
+
 
     }
 
@@ -248,6 +271,7 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
             imgChat = itemView.findViewById(R.id.img_chat);
             imgSendInterest = itemView.findViewById(R.id.img_send_interest);
             btnremove = itemView.findViewById(R.id.btn_remove);
+            imgChat=itemView.findViewById(R.id.img_chat);
 
         }
     }

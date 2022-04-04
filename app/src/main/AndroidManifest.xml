@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SearchRishta">
         <activity
-            android:name=".ChatBot.ConvesationActivity"
+            android:name=".ChatBot.ConvActivity"
             android:exported="false" />
         <activity
             android:name=".ChatBot.ChatActivity"
