@@ -4,17 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,9 +57,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +69,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    private View layoutstep1,layoutstep2,layoutsteplogin;
 
     private RecyclerView genderRv, profileCreatedByRv, maritalStatusRv, physicalStatusRv;
     private ProfileCreatorAttributesAdapter profileCreatorAttributesAdapter;
@@ -84,13 +92,23 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private ProgressDialog pd;
     private TextView loginBtn;
+    final Calendar myCalendar = Calendar.getInstance();
     private ConstraintLayout step1Cl, step2Cl, step3Cl;
     private String gender, profileCreator, name, dob, email, password, confirmPass, phone, religion,
             maritalStatus, clan, country, state, city, citizenShip, height, education, employedIn, occupation, salary,
-            physicalStatus, religiousValue, ethnicity, aboutMe, motherTongue,activatedstatus="normal";
-    private String currentDate, strmotherTongue, strRelegionlist, strClanislam,strClanchristian,strClanhindu,
+            physicalStatus, religiousValue, ethnicity, aboutMe, motherTongue, activatedstatus = "normal";
+
+    int year,age;
+    private String currentDate, strmotherTongue, strRelegionlist, strClanislam, strClanchristian, strClanhindu,
             strClanparsi;
-    private String[] motherTonguelist, relegionList, clanIslam, educationalBackground,clanCristian,clanHindu,clanParsi;
+    private String[] motherTonguelist;
+    private String[] relegionList;
+    private String[] clanIslam;
+    private String[] educationalBackground;
+    private String[] clanCristian;
+    private String[] clanHindu;
+    private String[] clanParsi;
+    private String[] ethnicityList;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -106,15 +124,16 @@ public class RegisterActivity extends AppCompatActivity {
         motherTonguelist = getResources().getStringArray(R.array.mother_tongue);
         relegionList = getResources().getStringArray(R.array.Relegion);
         clanIslam = getResources().getStringArray(R.array.ClanIslam);
-        clanCristian= getResources().getStringArray(R.array.ClanChristian);
-        clanParsi=getResources().getStringArray(R.array.ClanParsi);
-        clanHindu=getResources().getStringArray(R.array.ClanHindu);
+        clanCristian = getResources().getStringArray(R.array.ClanChristian);
+        clanParsi = getResources().getStringArray(R.array.ClanParsi);
+        clanHindu = getResources().getStringArray(R.array.ClanHindu);
         educationalBackground = getResources().getStringArray(R.array.Education);
         genderArrayList = Arrays.asList(getResources().getStringArray(R.array.gender));
         profileCreatorArrayList = Arrays.asList(getResources().getStringArray(R.array.profile_creator));
         phoneList = Arrays.asList(getResources().getStringArray(R.array.phone_number));
         maritalStatusList = Arrays.asList(getResources().getStringArray(R.array.marital_status));
         physicalStatusList = Arrays.asList(getResources().getStringArray(R.array.physical_status));
+        ethnicityList = getResources().getStringArray(R.array.Ethnicity);
         // motherTonguelist = Arrays.asList(getResources().getStringArray(R.array.mother_tongue));
         profileCreatedByRv = findViewById(R.id.profile_created_rv);
         genderRv = findViewById(R.id.gender_rv);
@@ -150,6 +169,10 @@ public class RegisterActivity extends AppCompatActivity {
         continueBtn2 = findViewById(R.id.reg_continue_btn_2);
         continueBtn3 = findViewById(R.id.reg_continue_btn_3);
 
+        layoutstep1=(View)findViewById(R.id.toolbar_step1);
+        layoutstep2=(View)findViewById(R.id.toolbar_step2);
+        layoutsteplogin=(View)findViewById(R.id.toolbar);
+
         step1Cl = findViewById(R.id.step_1_cl);
         step2Cl = findViewById(R.id.step_2_cl);
         step3Cl = findViewById(R.id.step_3_cl);
@@ -170,8 +193,12 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
+        year = Year.now().getValue();
+
+
         currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-        Toast.makeText(getApplicationContext(), "" + currentDate, Toast.LENGTH_LONG).show();
+
+        //Toast.makeText(getApplicationContext(), "" + currentDate, Toast.LENGTH_LONG).show();
         pd = new ProgressDialog(this);
         pd.setCanceledOnTouchOutside(false);
         pd.setMessage("Please wait...");
@@ -225,6 +252,29 @@ public class RegisterActivity extends AppCompatActivity {
         step2Cl.setVisibility(View.GONE);
         step3Cl.setVisibility(View.GONE);
 
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, day);
+                updateLabel();
+            }
+        };
+
+        dobEt.getEditText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(RegisterActivity.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+                age= year-myCalendar.get(Calendar.YEAR);
+
+                Toast.makeText(getApplicationContext(), ""+age, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
 
         motherTongueEt.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,10 +311,11 @@ public class RegisterActivity extends AppCompatActivity {
                                 int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                                 religionEt.getEditText().setText(relegionList[selectedPosition]);
                                 strRelegionlist = relegionList[selectedPosition];
-                                clanEt.requestFocus();
+                                //clanEt.requestFocus();
                             }
                         })
                         .show();
+
             }
         });
 
@@ -273,7 +324,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(strRelegionlist.equals("Christian")){
+                if (strRelegionlist.equals("Christian")) {
 
                     new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Clan")
                             .setSingleChoiceItems(clanCristian, 0, null)
@@ -292,10 +343,10 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                     Toast.makeText(getApplicationContext(), "yes", Toast.LENGTH_SHORT).show();
-                }else if(strRelegionlist.equals("Muslim-Abbasi")||strRelegionlist.equals("Muslim-Brailvi")
-                ||strRelegionlist.equals("Muslim-Deobandi")||strRelegionlist.equals("Muslim-Others")
-                ||strRelegionlist.equals("Muslim-Shia")||strRelegionlist.equals("Muslim-Wahabi")
-                ){
+                } else if (strRelegionlist.equals("Muslim-Abbasi") || strRelegionlist.equals("Muslim-Brailvi")
+                        || strRelegionlist.equals("Muslim-Deobandi") || strRelegionlist.equals("Muslim-Others")
+                        || strRelegionlist.equals("Muslim-Shia") || strRelegionlist.equals("Muslim-Wahabi")
+                ) {
 
                     new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Clan")
                             .setSingleChoiceItems(clanIslam, 0, null)
@@ -307,12 +358,14 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                                     clanEt.getEditText().setText(clanIslam[selectedPosition]);
-                                    strClanislam = relegionList[selectedPosition];
+                                    //strClanislam = relegionList[selectedPosition];
+                                    strClanislam = clanEt.getEditText().toString();
+                                    // Toast.makeText(getApplicationContext(), ""+strClanislam, Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .show();
 
-                }else if(strRelegionlist.equals("Hindu")){
+                } else if (strRelegionlist.equals("Hindu")) {
 
                     new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Clan")
                             .setSingleChoiceItems(clanHindu, 0, null)
@@ -324,14 +377,13 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                                     clanEt.getEditText().setText(clanHindu[selectedPosition]);
-                                    strClanhindu = relegionList[selectedPosition];
+                                    //strClanhindu = relegionList[selectedPosition];
                                 }
                             })
                             .show();
 
 
-
-                }else if(strClanparsi.equals("Parsi")){
+                } else if (strRelegionlist.equals("Parsi")) {
 
                     new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Clan")
                             .setSingleChoiceItems(clanParsi, 0, null)
@@ -343,16 +395,14 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                                     clanEt.getEditText().setText(clanParsi[selectedPosition]);
-                                    strClanparsi = relegionList[selectedPosition];
+                                    // strClanparsi = relegionList[selectedPosition];
                                 }
                             })
                             .show();
 
 
-
-
                 }
-                           }
+            }
         });
 
         educationEt.getEditText().setOnClickListener(new View.OnClickListener() {
@@ -377,6 +427,28 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        ethnicityEt.getEditText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Ethnicity")
+                        .setSingleChoiceItems(ethnicityList, 0, null)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                dialog.dismiss();
+
+                                int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                ethnicityEt.getEditText().setText(ethnicityList[selectedPosition]);
+                                //strClanislam = relegionList[selectedPosition];
+                            }
+                        })
+                        .show();
+
+            }
+        });
+
         continueBtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -384,6 +456,10 @@ public class RegisterActivity extends AppCompatActivity {
                 step1Cl.setVisibility(View.GONE);
                 step2Cl.setVisibility(View.VISIBLE);
                 step3Cl.setVisibility(View.GONE);
+
+                layoutstep1.setVisibility(View.INVISIBLE);
+                layoutstep2.setVisibility(View.VISIBLE);
+                layoutsteplogin.setVisibility(View.INVISIBLE);
 
 
             }
@@ -398,6 +474,10 @@ public class RegisterActivity extends AppCompatActivity {
                 step1Cl.setVisibility(View.GONE);
                 step2Cl.setVisibility(View.GONE);
                 step3Cl.setVisibility(View.VISIBLE);
+
+                layoutstep1.setVisibility(View.INVISIBLE);
+                layoutstep2.setVisibility(View.INVISIBLE);
+                layoutsteplogin.setVisibility(View.VISIBLE);
 
             }
         });
@@ -435,11 +515,19 @@ public class RegisterActivity extends AppCompatActivity {
 
                 addUsers(profileCreator, gender, name, dob, email, password, confirmPass, phone, motherTongue,
                         religion, clan, maritalStatus, country, state, city, citizenShip, height, education,
-                        employedIn, occupation, salary, physicalStatus, religiousValue, ethnicity, aboutMe, currentDate,activatedstatus);
+                        employedIn, occupation, salary, physicalStatus, religiousValue, ethnicity, aboutMe, currentDate, activatedstatus);
 
 
             }
         });
+
+    }
+
+    private void updateLabel() {
+        String myFormat = "dd/MM/yy";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        dobEt.getEditText().setText(dateFormat.format(myCalendar.getTime()));
+
 
     }
 
@@ -448,7 +536,7 @@ public class RegisterActivity extends AppCompatActivity {
                           String clan, String maritalStatus, String country, String state, String city,
                           String citizenShip, String height, String education, String employedIn, String occupation,
                           String salary, String physicalStatus, String religiousValue, String ethnicity,
-                          String aboutMe, String currentDate,String activatedstatus) {
+                          String aboutMe, String currentDate, String activatedstatus) {
 
         pd.show();
 
@@ -486,7 +574,7 @@ public class RegisterActivity extends AppCompatActivity {
                     userMap.put("ethnicity", ethnicity);
                     userMap.put("aboutMe", aboutMe);
                     userMap.put("dateOfRegistration", currentDate);
-                    userMap.put("activatedstatus",activatedstatus);
+                    userMap.put("activatedstatus", activatedstatus);
 
                     firebaseFirestore.collection("users")
                             .document(mAuth.getCurrentUser().getUid())
@@ -600,4 +688,25 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+
+    private String getAge(int year, int month, int day){
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        Integer ageInt = new Integer(age);
+        String ageS = ageInt.toString();
+
+        return ageS;
+
+    }
+
 }
+

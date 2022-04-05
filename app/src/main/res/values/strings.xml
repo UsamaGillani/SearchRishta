@@ -133,12 +133,59 @@
 
     </string-array>
 
+    <string-array name="RelegiousValues">
+
+        <item>Not Relegious</item>
+        <item>Moderate</item>
+        <item>Relegious </item>
+
+    </string-array>
+
     <string-array name="Location">
 
         <item>UAE</item>
         <item>America</item>
         <item>Germany </item>
         <item>Pakistan</item>
+
+
+    </string-array>
+
+
+    <string-array name="Ethnicity">
+
+        <item>Punjabi</item>
+        <item>Sindhi</item>
+        <item>Balochi </item>
+        <item>Urdu</item>
+        <item>Pashtun</item>
+        <item>Kashmiri</item>
+
+
+    </string-array>
+
+    <string-array name="Occupation">
+
+        <item>Punjabi</item>
+        <item>Sindhi</item>
+        <item>Balochi </item>
+        <item>Urdu</item>
+        <item>Pashtun</item>
+        <item>Kashmiri</item>
+
+
+    </string-array>
+
+    <string-array name="IncomeRange">
+
+        <item>20-50k</item>
+        <item>51-70k</item>
+        <item>71-90k </item>
+        <item>91-110k</item>
+        <item>110-150k</item>
+        <item>150-200k</item>
+        <item>200k+</item>
+
 
 
     </string-array>

@@ -5,10 +5,12 @@
       <map>
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable-v24/roundedbutton.xml" value="0.165234375" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable-v24/toolbar_chat.xml" value="0.1" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable/custom_dialog_background.xml" value="0.165234375" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.165234375" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable/ic_baseline_notes_24.xml" value="0.165234375" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable/ic_baseline_web_24.xml" value="0.165234375" />
-        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable/roundedbutton.xml" value="0.165234375" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable/roundedbtn2.xml" value="0.165234375" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable/roundedbutton.xml" value="0.14" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable/roundedittext.xml" value="0.165234375" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable/search.xml" value="0.2203125" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable/selector.xml" value="0.2203125" />
@@ -16,21 +18,25 @@
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable/star_border.xml" value="0.1" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable/toolbar_chat.xml" value="0.1" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/drawable/toolbar_elevation2.xml" value="0.1" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout-v21/activity_login.xml" value="0.2" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/Hometoolbar.xml" value="0.15" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_basic_details_pref.xml" value="0.153125" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_chat.xml" value="0.1" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_conv.xml" value="0.1" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_convesation.xml" value="0.1" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_edit_profile.xml" value="0.15" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_habits_pref.xml" value="0.1" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_home.xml" value="0.25" />
-        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_location_pref.xml" value="0.18" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_partner_description.xml" value="0.18" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_professional_pref.xml" value="0.142578125" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_register.xml" value="0.18" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_register2.xml" value="0.25" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_register3.xml" value="0.22" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/activity_splash_screen.xml" value="0.20416666666666666" />
-        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/custom_recyclerview_dashboard.xml" value="0.5" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/custom_recyclerview_dashboard.xml" value="0.25" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/custom_recyclerview_profile.xml" value="0.33" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/custom_toolbar_edit_profile.xml" value="0.20416666666666666" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/custom_toolbar_home.xml" value="0.20416666666666666" />
@@ -46,18 +52,22 @@
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/fragment_preffered_location.xml" value="0.1" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/fragment_preffered_profession.xml" value="0.1" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/fragment_premium.xml" value="0.1" />
-        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/fragment_search.xml" value="0.1" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/fragment_short_listed.xml" value="0.1" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/fragment_shortlisted_me.xml" value="0.1" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/fragment_upgrade.xml" value="0.20416666666666666" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/fragment_viewed_my_profile.xml" value="0.1" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/fragment_viewed_not_contacted.xml" value="0.1" />
-        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/layoutprofile.xml" value="0.16621743036837378" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/layoutprofile.xml" value="0.14068441064638784" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/login.xml" value="0.153125" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/message_layout.xml" value="0.15" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/reg_attribute_layout.xml" value="0.20416666666666666" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/relegious_pref_custom_dialog.xml" value="0.15" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/toolbar.xml" value="0.20416666666666666" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/toolbar_conversation.xml" value="0.15" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/toolbarstep1.xml" value="0.22" />
+        <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/toolbarstep2.xml" value="0.18" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/layout/users_single_layout.xml" value="0.18" />
         <entry key="..\:/techroof3/SearchRishta 2/SearchRishta/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/drawable/attribute_bg.xml" value="0.29775280898876405" />

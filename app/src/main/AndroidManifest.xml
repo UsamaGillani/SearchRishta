@@ -13,6 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SearchRishta">
         <activity
+            android:name=".Preferences.HabitsPrefActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Preferences.LocationPrefActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Preferences.ProfessionalPrefActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChatBot.ConvActivity"
             android:exported="false" />
         <activity

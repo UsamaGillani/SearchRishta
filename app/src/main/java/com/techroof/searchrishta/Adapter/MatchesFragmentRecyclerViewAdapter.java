@@ -48,7 +48,6 @@ public class MatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapter<Mat
     @Override
     public void onBindViewHolder(@NonNull MatchesFragmentRecyclerViewAdapter.ViewAdapter holder, int position) {
 
-
         Log.d(TAG, "onBindViewHolder: called");
         Users ld = UserlistData.get(position);
         holder.textViewid.setText(ld.getUserId());

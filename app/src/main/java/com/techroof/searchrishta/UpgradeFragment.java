@@ -114,7 +114,6 @@ public class UpgradeFragment extends Fragment {
         uId = currentFirebaseUser.getUid();
         progressDialog = new ProgressDialog(getContext());
         tvUploadimage = view.findViewById(R.id.tv_upload_image);
-
         progressDialog.setMessage("Uploading Image");
         progressDialog.setCanceledOnTouchOutside(false);
 
@@ -221,7 +220,7 @@ public class UpgradeFragment extends Fragment {
                             .show();
 
                 } else {
-                    Toast.makeText(getContext(), "yes" + activationStatus, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "yes" + activationStatus, Toast.LENGTH_SHORT).show();
 
                     imgUpload.setVisibility(View.INVISIBLE);
                     btnSubmitdetails.setVisibility(View.INVISIBLE);
