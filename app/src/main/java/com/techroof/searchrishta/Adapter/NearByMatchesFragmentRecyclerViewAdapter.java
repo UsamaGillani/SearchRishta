@@ -2,6 +2,7 @@ package com.techroof.searchrishta.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,10 +61,14 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
         this.startValue=startValue;
         this.endValue=endValue;
 
+
+
         //getCurrentLocation();
         db = FirebaseFirestore.getInstance();
 
         distanceCollections=new ArrayList<>();
+
+        Toast.makeText(context.getApplicationContext(), ""+UserlistData, Toast.LENGTH_SHORT).show();
 
 
     }
@@ -81,46 +86,31 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
     public void onBindViewHolder(@NonNull NearByMatchesFragmentRecyclerViewAdapter.ViewAdapter holder, @SuppressLint("RecyclerView") int position) {
 
 
-       // Toast.makeText(context.getApplicationContext(), ""+distance, Toast.LENGTH_SHORT).show();
 
-        //notifyDataSetChanged();
-        Log.d(TAG, "onBindViewHolder: called");
         Users ld = UserlistData.get(position);
-        holder.textViewid.setText(ld.getUserId());
-        holder.textViewState.setText(ld.getState());
-        holder.textviewHeight.setText(ld.getHeight());
-        holder.textViewCountry.setText(ld.getCountry());
-        holder.textViewCity.setText(ld.getCity());
-        holder.textViewdob.setText(ld.getDob());
-        holder.textViewrelegion.setText(ld.getReligion());
-        holder.textViewStatus.setText(ld.getMaritalStatus());
-        holder.textViewEducation.setText(ld.getEducation());
-        holder.textViewname.setText(ld.getName());
-        //notifyDataSetChanged();
-        //Glide.with(context).load(ld.getImage()).into(holder.imageView);
 
-        //Toast.makeText(context.getApplicationContext(), "yes"+longitude, Toast.LENGTH_LONG).show();
-
-        String imgProfile=ld.getImg();
+        //Toast.makeText(context.getApplicationContext(), "yes"+ld.getUserId(), Toast.LENGTH_SHORT).show();
+  /*      String imgProfile=ld.getImg();
         Glide.with(context)
                 .load(imgProfile) // image url
                 .placeholder(R.drawable.image) // any placeholder to load at start
                 .override(200, 200) // resizing
                 .centerCrop()
-                .into(holder.prflimage);// imageview object
+                .into(holder.prflimage);*/
+        //notifyDataSetChanged();
+        Log.d(TAG, "onBindViewHolder: called");
+        // imageview object
 
         //locations
 
-        Toast.makeText(context.getApplicationContext(), "start"+startValue+"end"+endValue, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context.getApplicationContext(), "start"+startValue+"end"+endValue, Toast.LENGTH_SHORT).show();
 
         db.collection("users")
-                .document(UserlistData.get(position).getUserId())
+                .document(ld.getUserId())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-
 
                         double lat, lng;
                         lat = Double.parseDouble(documentSnapshot.getString("Latitude"));
@@ -144,6 +134,8 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
                         DecimalFormat disFormat = new DecimalFormat("#.#");
                         //distance = "" + disFormat.format(d);
                         distance = "" + disFormat.format(d);
+
+                        UserlistData.add(ld.setLocation(distance));
                         //    holder.distanceText.setText(disFormat.format(d) + " Km away");
                         // holder.textViewdistance.setText(distance.toString() + " Km away");
 
@@ -154,18 +146,36 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
                             @Override
                             public int compare(String s, String t1) {
                                 return String.valueOf(distance).substring(0, 5) .compareTo(String.valueOf(distance).substring(0, 5));
-
                             }
                         });*/
 
 
-                        holder.textViewdistance.setText(distance.toString() + " Km away");
+                        //holder.textViewdistance.setText(distance.toString() + " Km away");
 
-                        if (startValue<=Double.parseDouble(distance)){
+                        if (Double.parseDouble(distance)>=startValue&&Double.parseDouble(distance)<=endValue){
 
                             holder.itemView.setVisibility(View.GONE);
                             Toast.makeText(context.getApplicationContext(), "yes", Toast.LENGTH_SHORT).show();
-                            notifyDataSetChanged();
+
+                        }else{
+
+                            holder.textViewid.setText(ld.getUserId());
+                            holder.textViewState.setText(ld.getState());
+                            holder.textviewHeight.setText(ld.getHeight());
+                            holder.textViewCountry.setText(ld.getCountry());
+                            holder.textViewCity.setText(ld.getCity());
+                            holder.textViewdob.setText(ld.getDob());
+                            holder.textViewrelegion.setText(ld.getReligion());
+                            holder.textViewStatus.setText(ld.getMaritalStatus());
+                            holder.textViewEducation.setText(ld.getEducation());
+                            holder.textViewname.setText(ld.getName());
+                            holder.textViewdistance.setText(ld.getLocation());
+                            //notifyDataSetChanged();
+                            //Glide.with(context).load(ld.getImage()).into(holder.imageView);
+
+                            //Toast.makeText(context.getApplicationContext(), "yes"+longitude, Toast.LENGTH_LONG).show();
+
+
 
                         }
                         //getFilter();
@@ -173,25 +183,11 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
                         // Toast.makeText(context.getApplicationContext(), "ar" + arraylist.get(position).getName(), Toast.LENGTH_SHORT).show();
 
 /*
-
                         for(int i= 0;i<distanceCollections.size();i++){
                             Toast.makeText(context.getApplicationContext(), ""+distanceCollections.get(i), Toast.LENGTH_SHORT).show();
-
                             holder.textViewdistance.setText(distanceCollections.get(i) + " Km away");
                         }*/
 
-                        Collections.sort(UserlistData, new Comparator<Users>() {
-                            @Override
-                            public int compare(Users users, Users t1) {
-
-                                //Toast.makeText(context.getApplicationContext(), ""+distance, Toast.LENGTH_SHORT).show();
-                                return String.valueOf(distance).compareTo(String.valueOf(distance));
-
-
-
-
-                            }
-                        });
 
 
                     }
@@ -201,6 +197,23 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
 
             }
         });
+
+
+
+        // imageview object
+
+
+        // Toast.makeText(context.getApplicationContext(), ""+distance, Toast.LENGTH_SHORT).show();
+
+        //locations
+        /*String imgProfile=ld.getImg();
+        Glide.with(context)
+                .load(imgProfile).placeholder(R.drawable.male_avatar) // image url// any placeholder to load at start
+                .override(200, 200) // resizing
+                .centerCrop()
+                .into(holder.prflimage);*/
+
+
 
 
 

@@ -1,6 +1,8 @@
 package com.techroof.searchrishta.Model;
 
 public class Users {
+
+
     public Users(String location, String aboutMe, String img, String longitude, String latitude, String dateOfRegistration, String citizenShip, String city, String clan, String country, String dob, String education, String email, String employedIn, String ethnicity, String gender, String height, String maritalStatus, String motherTongue, String name, String occupation, String password, String phone, String physicalStatus, String profileCreator, String religion, String relegiousValue, String salary, String state, String userId) {
         Location = location;
         this.aboutMe = aboutMe;
@@ -154,8 +156,9 @@ public class Users {
         return userId;
     }
 
-    public void setLocation(String location) {
-        Location = location;
+    public Users setLocation(String location) {
+        this.Location = location;
+        return null;
     }
 
     public void setAboutMe(String aboutMe) {

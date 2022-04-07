@@ -14,7 +14,7 @@
     android:stepSize="5"
     app:values="@array/RangeSliderValues"
     android:valueFrom="0"
-    android:valueTo="100"
+    android:valueTo="2000"
     app:haloColor="@color/accentColor"
     app:thumbColor="@color/primaryDark"
     app:trackColorActive="@color/four"
@@ -24,11 +24,27 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"/>
 
+    <Button
+        android:id="@+id/btn_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Filter"
+        app:layout_constraintTop_toBottomOf="@id/range_slider"
+        android:background="@drawable/roundedbutton"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+    <TextView
+        android:id="@+id/tvcheck"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="35dp"
+        android:text="yes"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nearby_matches_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/range_slider"/>
+        app:layout_constraintTop_toBottomOf="@+id/btn_filter"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

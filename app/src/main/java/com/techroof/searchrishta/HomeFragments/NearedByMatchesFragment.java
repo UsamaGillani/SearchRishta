@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,6 +52,9 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
     private RangeSlider rangeSlider;
     private String startValue, endValue;
     private double st,ed;
+    private Button btnFilter;
+
+    private TextView tvCheck;
 
     public NearedByMatchesFragment() {
         // Required empty public constructor
@@ -88,7 +93,9 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
         nearByRv = view.findViewById(R.id.nearby_matches_rv);
         firestore = FirebaseFirestore.getInstance();
         rangeSlider = view.findViewById(R.id.range_slider);
+        btnFilter=view.findViewById(R.id.btn_filter);
 
+        tvCheck=view.findViewById(R.id.tvcheck);
         rangeSlider.addOnChangeListener(new RangeSlider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
@@ -100,7 +107,8 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
                 st=Double.parseDouble(startValue);
                 ed=Double.parseDouble(endValue);
-                getcurrentuserData();
+                tvCheck.setText(String.valueOf(ed));
+                //getcurrentuserData();
                // recyclerViewAdapter = new NearByMatchesFragmentRecyclerViewAdapter(userArrayList,
                  //       getContext(), dasboardClickListener, Double.parseDouble("50.6692533"), Double.parseDouble("80.0741859"),st,ed);
                 //nearByRv.setAdapter(recyclerViewAdapter);
@@ -112,6 +120,14 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
         firebaseAuth = FirebaseAuth.getInstance();
         uId = firebaseAuth.getUid();
+
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                getcurrentuserData();
+            }
+        });
         //arraylist decleration
         userArrayList = new ArrayList<>();
 
@@ -168,6 +184,12 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
     private void getcurrentuserData() {
 
+        if(!userArrayList.isEmpty()){
+
+
+            userArrayList.clear();
+            recyclerViewAdapter.notifyDataSetChanged();
+        }
         firestore.collection("users").document(uId)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
