@@ -111,15 +111,15 @@ public class ShortListedFragment extends Fragment {
             public void onChanged(List<Shortlisted> shortlisteds) {
                 shortlistedAdapter.setShortlisted(shortlisteds);
                 shortlistedRv.setAdapter(shortlistedAdapter);
-                Toast.makeText(getContext(), "changed"+getViewmodel, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(), "changed"+getViewmodel, Toast.LENGTH_SHORT).show();
 
                 if (shortlistedAdapter.getItemCount()!=0)
                 {
                     //nothing.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "something not working"+shortlistedAdapter.getItemCount(),Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "something not working"+shortlistedAdapter.getItemCount(),Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(getContext(), "working"+shortlistedAdapter.getItemCount(),Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "working"+shortlistedAdapter.getItemCount(),Toast.LENGTH_LONG).show();
 
                 }
             }

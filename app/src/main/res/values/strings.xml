@@ -186,6 +186,14 @@
         <item>150-200k</item>
         <item>200k+</item>
 
+    </string-array>
+
+
+
+    <string-array name="RangeSliderValues">
+
+        <item>20</item>
+        <item>70</item>
 
 
     </string-array>

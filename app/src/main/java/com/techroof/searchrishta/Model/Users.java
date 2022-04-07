@@ -1,8 +1,57 @@
 package com.techroof.searchrishta.Model;
 
 public class Users {
+    public Users(String location, String aboutMe, String img, String longitude, String latitude, String dateOfRegistration, String citizenShip, String city, String clan, String country, String dob, String education, String email, String employedIn, String ethnicity, String gender, String height, String maritalStatus, String motherTongue, String name, String occupation, String password, String phone, String physicalStatus, String profileCreator, String religion, String relegiousValue, String salary, String state, String userId) {
+        Location = location;
+        this.aboutMe = aboutMe;
+        this.img = img;
+        Longitude = longitude;
+        Latitude = latitude;
+        this.dateOfRegistration = dateOfRegistration;
+        this.citizenShip = citizenShip;
+        this.city = city;
+        this.clan = clan;
+        this.country = country;
+        this.dob = dob;
+        this.education = education;
+        this.email = email;
+        this.employedIn = employedIn;
+        this.ethnicity = ethnicity;
+        this.gender = gender;
+        this.height = height;
+        this.maritalStatus = maritalStatus;
+        this.motherTongue = motherTongue;
+        this.name = name;
+        this.occupation = occupation;
+        this.password = password;
+        this.phone = phone;
+        this.physicalStatus = physicalStatus;
+        this.profileCreator = profileCreator;
+        this.religion = religion;
+        this.relegiousValue = relegiousValue;
+        this.salary = salary;
+        this.state = state;
+        this.userId = userId;
+    }
 
-    public Users() {
+    public String getLocation() {
+        return Location;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public String getLongitude() {
+        return Longitude;
+    }
+
+    public String getLatitude() {
+        return Latitude;
     }
 
     public String getDateOfRegistration() {
@@ -105,6 +154,26 @@ public class Users {
         return userId;
     }
 
+    public void setLocation(String location) {
+        Location = location;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public void setLongitude(String longitude) {
+        Longitude = longitude;
+    }
+
+    public void setLatitude(String latitude) {
+        Latitude = latitude;
+    }
+
     public void setDateOfRegistration(String dateOfRegistration) {
         this.dateOfRegistration = dateOfRegistration;
     }
@@ -205,57 +274,41 @@ public class Users {
         this.userId = userId;
     }
 
-    String dateOfRegistration;
-    String citizenShip;
-    String city;
-    String clan;
-    String country;
-    String dob;
-    String education;
-    String email;
-    String employedIn;
-    String ethnicity;
-    String gender;
-    String height;
-    String maritalStatus;
-    String motherTongue;
-    String name;
-    String occupation;
-    String password;
-    String phone;
-    String physicalStatus;
-    String profileCreator;
-    String religion;
-    String relegiousValue;
-    String salary;
-    String state;
-    String userId;
+    private String Location;
+    private String aboutMe;
+    private String img;
+    private String Longitude;
+    private String Latitude;
+    private String dateOfRegistration;
+    private String citizenShip;
+    private String city;
+    private String clan;
+    private String country;
+    private String dob;
+    private String education;
+    private String email;
+    private String employedIn;
+    private String ethnicity;
+    private String gender;
+    private String height;
+    private String maritalStatus;
+    private String motherTongue;
+    private String name;
+    private String occupation;
+    private String password;
+    private String phone;
+    private String physicalStatus;
+    private String profileCreator;
+    private String religion;
+    private String relegiousValue;
+    private String salary;
+    private String state;
+    private String userId;
 
-    public Users(String dateOfRegistration, String citizenShip, String city, String clan, String country, String dob, String education, String email, String employedIn, String ethnicity, String gender, String height, String maritalStatus, String motherTongue, String name, String occupation, String password, String phone, String physicalStatus, String profileCreator, String religion, String relegiousValue, String salary, String state, String userId) {
-        this.dateOfRegistration = dateOfRegistration;
-        this.citizenShip = citizenShip;
-        this.city = city;
-        this.clan = clan;
-        this.country = country;
-        this.dob = dob;
-        this.education = education;
-        this.email = email;
-        this.employedIn = employedIn;
-        this.ethnicity = ethnicity;
-        this.gender = gender;
-        this.height = height;
-        this.maritalStatus = maritalStatus;
-        this.motherTongue = motherTongue;
-        this.name = name;
-        this.occupation = occupation;
-        this.password = password;
-        this.phone = phone;
-        this.physicalStatus = physicalStatus;
-        this.profileCreator = profileCreator;
-        this.religion = religion;
-        this.relegiousValue = relegiousValue;
-        this.salary = salary;
-        this.state = state;
-        this.userId = userId;
+
+    public Users() {
     }
+
+
+
 }
