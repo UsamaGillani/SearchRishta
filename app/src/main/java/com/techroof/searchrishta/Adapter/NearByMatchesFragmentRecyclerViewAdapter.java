@@ -49,6 +49,8 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
 
     private ArrayList<String> distanceCollections;
 
+    Users users =new Users();
+
     public NearByMatchesFragmentRecyclerViewAdapter(ArrayList<Users> UserlistData, Context context, DasboardClickListener listener,double latitude, double longitude,double startValue,double endValue) {
         this.UserlistData = UserlistData;
         this.context = context;
@@ -83,14 +85,12 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NearByMatchesFragmentRecyclerViewAdapter.ViewAdapter holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull NearByMatchesFragmentRecyclerViewAdapter.ViewAdapter holder,  int position) {
 
 
 
         Users ld = UserlistData.get(position);
-
-        //Toast.makeText(context.getApplicationContext(), "yes"+ld.getUserId(), Toast.LENGTH_SHORT).show();
-  /*      String imgProfile=ld.getImg();
+        /*      String imgProfile=ld.getImg();
         Glide.with(context)
                 .load(imgProfile) // image url
                 .placeholder(R.drawable.image) // any placeholder to load at start
@@ -99,14 +99,11 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
                 .into(holder.prflimage);*/
         //notifyDataSetChanged();
         Log.d(TAG, "onBindViewHolder: called");
-        // imageview object
 
-        //locations
 
-        //Toast.makeText(context.getApplicationContext(), "start"+startValue+"end"+endValue, Toast.LENGTH_SHORT).show();
 
         db.collection("users")
-                .document(ld.getUserId())
+                .document(UserlistData.get(position).getUserId())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -132,33 +129,21 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
 
 
                         DecimalFormat disFormat = new DecimalFormat("#.#");
-                        //distance = "" + disFormat.format(d);
                         distance = "" + disFormat.format(d);
 
-                        UserlistData.add(ld.setLocation(distance));
+                        ld.setLocation(distance);
                         //    holder.distanceText.setText(disFormat.format(d) + " Km away");
                         // holder.textViewdistance.setText(distance.toString() + " Km away");
 
-                        //distanceCollections.add(distance);
 
 
-                          /* {
-                            @Override
-                            public int compare(String s, String t1) {
-                                return String.valueOf(distance).substring(0, 5) .compareTo(String.valueOf(distance).substring(0, 5));
-                            }
-                        });*/
-
-
-                        //holder.textViewdistance.setText(distance.toString() + " Km away");
 
                         if (Double.parseDouble(distance)>=startValue&&Double.parseDouble(distance)<=endValue){
 
                             holder.itemView.setVisibility(View.GONE);
-                            Toast.makeText(context.getApplicationContext(), "yes", Toast.LENGTH_SHORT).show();
+
 
                         }else{
-
                             holder.textViewid.setText(ld.getUserId());
                             holder.textViewState.setText(ld.getState());
                             holder.textviewHeight.setText(ld.getHeight());
@@ -169,24 +154,19 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
                             holder.textViewStatus.setText(ld.getMaritalStatus());
                             holder.textViewEducation.setText(ld.getEducation());
                             holder.textViewname.setText(ld.getName());
-                            holder.textViewdistance.setText(ld.getLocation());
+                            holder.textViewdistance.setText(ld.getLocation()+ " km away" );
+                            String imgProfile=ld.getImg();
                             //notifyDataSetChanged();
-                            //Glide.with(context).load(ld.getImage()).into(holder.imageView);
+                            Glide.with(context).load(imgProfile).into(holder.prflimage);
 
-                            //Toast.makeText(context.getApplicationContext(), "yes"+longitude, Toast.LENGTH_LONG).show();
+
 
 
 
                         }
-                        //getFilter();
-                        // Toast.makeText(context.getApplicationContext(), "users" + UserlistData.get(position).getName(), Toast.LENGTH_SHORT).show();
-                        // Toast.makeText(context.getApplicationContext(), "ar" + arraylist.get(position).getName(), Toast.LENGTH_SHORT).show();
 
-/*
-                        for(int i= 0;i<distanceCollections.size();i++){
-                            Toast.makeText(context.getApplicationContext(), ""+distanceCollections.get(i), Toast.LENGTH_SHORT).show();
-                            holder.textViewdistance.setText(distanceCollections.get(i) + " Km away");
-                        }*/
+
+
 
 
 
@@ -197,6 +177,7 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
 
             }
         });
+
 
 
 

@@ -54,8 +54,6 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
     private double st,ed;
     private Button btnFilter;
 
-    private TextView tvCheck;
-
     public NearedByMatchesFragment() {
         // Required empty public constructor
     }
@@ -95,7 +93,6 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
         rangeSlider = view.findViewById(R.id.range_slider);
         btnFilter=view.findViewById(R.id.btn_filter);
 
-        tvCheck=view.findViewById(R.id.tvcheck);
         rangeSlider.addOnChangeListener(new RangeSlider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
@@ -107,7 +104,6 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
                 st=Double.parseDouble(startValue);
                 ed=Double.parseDouble(endValue);
-                tvCheck.setText(String.valueOf(ed));
                 //getcurrentuserData();
                // recyclerViewAdapter = new NearByMatchesFragmentRecyclerViewAdapter(userArrayList,
                  //       getContext(), dasboardClickListener, Double.parseDouble("50.6692533"), Double.parseDouble("80.0741859"),st,ed);

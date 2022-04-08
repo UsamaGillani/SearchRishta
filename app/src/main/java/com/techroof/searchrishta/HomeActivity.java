@@ -72,12 +72,13 @@ public class HomeActivity extends AppCompatActivity {
 
         firestore=FirebaseFirestore.getInstance();
 
+        //load progressbar
 
-        pd = new ProgressDialog(this);
+        /*pd = new ProgressDialog(this);
         pd.setMessage("Updating your location...");
-        pd.setCanceledOnTouchOutside(false);
+        pd.setCanceledOnTouchOutside(false);*/
 
-        checkLocationPermission();
+        //checkLocationPermission();
         //initializing progressbar
 
 

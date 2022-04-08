@@ -156,9 +156,8 @@ public class Users {
         return userId;
     }
 
-    public Users setLocation(String location) {
-        this.Location = location;
-        return null;
+    public void setLocation(String location) {
+        Location = location;
     }
 
     public void setAboutMe(String aboutMe) {
