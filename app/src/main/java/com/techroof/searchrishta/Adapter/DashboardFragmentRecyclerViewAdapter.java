@@ -281,7 +281,6 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(context.getApplicationContext(), ""+statuss, Toast.LENGTH_SHORT).show();
 
                 if(statuss.equals("activated")){
 

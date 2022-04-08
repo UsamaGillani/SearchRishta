@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.slider.RangeSlider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,6 +54,7 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
     private String startValue, endValue;
     private double st,ed;
     private Button btnFilter;
+    private String statuss=null;
 
     public NearedByMatchesFragment() {
         // Required empty public constructor
@@ -93,6 +95,7 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
         rangeSlider = view.findViewById(R.id.range_slider);
         btnFilter=view.findViewById(R.id.btn_filter);
 
+        checkStatus();
         rangeSlider.addOnChangeListener(new RangeSlider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
@@ -121,7 +124,16 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
             @Override
             public void onClick(View view) {
 
-                getcurrentuserData();
+                if(statuss.equals("activated")){
+
+                    getcurrentuserData();
+
+                }else if(statuss.equals("not activated")){
+
+                    Toast.makeText(getContext(), "switch to user user account to enable our location services", Toast.LENGTH_SHORT).show();
+
+
+                }
             }
         });
         //arraylist decleration
@@ -202,6 +214,31 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
                 }
 
+
+            }
+        });
+
+    }
+
+    private void checkStatus(){
+
+
+        firestore.collection("users").whereEqualTo("userId",uId).whereEqualTo("activatedstatus","activated").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if(task.getResult().isEmpty()){
+
+                    statuss="not activated";
+
+                }else{
+
+                    statuss="activated";
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
             }
         });
