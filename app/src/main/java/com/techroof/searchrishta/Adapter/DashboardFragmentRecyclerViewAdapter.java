@@ -63,6 +63,10 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
 
     private String uId;
 
+    //status initialization
+
+    private String statuss=null;
+
     //----------------------------------//
 
     public DashboardFragmentRecyclerViewAdapter(ArrayList<Users> UserlistData, Context context, DasboardClickListener listener, ArrayList<String> storedId) {
@@ -79,6 +83,8 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
 
         uId=firebaseAuth.getCurrentUser().getUid();
 
+
+
     }
 
     @NonNull
@@ -91,6 +97,32 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
 
     @Override
     public void onBindViewHolder(@NonNull DashboardFragmentRecyclerViewAdapter.ViewAdapter holder, int position) {
+
+        //checking condition of premium account to enable chat
+
+
+        firestore.collection("users").whereEqualTo("userId",uId).whereEqualTo("activatedstatus","activated").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if(task.getResult().isEmpty()){
+
+                    statuss="not activated";
+
+                }else{
+
+                    statuss="activated";
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+
+
 
         Users ld = UserlistData.get(position);
 
@@ -249,21 +281,33 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
             @Override
             public void onClick(View view) {
 
-                String userId = ld.getUserId();
-                String name = ld.getName();
-                String dob = ld.getDob();
-                String height = ld.getHeight();
-                String relegion = ld.getReligion();
-                String education = ld.getEducation();
-                String maritalstatus = ld.getMaritalStatus();
-                String city = ld.getCity();
-                String province = ld.getState();
-                String country = ld.getCountry();
+                Toast.makeText(context.getApplicationContext(), ""+statuss, Toast.LENGTH_SHORT).show();
 
-                Intent moveChat = new Intent(context.getApplicationContext(), ChatActivity.class);
-                moveChat.putExtra("userId", userId);
-                moveChat.putExtra("userName", name);
-                context.startActivity(moveChat);
+                if(statuss.equals("activated")){
+
+                    String userId = ld.getUserId();
+                    String name = ld.getName();
+                    String dob = ld.getDob();
+                    String height = ld.getHeight();
+                    String relegion = ld.getReligion();
+                    String education = ld.getEducation();
+                    String maritalstatus = ld.getMaritalStatus();
+                    String city = ld.getCity();
+                    String province = ld.getState();
+                    String country = ld.getCountry();
+
+                    Intent moveChat = new Intent(context.getApplicationContext(), ChatActivity.class);
+                    moveChat.putExtra("userId", userId);
+                    moveChat.putExtra("userName", name);
+                    context.startActivity(moveChat);
+
+                }else if(statuss.equals("not activated")){
+
+                    Toast.makeText(context.getApplicationContext(), "switch to our premium account to enable chat system", Toast.LENGTH_SHORT).show();
+
+
+                }
+
             }
         });
 

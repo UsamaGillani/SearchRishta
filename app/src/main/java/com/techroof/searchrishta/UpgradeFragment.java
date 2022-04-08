@@ -204,7 +204,7 @@ public class UpgradeFragment extends Fragment {
                 //Toast.makeText(getContext(), "yes"+activationStatus, Toast.LENGTH_SHORT).show();
 
                 if (activationStatus.equals("normal")) {
-                    Toast.makeText(getContext(), "yes" + activationStatus, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getContext(), "yes" + activationStatus, Toast.LENGTH_SHORT).show();
 
                     new AlertDialog.Builder(getActivity()).setTitle("Upgrade to our Premium account ").
                             setMessage("Activate to our Premium account to have verified mobile numbers" +
