@@ -19,16 +19,26 @@ import androidx.lifecycle.ViewModelStore;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
 import com.techroof.searchrishta.ChatBot.ChatActivity;
 import com.techroof.searchrishta.Interfaces.ClickListener;
 import com.techroof.searchrishta.Interfaces.DasboardClickListener;
 import com.techroof.searchrishta.Model.Users;
+import com.techroof.searchrishta.ProfileFragment;
 import com.techroof.searchrishta.R;
 import com.techroof.searchrishta.Shortlisted;
+import com.techroof.searchrishta.UserProfile;
 import com.techroof.searchrishta.ViewModel.ShortlistedViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<DashboardFragmentRecyclerViewAdapter.ViewAdapter> {
     private static final String TAG = "RecyclerViewAdapter";
@@ -40,12 +50,34 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
     private Context context;
     private ArrayList<String> storedId;
 
+    //firebase initialization
+
+    private FirebaseFirestore firestore;
+
+    private FirebaseAuth firebaseAuth;
+
+    //----------------------------------//
+
+
+    //Uid initialization
+
+    private String uId;
+
+    //----------------------------------//
+
     public DashboardFragmentRecyclerViewAdapter(ArrayList<Users> UserlistData, Context context, DasboardClickListener listener, ArrayList<String> storedId) {
         this.UserlistData = UserlistData;
         this.context = context;
         this.mlistener = listener;
         this.storedId = storedId;
 
+        //firestore
+
+        firestore=FirebaseFirestore.getInstance();
+
+        firebaseAuth=FirebaseAuth.getInstance();
+
+        uId=firebaseAuth.getCurrentUser().getUid();
 
     }
 
@@ -100,7 +132,7 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
             holder.textViewname.setText(ld.getName());
 
             holder.imgShortlisted.setImageDrawable(context.getResources().getDrawable(R.drawable.star_border));
-           // flag = "false";
+            // flag = "false";
             //Toast.makeText(context.getApplicationContext(), "no", Toast.LENGTH_SHORT).show();
             holder.btnremove.setVisibility(View.INVISIBLE);
 
@@ -192,7 +224,6 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
                                 relegion, education, maritalstatus, city, province, country);
 
 
-
                 notifyDataSetChanged();
 
             }
@@ -205,12 +236,11 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
                 /*Snackbar snackbar = Snackbar
                         .make(Ho, "www.journaldev.com", Snackbar.LENGTH_LONG);
                 snackbar.show();*/
-               /* String movecategory=ld.getCategory();
-                Log.d(TAG, "onClick: "+ld.getName());
-                Intent intent= new Intent(context.getApplicationContext(), InvestmentDetailsActivity.class);
-                intent.putExtra("content", movecategory);
+                String moveid = ld.getUserId();
+                Intent intent = new Intent(context.getApplicationContext(), UserProfile.class);
+                intent.putExtra("content", moveid);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);*/
+                context.startActivity(intent);
 
             }
         });
@@ -230,10 +260,77 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
                 String province = ld.getState();
                 String country = ld.getCountry();
 
-                Intent moveChat=new Intent(context.getApplicationContext(), ChatActivity.class);
-                moveChat.putExtra("userId",userId);
-                moveChat.putExtra("userName",name);
+                Intent moveChat = new Intent(context.getApplicationContext(), ChatActivity.class);
+                moveChat.putExtra("userId", userId);
+                moveChat.putExtra("userName", name);
                 context.startActivity(moveChat);
+            }
+        });
+
+        holder.imgSendInterest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                //function
+                Map<String, Object> ViewerMap = new HashMap<>();
+                ViewerMap.put("InterestSent", ld.getUserId());
+                ViewerMap.put("InterestedPerson", uId);
+
+                //firestorestatus check
+
+                firestore.collection("SentInterests")
+                        .whereEqualTo("InterestSent", ld.getUserId()).whereEqualTo("InterestedPerson", uId)
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.getResult().isEmpty()) {
+
+                            firestore.collection("SentInterests")
+                                    .document()
+                                    .set(ViewerMap)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(context.getApplicationContext(), "Interest Sent", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(context.getApplicationContext(), ""+e.toString(), Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+
+                        }else{
+
+
+                            Toast.makeText(context.getApplicationContext(), "You Have Already Sent Interest", Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
+
+
+                //--------------------\\
+
+
+
+
+
+
+
             }
         });
 
@@ -271,7 +368,7 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
             imgChat = itemView.findViewById(R.id.img_chat);
             imgSendInterest = itemView.findViewById(R.id.img_send_interest);
             btnremove = itemView.findViewById(R.id.btn_remove);
-            imgChat=itemView.findViewById(R.id.img_chat);
+            imgChat = itemView.findViewById(R.id.img_chat);
 
         }
     }

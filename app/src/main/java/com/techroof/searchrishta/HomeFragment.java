@@ -80,10 +80,8 @@ public class HomeFragment extends Fragment {
         viewPagerAdapter.addfragment(new JustJoinedFragment(), "JUST JOINED");
         viewPagerAdapter.addfragment(new MatchesFragment(), "MATCHES");
         viewPagerAdapter.addfragment(new PremiumFragment(), "PREMIUM");
-        viewPagerAdapter.addfragment(new MutualFragment(), "MUTUAL");
-        viewPagerAdapter.addfragment(new ViewedNotContactedFragment(), "VIEWED NOT CONTACTED");
         viewPagerAdapter.addfragment(new ViewedMyProfileFragment(), "VIEWED MY PROFILE");
-        viewPagerAdapter.addfragment(new ShortlistedMeFragment(), "SHORTLISTED ME");
+        viewPagerAdapter.addfragment(new ShortlistedMeFragment(), "SHOWN INTEREST");
         viewPagerAdapter.addfragment(new ShortListedFragment(), "SHORTLISTED");
         viewPagerAdapter.addfragment(new NearedByMatchesFragment(), "NEARBY MATCHES");
         viewPagerAdapter.addfragment(new PrefferedProfessionFragment(), "PREFFERED PROFESSION");

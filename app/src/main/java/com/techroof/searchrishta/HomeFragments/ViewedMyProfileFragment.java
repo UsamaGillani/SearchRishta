@@ -1,5 +1,6 @@
 package com.techroof.searchrishta.HomeFragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,6 +43,8 @@ public class ViewedMyProfileFragment extends Fragment implements DasboardClickLi
     private FirebaseAuth firebaseAuth;
     FirebaseAuth.AuthStateListener authStateListener;
     private ShortlistedViewModel getViewmodel;
+    String uId;
+    private ProgressDialog progressDialog;
 
     public ViewedMyProfileFragment() {
         // Required empty public constructor
@@ -79,8 +83,14 @@ public class ViewedMyProfileFragment extends Fragment implements DasboardClickLi
 
         viewedMyprofileRv = view.findViewById(R.id.viewed_my_profile_rv);
         firestore = FirebaseFirestore.getInstance();
+        firebaseAuth=FirebaseAuth.getInstance();
+        uId=firebaseAuth.getCurrentUser().getUid();
 
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
+
 
         //arraylist decleration
         userArrayList = new ArrayList<>();
@@ -104,25 +114,49 @@ public class ViewedMyProfileFragment extends Fragment implements DasboardClickLi
 
     }
 
-    private void getData() {
+    private void getData(){
 
-        firestore.collection("users")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firestore.collection("ViewedProfile").whereEqualTo("Viewed",uId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                if(task.isSuccessful()){
 
-                    Users listData = documentSnapshot.toObject(Users.class);
-                    userArrayList.add(listData);
+                    for (QueryDocumentSnapshot document : task.getResult()) {
 
-                }
 
-                layoutManagerdashboard = new LinearLayoutManager(getContext(),
-                        LinearLayoutManager.HORIZONTAL, false);
-                viewedMyprofileRv.setLayoutManager(layoutManagerdashboard);
-                viewedMyprofileRv.setAdapter(recyclerViewAdapter);
+                        String Viewer=document.getString("Viewer");
 
+                        firestore.collection("users").whereEqualTo("userId",Viewer)
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+
+                                    Users listData = documentSnapshot.toObject(Users.class);
+                                    userArrayList.add(listData);
+
+                                }
+
+                                layoutManagerdashboard = new LinearLayoutManager(getContext(),
+                                        LinearLayoutManager.VERTICAL, false);
+                                viewedMyprofileRv.setLayoutManager(layoutManagerdashboard);
+                                viewedMyprofileRv.setAdapter(recyclerViewAdapter);
+
+                                progressDialog.dismiss();
+                            }
+                        });
+
+
+                    }
+
+                    }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
             }
         });

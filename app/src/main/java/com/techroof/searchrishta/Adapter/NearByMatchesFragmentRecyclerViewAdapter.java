@@ -138,12 +138,9 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
 
 
 
-                        if (Double.parseDouble(distance)>=startValue&&Double.parseDouble(distance)<=endValue){
-
-                            holder.itemView.setVisibility(View.GONE);
+                        if (Double.parseDouble(ld.getLocation())>=startValue&&Double.parseDouble(ld.getLocation())<=endValue){
 
 
-                        }else{
                             holder.textViewid.setText(ld.getUserId());
                             holder.textViewState.setText(ld.getState());
                             holder.textviewHeight.setText(ld.getHeight());
@@ -159,7 +156,9 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
                             //notifyDataSetChanged();
                             Glide.with(context).load(imgProfile).into(holder.prflimage);
 
+                        }else{
 
+                            holder.itemView.setVisibility(View.GONE);
 
 
 
