@@ -109,6 +109,8 @@ public class RegisterActivity extends AppCompatActivity {
     private String[] clanHindu;
     private String[] clanParsi;
     private String[] ethnicityList;
+    private String[] countryList;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -134,6 +136,7 @@ public class RegisterActivity extends AppCompatActivity {
         maritalStatusList = Arrays.asList(getResources().getStringArray(R.array.marital_status));
         physicalStatusList = Arrays.asList(getResources().getStringArray(R.array.physical_status));
         ethnicityList = getResources().getStringArray(R.array.Ethnicity);
+        countryList=getResources().getStringArray(R.array.countries);
         // motherTonguelist = Arrays.asList(getResources().getStringArray(R.array.mother_tongue));
         profileCreatedByRv = findViewById(R.id.profile_created_rv);
         genderRv = findViewById(R.id.gender_rv);
@@ -446,6 +449,27 @@ public class RegisterActivity extends AppCompatActivity {
                         })
                         .show();
 
+            }
+        });
+
+        countryEt.getEditText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Country")
+                        .setSingleChoiceItems(countryList, 0, null)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                dialog.dismiss();
+
+                                int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                countryEt.getEditText().setText(countryList[selectedPosition]);
+                                //strClanislam = relegionList[selectedPosition];
+                            }
+                        })
+                        .show();
             }
         });
 

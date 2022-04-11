@@ -416,4 +416,9 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
         }
     }
 
+    public void filterList(ArrayList<Users> filteredList) {
+        UserlistData = filteredList;
+        notifyDataSetChanged();
+    }
+
 }

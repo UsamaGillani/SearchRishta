@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -19,6 +20,8 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
@@ -38,8 +41,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.techroof.searchrishta.Authentication.LoginActivity;
 import com.techroof.searchrishta.Authentication.RegisterActivity;
+import com.techroof.searchrishta.Model.Users;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,6 +64,8 @@ public class HomeActivity extends AppCompatActivity {
     private LocationSettingsRequest.Builder locationBuilder;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +80,10 @@ public class HomeActivity extends AppCompatActivity {
 
         firestore=FirebaseFirestore.getInstance();
 
+
+
         //load progressbar
+
 
         /*pd = new ProgressDialog(this);
         pd.setMessage("Updating your location...");
@@ -91,7 +102,8 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         mAuth = FirebaseAuth.getInstance();
-        Toast.makeText(getApplicationContext(), "" + mAuth.getUid(), Toast.LENGTH_SHORT).show();
+        uId=mAuth.getCurrentUser().getUid();
+        //Toast.makeText(getApplicationContext(), "" + mAuth.getUid(), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -395,7 +407,13 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+
+
+
+
+
 }
+
 
 
 

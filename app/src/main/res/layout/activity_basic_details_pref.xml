@@ -7,135 +7,75 @@
     tools:context=".Preferences.BasicDetailsPref">
 
 
-
     <TextView
-        android:id="@+id/label_status"
-        android:layout_width="wrap_content"
+        android:id="@+id/label_Professional_details"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Partner Marital Status"
-        android:layout_marginLeft="25dp"
+        android:text="ENTER YOUR HOBBIES PREFERENCES FROM BELOW"
         android:textSize="16sp"
-        android:textColor="@color/black"
         android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/sp_status"
-        android:layout_marginTop="100dp"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <Spinner
-        android:id="@+id/sp_status"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:outlineSpotShadowColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="300dp"
-        app:layout_constraintTop_toTopOf="@+id/label_status"
-        app:layout_constraintBottom_toBottomOf="@+id/label_status"
-        tools:ignore="MissingConstraints"/>
-
-    <TextView
-        android:id="@+id/age_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Age"
-        android:layout_marginLeft="25dp"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-       app:layout_constraintTop_toBottomOf="@id/label_status"
+    <EditText
+        android:id="@+id/et_marital_preferences"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/roundedittext"
+        android:hint="ENTER YOUR MARITAL STATUS PREFERENCES"
         android:layout_marginTop="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toBottomOf="@id/label_Professional_details"/>
 
-    <Spinner
-        android:id="@+id/sp_age"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:outlineSpotShadowColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="300dp"
-        app:layout_constraintTop_toTopOf="@+id/age_status"
-        app:layout_constraintBottom_toBottomOf="@+id/age_status"
-        tools:ignore="MissingConstraints"/>
-
-
-    <TextView
-        android:id="@+id/height_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Height"
-        android:layout_marginLeft="25dp"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/age_status"
+    <EditText
+        android:id="@+id/et_age_preferences"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/roundedittext"
+        android:hint="ENTER YOUR AGE PREFERENCES"
         android:layout_marginTop="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toBottomOf="@id/et_marital_preferences"/>
 
-    <Spinner
-        android:id="@+id/sp_height"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:outlineSpotShadowColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="300dp"
-        app:layout_constraintTop_toTopOf="@+id/height_status"
-        app:layout_constraintBottom_toBottomOf="@+id/height_status"
-        tools:ignore="MissingConstraints"/>
-
-    <TextView
-        android:id="@+id/mother_tongue_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mother Tongue"
-        android:layout_marginLeft="25dp"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/height_status"
+    <EditText
+        android:id="@+id/et_height_preferences"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/roundedittext"
+        android:hint="ENTER YOUR HEIGHT PREFERENCES"
         android:layout_marginTop="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toBottomOf="@id/et_age_preferences"/>
 
-    <Spinner
-        android:id="@+id/sp_mother_tongue"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:outlineSpotShadowColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="300dp"
-        app:layout_constraintTop_toTopOf="@+id/mother_tongue_status"
-        app:layout_constraintBottom_toBottomOf="@+id/mother_tongue_status"
-        tools:ignore="MissingConstraints"/>
-
-
-    <TextView
-        android:id="@+id/physical_statuss"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Physical Status"
-        android:layout_marginLeft="25dp"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/mother_tongue_status"
+    <EditText
+        android:id="@+id/et_mothertongue_preferences"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/roundedittext"
+        android:hint="ENTER YOUR MOTHER TONGUE PREFERENCES"
         android:layout_marginTop="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toBottomOf="@id/et_height_preferences"/>
 
-    <Spinner
-        android:id="@+id/sp_physical_status"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:outlineSpotShadowColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="300dp"
-        app:layout_constraintTop_toTopOf="@+id/physical_statuss"
-        app:layout_constraintBottom_toBottomOf="@+id/physical_statuss"
-        tools:ignore="MissingConstraints"/>
 
+    <EditText
+        android:id="@+id/et_physicalstatus_preferences"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/roundedittext"
+        android:hint="ENTER YOUR PHYSICAL STATUS PREFERENCES"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toBottomOf="@id/et_height_preferences"/>
     <Button
         android:id="@+id/btn_update_basic_preffer_details"
         android:layout_width="match_parent"
@@ -143,7 +83,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/physical_statuss"
+        app:layout_constraintTop_toBottomOf="@+id/et_physicalstatus_preferences"
         android:text="UPDATE BASIC PREFFERED DETAILS"
         android:background="@drawable/roundedbutton"/>
 

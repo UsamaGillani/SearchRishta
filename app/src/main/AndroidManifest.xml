@@ -16,6 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SearchRishta">
         <activity
+            android:name=".Notification.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfile.EditBasicDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".UserProfile"
             android:exported="false" />
         <activity

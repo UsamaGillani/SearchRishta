@@ -2,6 +2,7 @@ package com.techroof.searchrishta;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -10,11 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.techroof.searchrishta.Adapter.HomeFragmentViewPagerAdapter;
 import com.techroof.searchrishta.HomeFragments.DashBoardFragment;
 import com.techroof.searchrishta.HomeFragments.JustJoinedFragment;
@@ -30,6 +38,9 @@ import com.techroof.searchrishta.HomeFragments.ShortlistedMeFragment;
 import com.techroof.searchrishta.HomeFragments.ViewedMyProfileFragment;
 import com.techroof.searchrishta.HomeFragments.ViewedNotContactedFragment;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class HomeFragment extends Fragment {
 
@@ -39,6 +50,12 @@ public class HomeFragment extends Fragment {
     FirebaseAnalytics mFirebaseAnalytics;
     FirebaseFirestore firebaseFirestore;
     ImageView imgToolbar;
+    private TextView tvNotificationCounter;
+    private ImageView imgViewNotification;
+    private final int max_number=99;
+    private int notification_number_counter;
+    private String uId;
+    private String documentNumber;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -74,6 +91,23 @@ public class HomeFragment extends Fragment {
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
+        uId=firebaseAuth.getCurrentUser().getUid();
+        //notification counter textview
+        tvNotificationCounter=view.findViewById(R.id.tv_notification_counter);
+
+
+        imgViewNotification=view.findViewById(R.id.img_back_arrow);
+
+
+        imgViewNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                UpdateStatus();
+            }
+        });
+
+
         HomeFragmentViewPagerAdapter viewPagerAdapter = new HomeFragmentViewPagerAdapter(getFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         //viewPagerAdapter.addfragment(new ProfileFragment(), "PROFILE");
         viewPagerAdapter.addfragment(new DashBoardFragment(), "DASHBOARD");
@@ -91,4 +125,90 @@ public class HomeFragment extends Fragment {
         viewPager.setAdapter(viewPagerAdapter);
         return view;
     }
+
+
+
+    @Override
+    public void onStart() {
+        CheckNotification();
+        super.onStart();
+    }
+
+    private void CheckNotification(){
+
+
+        firebaseFirestore.collection("SentInterests").whereEqualTo("InterestSent", uId).whereEqualTo("Status","UnSeen").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if (task.isSuccessful()) {
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        String Viewer = document.getString("InterestedPerson");
+
+                        firebaseFirestore.collection("users").whereEqualTo("userId", Viewer)
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+
+                                    notification_number_counter++;
+                                    Toast.makeText(getContext(), "yes"+notification_number_counter, Toast.LENGTH_SHORT).show();
+
+                                }
+
+                                if(max_number>notification_number_counter){
+
+                                    tvNotificationCounter.setVisibility(View.VISIBLE);
+                                    tvNotificationCounter.setText(String.valueOf(notification_number_counter));
+                                    documentNumber=document.getId();
+                                    //Toast.makeText(getContext(), ""+document.getId(), Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        });
+
+
+                    }
+
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(getContext(),""+e.toString(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    private void UpdateStatus() {
+
+        Map<String, Object> updateNotificationStatusMap = new HashMap<>();
+        updateNotificationStatusMap.put("Status", "Seen");
+
+        firebaseFirestore.collection("SentInterests").document(documentNumber)
+                .update(updateNotificationStatusMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                Toast.makeText(getContext(), "Updated", Toast.LENGTH_LONG).show();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+    }
+
+
 }

@@ -45,13 +45,13 @@ public class EditProfileActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firestore;
     CollapsingToolbarLayout toolbarLayout;
-    ImageView imgPrfdesc,imgPrfbasicdetails,imgRelegiousdetails,imgProfessionaldetails;
+    ImageView imgPrfdesc,imgPrfbasicdetails,imgRelegiousdetails,imgProfessionaldetails,imgPhone,imgMail;
     String Uid;
     TextView tvAboutmyself,tvname,dateOfBirth,tvProfileCreated,tvGender,tvHeight, tvMaritalstatus,tvMothertongue,tvPhysicalStatus,tvEducation,tvEmployed,tvOccupation,tvAnnualIncome;
     //private CollapsingToolbarLayout toolbar;
-    private Dialog dialog;
+    private Dialog dialog,dialogPhone,dialogMail;
     private String[] relegiousValues;
-    private String relegiousvalues,uId;
+    private String relegiousvalues,uId,editPhone,editMail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +78,9 @@ public class EditProfileActivity extends AppCompatActivity {
         imgPrfbasicdetails=findViewById(R.id.edit_basic_details_prf);
         imgRelegiousdetails=findViewById(R.id.edit_relegious_information_prf);
         imgProfessionaldetails=findViewById(R.id.edit_professional_details_preferences_prf);
+        imgPhone=findViewById(R.id.img_call);
+        imgMail=findViewById(R.id.img_mail);
+
         relegiousValues=getResources().getStringArray(R.array.RelegiousValues);
 
         uId=FirebaseAuth.getInstance().getUid();
@@ -94,6 +97,36 @@ public class EditProfileActivity extends AppCompatActivity {
         Button Okay = dialog.findViewById(R.id.btn_okay);
         Button Cancel = dialog.findViewById(R.id.btn_cancel);
         EditText AccountNo=dialog.findViewById(R.id.et_relegious_pref);
+        EditText edtPhone=dialogPhone.findViewById(R.id.et_edit_phonenumber);
+        EditText edtMail=dialogMail.findViewById(R.id.et_edit_mail);
+
+        //dialogbox phone
+
+        dialogPhone = new Dialog(this);
+        dialogPhone.setContentView(R.layout.edit_phone_custom_dialog);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            dialogPhone.getWindow().setBackgroundDrawable(getDrawable(R.drawable.custom_dialog_background));
+        }
+        dialogPhone.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialogPhone.setCancelable(false); //Optional
+        dialogPhone.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //Setting the animations to dialog
+
+        Button okayPhone = dialog.findViewById(R.id.btn_okay_phone);
+        Button cancelPhone = dialog.findViewById(R.id.btn_cancel_phone);
+
+        //dialogbox mail
+
+        dialogMail = new Dialog(this);
+        dialogMail.setContentView(R.layout.edit_mail_custom_dialog);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            dialogMail.getWindow().setBackgroundDrawable(getDrawable(R.drawable.custom_dialog_background));
+        }
+        dialogMail.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialogMail.setCancelable(false); //Optional
+        dialogMail.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //Setting the animations to dialog
+
+        Button okayMail = dialog.findViewById(R.id.btn_okay_mail);
+        Button cancelMail = dialog.findViewById(R.id.btn_cancel_mail);
 
 
         AccountNo.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +161,61 @@ public class EditProfileActivity extends AppCompatActivity {
         Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        //edit phone
+
+        imgPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialogPhone.show();
+            }
+        });
+
+
+        okayPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                editPhone=edtPhone.getText().toString();
+                EditPhone(editPhone);
+            }
+        });
+
+        cancelPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialog.dismiss();
+            }
+        });
+
+        //edit mail
+        imgMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialogMail.show();
+
+            }
+        });
+
+        okayMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editMail=edtMail.getText().toString();
+                EditMail(editMail);
+            }
+        });
+
+
+        cancelMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
                 dialog.dismiss();
             }
         });
@@ -265,6 +353,60 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+    }
+
+    private void EditPhone(String phone){
+
+
+        Map<String, Object> editPhoneMap = new HashMap<>();
+        editPhoneMap.put("phone", phone);
+
+        firestore.collection("users").document(uId)
+                .update(editPhoneMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                Toast.makeText(getApplicationContext(), "Phone Number Updated", Toast.LENGTH_LONG).show();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+
+    }
+
+
+    private void EditMail(String mail){
+
+
+        Map<String, Object> editMailMap = new HashMap<>();
+        editMailMap.put("email", mail);
+
+        firestore.collection("users").document(uId)
+                .update(editMailMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                Toast.makeText(getApplicationContext(), "email address updated", Toast.LENGTH_LONG).show();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
 
 
 
