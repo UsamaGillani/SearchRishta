@@ -12,13 +12,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,6 +31,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -53,6 +59,12 @@ public class ProfileFragment extends Fragment {
     DatabaseReference databaseReference;
     ProgressDialog progressDialog;
     String strUserimg,uId;
+    private TextView tvProgressbarstatus,tvName,tvId,tvMemberShip;
+    private ProgressBar progressBar;
+    private String checkProfilephone,checkProfileimg
+            ,checkProfilephysicalStatus,checkprofileemail,checkProfileRelegion;
+
+    private String userId,memberShip,userName,userImage;
 
     private String[] name = {"Matches", "Chat", "Daily Matches", "Edit Profile"
             , "Upgrade Now", "log out"};
@@ -98,6 +110,14 @@ public class ProfileFragment extends Fragment {
         rvProfile.setAdapter(adapter);
         mAuth = FirebaseAuth.getInstance();
         uId=FirebaseAuth.getInstance().getUid();
+        progressBar=view.findViewById(R.id.progressBar);
+        tvProgressbarstatus=view.findViewById(R.id.label_progess_bar_status_text);
+        tvName=view.findViewById(R.id.label_Name);
+        tvId=view.findViewById(R.id.label_Id);
+        tvMemberShip=view.findViewById(R.id.label_Membership_status);
+
+
+        checkProfileCompleted();
         userImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -240,6 +260,112 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+    }
+
+
+    private void checkProfileCompleted(){
+
+
+
+        firestore.collection("users")
+                .whereEqualTo("userId", uId).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        checkProfilephone = document.getString("phone");
+                        checkProfileimg = document.getString("img");
+                        checkProfilephysicalStatus = document.getString("physicalStatus");
+                        checkprofileemail = document.getString("email");
+                        checkProfileRelegion = document.getString("religion");
+                        userId=document.getString("userId");
+                        memberShip=document.getString("activatedstatus");
+                        userName=document.getString("name");
+                        userImage=document.getString("img");
+
+
+
+                    }
+
+                    tvId.setText(userId);
+                    tvName.setText(userName);
+
+                    Glide.with(getActivity())
+                            .load(userImage) // image url
+                            .override(200, 200) // resizing
+                            .centerCrop()
+                            .into(userImg);  // imageview object
+                    if(memberShip.equals("normal")){
+
+
+                        tvMemberShip.setText("MemberShip-free");
+                    }else if(memberShip.equals("Activated")){
+
+                        tvMemberShip.setText("Premium Account");
+
+                    }
+
+
+
+                  /*  if(checkProfileRelegion.&&checkProfilephysicalStatus&&checkProfileimg&&checkProfilephone
+                    &&checkprofileemail!=null)*/
+                    if(!TextUtils.isEmpty(checkprofileemail) && !TextUtils.isEmpty(checkProfilephone) &&
+                            !TextUtils.isEmpty(checkProfileimg) &&!TextUtils.isEmpty(checkProfilephysicalStatus) &&
+                            !TextUtils.isEmpty(checkProfileRelegion)){
+
+
+                        progressBar.setProgress(100);
+                        tvProgressbarstatus.setText("Your Profile Score is 100%");
+
+                    }else if(!TextUtils.isEmpty(checkprofileemail) && !TextUtils.isEmpty(checkProfilephone) &&
+                            TextUtils.isEmpty(checkProfileimg) &&!TextUtils.isEmpty(checkProfilephysicalStatus) &&
+                            !TextUtils.isEmpty(checkProfileRelegion)){
+
+                        progressBar.setProgress(80);
+                        tvProgressbarstatus.setText("Your Profile Score is 90%");
+
+                    }else if(TextUtils.isEmpty(checkprofileemail) && TextUtils.isEmpty(checkProfilephone) &&
+                            TextUtils.isEmpty(checkProfileimg) &&!TextUtils.isEmpty(checkProfilephysicalStatus) &&
+                            !TextUtils.isEmpty(checkProfileRelegion)){
+
+                        progressBar.setProgress(60);
+                        tvProgressbarstatus.setText("Your Profile Score is 60%");
+
+                    }else if(TextUtils.isEmpty(checkprofileemail) && TextUtils.isEmpty(checkProfilephone) &&
+                            TextUtils.isEmpty(checkProfileimg) &&TextUtils.isEmpty(checkProfilephysicalStatus) &&
+                            !TextUtils.isEmpty(checkProfileRelegion)){
+
+                        progressBar.setProgress(30);
+                        tvProgressbarstatus.setText("Your Profile Score is 30%");
+
+                    }else if(TextUtils.isEmpty(checkprofileemail) && TextUtils.isEmpty(checkProfilephone) &&
+                            TextUtils.isEmpty(checkProfileimg) &&TextUtils.isEmpty(checkProfilephysicalStatus) &&
+                            TextUtils.isEmpty(checkProfileRelegion)){
+
+                        progressBar.setProgress(0);
+                        tvProgressbarstatus.setText("Your Profile Score is 0%");
+
+                    }
+
+                } else {
+                    Log.d("d", "Error getting documents: ", task.getException());
+
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+
+
+
+
     }
 
 

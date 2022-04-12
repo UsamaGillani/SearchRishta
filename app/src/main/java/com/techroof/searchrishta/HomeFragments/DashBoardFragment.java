@@ -1,5 +1,6 @@
 package com.techroof.searchrishta.HomeFragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,6 +52,16 @@ public class DashBoardFragment extends Fragment implements DasboardClickListener
     private ArrayList<String> storedId;
     private String uId;
     private FirebaseUser currentFirebaseUser;
+    //progress dialog
+
+    private ProgressDialog progressDialog;
+
+    //imageviewNotification
+    private ImageView imgViewNotification;
+
+    private TextView tvNotificationCounter;
+
+
 
 
     public DashBoardFragment() {
@@ -67,6 +81,7 @@ public class DashBoardFragment extends Fragment implements DasboardClickListener
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
         }
     }
@@ -82,6 +97,13 @@ public class DashBoardFragment extends Fragment implements DasboardClickListener
 
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
 
+        //imageview Initialization
+
+
+
+        progressDialog=new ProgressDialog(getContext());
+        progressDialog.setMessage("Loading Please Wait...");
+        progressDialog.show();
         //arraylist decleration
         userArrayList = new ArrayList<>();
 
@@ -109,9 +131,20 @@ public class DashBoardFragment extends Fragment implements DasboardClickListener
         recyclerViewAdapter = new DashboardFragmentRecyclerViewAdapter(userArrayList,
                 requireActivity(), this, storedId);
         //methods
-        getData();
+        //getData();
         return view;
     }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        userArrayList.clear();
+        getData();
+        recyclerViewAdapter.notifyDataSetChanged();
+    }
+
+
 
     private void getData() {
 
@@ -136,10 +169,11 @@ public class DashBoardFragment extends Fragment implements DasboardClickListener
                         requireActivity(), recyclerViewAdapter.mlistener);*/
                 dashboardRv.setAdapter(recyclerViewAdapter);
 
+                progressDialog.dismiss();
+
 
             }
         });
-
 
     }
 
@@ -182,7 +216,7 @@ public class DashBoardFragment extends Fragment implements DasboardClickListener
     public void onRemoveClick(String userId, String name, String dob, String height, String relegion, String education, String maritalstatus,
                               String city, String province, String country) {
 
-        Toast.makeText(getContext(), "removed" + userId, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "removed" + userId, Toast.LENGTH_SHORT).show();
        /* getViewmodel= new ViewModelProvider(this).get(ShortlistedViewModel.class);
         Shortlisted shortlistedd=new Shortlisted(userId,name,dob,height,relegion,
                 education,maritalstatus,city,province,country);*/

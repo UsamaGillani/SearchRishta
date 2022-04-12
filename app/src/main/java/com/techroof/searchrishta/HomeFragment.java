@@ -1,5 +1,6 @@
 package com.techroof.searchrishta;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -37,7 +38,9 @@ import com.techroof.searchrishta.HomeFragments.ShortListedFragment;
 import com.techroof.searchrishta.HomeFragments.ShortlistedMeFragment;
 import com.techroof.searchrishta.HomeFragments.ViewedMyProfileFragment;
 import com.techroof.searchrishta.HomeFragments.ViewedNotContactedFragment;
+import com.techroof.searchrishta.Notification.NotificationActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,10 +55,11 @@ public class HomeFragment extends Fragment {
     ImageView imgToolbar;
     private TextView tvNotificationCounter;
     private ImageView imgViewNotification;
-    private final int max_number=99;
-    private int notification_number_counter;
+    private final int max_number = 99;
+    private int notification_number_counter=0;
     private String uId;
     private String documentNumber;
+    private ArrayList<String> documentArraylist;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -82,28 +86,44 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         tableLayout = view.findViewById(R.id.tablayout);
         viewPager = view.findViewById(R.id.viewpager);
         tableLayout.setupWithViewPager(viewPager);
 
-        firebaseAuth=FirebaseAuth.getInstance();
+        documentArraylist=new ArrayList<>();
+
+        firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        uId=firebaseAuth.getCurrentUser().getUid();
+
+       // uId = firebaseAuth.getCurrentUser().getUid();
         //notification counter textview
-        tvNotificationCounter=view.findViewById(R.id.tv_notification_counter);
+        tvNotificationCounter = view.findViewById(R.id.tv_notification_counter);
 
 
-        imgViewNotification=view.findViewById(R.id.img_back_arrow);
+        imgViewNotification = view.findViewById(R.id.img_back_arrow);
 
 
         imgViewNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                UpdateStatus();
+                if (documentArraylist!=null) {
+
+                   // UpdateStatus();
+
+                    Intent moveNotifications = new Intent(getActivity(), NotificationActivity.class);
+                    moveNotifications.putStringArrayListExtra("document_list",documentArraylist);
+                    startActivity(moveNotifications);
+
+                } else {
+
+
+                    Toast.makeText(getContext(), "You dont have new notifications", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -123,29 +143,34 @@ public class HomeFragment extends Fragment {
         viewPagerAdapter.addfragment(new PrefferedLocationFragment(), "PREFFERED LOCATION");
 
         viewPager.setAdapter(viewPagerAdapter);
+        CheckNotification();
         return view;
     }
 
 
-
     @Override
     public void onStart() {
-        CheckNotification();
+        //CheckNotification();
         super.onStart();
+        DashBoardFragment dashBoardFragment=new DashBoardFragment();
+
     }
 
-    private void CheckNotification(){
+    private void CheckNotification() {
 
+        uId= firebaseAuth.getCurrentUser().getUid();
+        Toast.makeText(getContext(), ""+uId, Toast.LENGTH_SHORT).show();
 
-        firebaseFirestore.collection("SentInterests").whereEqualTo("InterestSent", uId).whereEqualTo("Status","UnSeen").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firebaseFirestore.collection("SentInterests").whereEqualTo("InterestSent", uId).whereEqualTo("Status", "Unseen").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                 if (task.isSuccessful()) {
 
+
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
-                        String Viewer = document.getString("InterestedPerson");
+                        String Viewer = document.get("InterestedPerson").toString();
 
                         firebaseFirestore.collection("users").whereEqualTo("userId", Viewer)
                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -155,15 +180,16 @@ public class HomeFragment extends Fragment {
                                 for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
 
                                     notification_number_counter++;
-                                    Toast.makeText(getContext(), "yes"+notification_number_counter, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "document"+document.getId(), Toast.LENGTH_SHORT).show();
+                                    documentArraylist.add(document.getId());
 
                                 }
 
-                                if(max_number>notification_number_counter){
+                                if (max_number > notification_number_counter) {
 
                                     tvNotificationCounter.setVisibility(View.VISIBLE);
                                     tvNotificationCounter.setText(String.valueOf(notification_number_counter));
-                                    documentNumber=document.getId();
+                                    //documentNumber = document.getId();
                                     //Toast.makeText(getContext(), ""+document.getId(), Toast.LENGTH_SHORT).show();
                                 }
 
@@ -180,7 +206,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Exception e) {
 
-                Toast.makeText(getContext(),""+e.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "" + e.toString(), Toast.LENGTH_LONG).show();
             }
         });
 

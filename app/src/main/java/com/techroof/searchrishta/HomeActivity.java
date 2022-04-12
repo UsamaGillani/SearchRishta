@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
         //intializing Firebase auth
 
         firebaseAuth=FirebaseAuth.getInstance();
-        uId=firebaseAuth.getUid();
+        //uId=firebaseAuth.getUid();
 
         //initializing Firestore
 
@@ -102,7 +102,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         mAuth = FirebaseAuth.getInstance();
-        uId=mAuth.getCurrentUser().getUid();
+//        uId=mAuth.getCurrentUser().getUid();
         //Toast.makeText(getApplicationContext(), "" + mAuth.getUid(), Toast.LENGTH_SHORT).show();
     }
 

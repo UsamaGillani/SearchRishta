@@ -1,9 +1,11 @@
 package com.techroof.searchrishta.HomeFragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +31,7 @@ import com.techroof.searchrishta.Shortlisted;
 import com.techroof.searchrishta.ViewModel.ShortlistedViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MatchesFragment extends Fragment implements DasboardClickListener {
@@ -44,6 +47,13 @@ public class MatchesFragment extends Fragment implements DasboardClickListener {
     private ShortlistedViewModel getViewmodel ;
     private String uId;
     private FirebaseUser currentFirebaseUser;
+
+    //Date dateObj = null;
+    private ArrayList<String> storedId;
+
+    //progress dialog
+
+    private ProgressDialog progressDialog;
 
     public MatchesFragment() {
         // Required empty public constructor
@@ -83,13 +93,31 @@ public class MatchesFragment extends Fragment implements DasboardClickListener {
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         uId=currentFirebaseUser.getUid();
 
-        Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
-
         //arraylist decleration
         userArrayList = new ArrayList<>();
+        storedId = new ArrayList();
 
+        Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
+
+        getViewmodel = new ViewModelProvider(this).get(ShortlistedViewModel.class);
+        getViewmodel.getAllshortlisted().observe(getViewLifecycleOwner(), new Observer<List<Shortlisted>>() {
+            @Override
+            public void onChanged(List<Shortlisted> shortlisteds) {
+
+                for (int i = 0; i < shortlisteds.size(); i++) {
+
+
+                    storedId.add(shortlisteds.get(i).getUserid());
+                    //storedId= String.valueOf(shortlisteds.get(i).getUserid());
+
+
+                }
+                //Toast.makeText(getContext(), ""+storedId.size(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
         recyclerViewAdapter = new MatchesFragmentRecyclerViewAdapter(userArrayList,
-                getContext(),this);
+                getContext(),this,storedId);
 
 
         //methods
@@ -102,7 +130,6 @@ public class MatchesFragment extends Fragment implements DasboardClickListener {
     public void onItemclickk(String userId, String name, String dob, String height, String relegion, String education, String maritalstatus, String city, String province, String country) {
 
 
-        //Toast.makeText(getContext(), "yes"+userId+name, Toast.LENGTH_SHORT).show();
         getViewmodel= new ViewModelProvider(this).get(ShortlistedViewModel.class);
         Shortlisted shortlisted=new Shortlisted(userId,name,dob,height,relegion,
                 education,maritalstatus,city,province,country);
@@ -113,6 +140,8 @@ public class MatchesFragment extends Fragment implements DasboardClickListener {
 
     @Override
     public void onRemoveClick(String userId, String name, String dob, String height, String relegion, String education, String maritalstatus, String city, String province, String country) {
+
+        getViewmodel.deletenote(userId);
 
     }
 
@@ -131,10 +160,9 @@ public class MatchesFragment extends Fragment implements DasboardClickListener {
                 }
 
                 layoutManagerdashboard = new LinearLayoutManager(getContext(),
-                        LinearLayoutManager.HORIZONTAL, false);
+                        LinearLayoutManager.VERTICAL, false);
                 matchesRv.setLayoutManager(layoutManagerdashboard);
                 matchesRv.setAdapter(recyclerViewAdapter);
-
 
             }
         });

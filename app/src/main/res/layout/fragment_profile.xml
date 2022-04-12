@@ -53,10 +53,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="5dp"
         android:text="PAK-123456789"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/image"
         app:layout_constraintTop_toBottomOf="@+id/label_Name"
         tools:ignore="MissingConstraints" />

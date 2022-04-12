@@ -70,7 +70,7 @@ import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private View layoutstep1,layoutstep2,layoutsteplogin;
+    private View layoutstep1, layoutstep2, layoutsteplogin;
 
     private RecyclerView genderRv, profileCreatedByRv, maritalStatusRv, physicalStatusRv;
     private ProfileCreatorAttributesAdapter profileCreatorAttributesAdapter;
@@ -98,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
             maritalStatus, clan, country, state, city, citizenShip, height, education, employedIn, occupation, salary,
             physicalStatus, religiousValue, ethnicity, aboutMe, motherTongue, activatedstatus = "normal";
 
-    int year,age;
+    int year, age;
     private String currentDate, strmotherTongue, strRelegionlist, strClanislam, strClanchristian, strClanhindu,
             strClanparsi;
     private String[] motherTonguelist;
@@ -110,7 +110,11 @@ public class RegisterActivity extends AppCompatActivity {
     private String[] clanParsi;
     private String[] ethnicityList;
     private String[] countryList;
-
+    private String[] occupationList;
+    private String[] heightList;
+    private String[] employedInList;
+    private String[] nationalityList;
+    private String[] relegiousValuesList;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -136,7 +140,12 @@ public class RegisterActivity extends AppCompatActivity {
         maritalStatusList = Arrays.asList(getResources().getStringArray(R.array.marital_status));
         physicalStatusList = Arrays.asList(getResources().getStringArray(R.array.physical_status));
         ethnicityList = getResources().getStringArray(R.array.Ethnicity);
-        countryList=getResources().getStringArray(R.array.countries);
+        countryList = getResources().getStringArray(R.array.countries);
+        occupationList = getResources().getStringArray(R.array.Occupation);
+        heightList=getResources().getStringArray(R.array.height);
+        nationalityList=getResources().getStringArray(R.array.citizenship);
+        employedInList=getResources().getStringArray(R.array.employed_in);
+        relegiousValuesList=getResources().getStringArray(R.array.RelegiousValues);
         // motherTonguelist = Arrays.asList(getResources().getStringArray(R.array.mother_tongue));
         profileCreatedByRv = findViewById(R.id.profile_created_rv);
         genderRv = findViewById(R.id.gender_rv);
@@ -172,9 +181,9 @@ public class RegisterActivity extends AppCompatActivity {
         continueBtn2 = findViewById(R.id.reg_continue_btn_2);
         continueBtn3 = findViewById(R.id.reg_continue_btn_3);
 
-        layoutstep1=(View)findViewById(R.id.toolbar_step1);
-        layoutstep2=(View)findViewById(R.id.toolbar_step2);
-        layoutsteplogin=(View)findViewById(R.id.toolbar);
+        layoutstep1 = (View) findViewById(R.id.toolbar_step1);
+        layoutstep2 = (View) findViewById(R.id.toolbar_step2);
+        layoutsteplogin = (View) findViewById(R.id.toolbar);
 
         step1Cl = findViewById(R.id.step_1_cl);
         step2Cl = findViewById(R.id.step_2_cl);
@@ -270,13 +279,11 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 new DatePickerDialog(RegisterActivity.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 
-                age= year-myCalendar.get(Calendar.YEAR);
+                age = year - myCalendar.get(Calendar.YEAR);
 
-                Toast.makeText(getApplicationContext(), ""+age, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "" + age, Toast.LENGTH_SHORT).show();
             }
         });
-
-
 
 
         motherTongueEt.getEditText().setOnClickListener(new View.OnClickListener() {
@@ -326,8 +333,11 @@ public class RegisterActivity extends AppCompatActivity {
         clanEt.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (strRelegionlist==null) {
 
-                if (strRelegionlist.equals("Christian")) {
+                    Toast.makeText(getApplicationContext(), "please fill above fields", Toast.LENGTH_SHORT).show();
+
+                } else if (strRelegionlist.equals("Christian")) {
 
                     new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Clan")
                             .setSingleChoiceItems(clanCristian, 0, null)
@@ -466,6 +476,112 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                                 countryEt.getEditText().setText(countryList[selectedPosition]);
+                                //strClanislam = relegionList[selectedPosition];
+                            }
+                        })
+                        .show();
+            }
+        });
+
+        occupationEt.getEditText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Occupation")
+                        .setSingleChoiceItems(occupationList, 0, null)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                dialog.dismiss();
+
+                                int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                occupationEt.getEditText().setText(occupationList[selectedPosition]);
+                                //strClanislam = relegionList[selectedPosition];
+                            }
+                        })
+                        .show();
+            }
+        });
+
+        citizenshipEt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Nationality")
+                        .setSingleChoiceItems(nationalityList, 0, null)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                dialog.dismiss();
+
+                                int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                citizenshipEt.getEditText().setText(nationalityList[selectedPosition]);
+                                //strClanislam = relegionList[selectedPosition];
+                            }
+                        })
+                        .show();
+
+            }
+        });
+
+        heightEt.getEditText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Height")
+                        .setSingleChoiceItems(heightList, 0, null)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                dialog.dismiss();
+
+                                int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                heightEt.getEditText().setText(heightList[selectedPosition]);
+                                //strClanislam = relegionList[selectedPosition];
+                            }
+                        })
+                        .show();
+            }
+        });
+
+        employedInEt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Employed Status")
+                        .setSingleChoiceItems(employedInList, 0, null)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                dialog.dismiss();
+
+                                int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                employedInEt.getEditText().setText(employedInList[selectedPosition]);
+                                //strClanislam = relegionList[selectedPosition];
+                            }
+                        })
+                        .show();
+            }
+        });
+
+        religiousValueEt.getEditText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Relegious Values")
+                        .setSingleChoiceItems(relegiousValuesList, 0, null)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                dialog.dismiss();
+
+                                int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                religiousValueEt.getEditText().setText(relegiousValuesList[selectedPosition]);
                                 //strClanislam = relegionList[selectedPosition];
                             }
                         })
@@ -713,7 +829,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    private String getAge(int year, int month, int day){
+    private String getAge(int year, int month, int day) {
         Calendar dob = Calendar.getInstance();
         Calendar today = Calendar.getInstance();
 
@@ -721,7 +837,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
             age--;
         }
 

@@ -55,6 +55,7 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
     private double st,ed;
     private Button btnFilter;
     private String statuss=null;
+    private TextView tvStartPoint,tvEndPoint;
 
     public NearedByMatchesFragment() {
         // Required empty public constructor
@@ -94,8 +95,8 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
         firestore = FirebaseFirestore.getInstance();
         rangeSlider = view.findViewById(R.id.range_slider);
         btnFilter=view.findViewById(R.id.btn_filter);
-
-        checkStatus();
+        tvStartPoint=view.findViewById(R.id.startpoint);
+        tvEndPoint=view.findViewById(R.id.endpoint);
         rangeSlider.addOnChangeListener(new RangeSlider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
@@ -107,6 +108,8 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
                 st=Double.parseDouble(startValue);
                 ed=Double.parseDouble(endValue);
+                tvStartPoint.setText(String.valueOf(st));
+                tvEndPoint.setText(String.valueOf(ed));
                 //getcurrentuserData();
                // recyclerViewAdapter = new NearByMatchesFragmentRecyclerViewAdapter(userArrayList,
                  //       getContext(), dasboardClickListener, Double.parseDouble("50.6692533"), Double.parseDouble("80.0741859"),st,ed);
@@ -124,11 +127,13 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
             @Override
             public void onClick(View view) {
 
-                if(statuss.equals("activated")){
+
+                if(statuss.equals("Activated")){
 
                     getcurrentuserData();
 
                 }else if(statuss.equals("not activated")){
+                    Toast.makeText(getContext(), ""+statuss, Toast.LENGTH_SHORT).show();
 
                     Toast.makeText(getContext(), "switch to user user account to enable our location services", Toast.LENGTH_SHORT).show();
 
@@ -142,6 +147,7 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
         //getcurrentuserData();
 
+        checkStatus();
 
         //methods
         return view;
@@ -214,7 +220,6 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
                 }
 
-
             }
         });
 
@@ -222,10 +227,12 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
     private void checkStatus(){
 
+        Toast.makeText(getContext(), "yes"+uId, Toast.LENGTH_SHORT).show();
 
-        firestore.collection("users").whereEqualTo("userId",uId).whereEqualTo("activatedstatus","activated").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firestore.collection("users").whereEqualTo("userId",uId).whereEqualTo("activatedstatus","Activated").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
 
                 if(task.getResult().isEmpty()){
 
@@ -233,13 +240,14 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
                 }else{
 
-                    statuss="activated";
+                    statuss="Activated";
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
 
+                Toast.makeText(getContext(), ""+e.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 

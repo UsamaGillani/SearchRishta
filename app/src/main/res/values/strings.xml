@@ -36,6 +36,13 @@
 
     </string-array>
 
+    <string-array name="employed_in">
+
+        <item>Govt Sector</item>
+        <item>Private Sector</item>
+
+    </string-array>
+
     <string-array name="phone_number">
 
         <item>(PK) +92</item>
@@ -412,6 +419,7 @@
         <item>European</item>
         <item>Pakistani</item>
         <item>Foreign</item>
+        <item>Local</item>
 
     </string-array>
 

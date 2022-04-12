@@ -116,7 +116,7 @@ public class ShortlistedMeFragment extends Fragment implements DasboardClickList
 
     private void getData() {
 
-        Toast.makeText(getContext(), "" + uId, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "" + uId, Toast.LENGTH_SHORT).show();
         firestore.collection("SentInterests").whereEqualTo("InterestSent", uId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

@@ -105,6 +105,7 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
+
                 if(task.getResult().isEmpty()){
 
                     statuss="not activated";
