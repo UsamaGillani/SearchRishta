@@ -94,11 +94,7 @@ public class EditProfileActivity extends AppCompatActivity {
         dialog.setCancelable(false); //Optional
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //Setting the animations to dialog
 
-        Button Okay = dialog.findViewById(R.id.btn_okay);
-        Button Cancel = dialog.findViewById(R.id.btn_cancel);
-        EditText AccountNo=dialog.findViewById(R.id.et_relegious_pref);
-        EditText edtPhone=dialogPhone.findViewById(R.id.et_edit_phonenumber);
-        EditText edtMail=dialogMail.findViewById(R.id.et_edit_mail);
+
 
         //dialogbox phone
 
@@ -111,8 +107,8 @@ public class EditProfileActivity extends AppCompatActivity {
         dialogPhone.setCancelable(false); //Optional
         dialogPhone.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //Setting the animations to dialog
 
-        Button okayPhone = dialog.findViewById(R.id.btn_okay_phone);
-        Button cancelPhone = dialog.findViewById(R.id.btn_cancel_phone);
+        Button okayPhone = dialogPhone.findViewById(R.id.btn_okay_phone);
+        Button cancelPhone = dialogPhone.findViewById(R.id.btn_cancel_phone);
 
         //dialogbox mail
 
@@ -125,9 +121,14 @@ public class EditProfileActivity extends AppCompatActivity {
         dialogMail.setCancelable(false); //Optional
         dialogMail.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //Setting the animations to dialog
 
-        Button okayMail = dialog.findViewById(R.id.btn_okay_mail);
-        Button cancelMail = dialog.findViewById(R.id.btn_cancel_mail);
+        Button okayMail = dialogMail.findViewById(R.id.btn_okay_mail);
+        Button cancelMail = dialogMail.findViewById(R.id.btn_cancel_mail);
 
+        Button Okay = dialog.findViewById(R.id.btn_okay);
+        Button Cancel = dialog.findViewById(R.id.btn_cancel);
+        EditText AccountNo=dialog.findViewById(R.id.et_relegious_pref);
+        EditText edtPhone=dialogPhone.findViewById(R.id.et_edit_phonenumber);
+        EditText edtMail=dialogMail.findViewById(R.id.et_edit_mail);
 
         AccountNo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,7 +190,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                dialog.dismiss();
+                dialogPhone.dismiss();
             }
         });
 
@@ -216,7 +217,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                dialog.dismiss();
+                dialogMail.dismiss();
             }
         });
 

@@ -85,7 +85,7 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NearByMatchesFragmentRecyclerViewAdapter.ViewAdapter holder,  int position) {
+    public void onBindViewHolder(@NonNull NearByMatchesFragmentRecyclerViewAdapter.ViewAdapter holder, @SuppressLint("RecyclerView") int position) {
 
 
 
@@ -155,12 +155,14 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
                             String imgProfile=ld.getImg();
                             //notifyDataSetChanged();
                             Glide.with(context).load(imgProfile).into(holder.prflimage);
-
+                            notifyDataSetChanged();
+                            notifyItemRemoved(position);
                         }else{
 
-                            holder.itemView.setVisibility(View.GONE);
+                            holder.cardViewview.setVisibility(View.GONE);
 
-
+                            notifyDataSetChanged();
+                            notifyItemRemoved(position);
 
                         }
 

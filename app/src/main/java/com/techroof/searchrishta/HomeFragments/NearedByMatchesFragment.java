@@ -130,10 +130,11 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
                 if(statuss.equals("Activated")){
 
+                    Toast.makeText(getContext(), ""+statuss, Toast.LENGTH_SHORT).show();
+
                     getcurrentuserData();
 
                 }else if(statuss.equals("not activated")){
-                    Toast.makeText(getContext(), ""+statuss, Toast.LENGTH_SHORT).show();
 
                     Toast.makeText(getContext(), "switch to user user account to enable our location services", Toast.LENGTH_SHORT).show();
 
@@ -229,7 +230,7 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
         Toast.makeText(getContext(), "yes"+uId, Toast.LENGTH_SHORT).show();
 
-        firestore.collection("users").whereEqualTo("userId",uId).whereEqualTo("activatedstatus","Activated").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firestore.collection("users").whereEqualTo("userId",uId).whereEqualTo("activatedstatus","activated").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
@@ -238,7 +239,7 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
                     statuss="not activated";
 
-                }else{
+                }else {
 
                     statuss="Activated";
                 }
