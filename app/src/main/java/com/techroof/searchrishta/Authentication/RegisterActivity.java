@@ -281,7 +281,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 age = year - myCalendar.get(Calendar.YEAR);
 
-                Toast.makeText(getApplicationContext(), "" + age, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "" + age, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -358,7 +358,8 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "yes", Toast.LENGTH_SHORT).show();
                 } else if (strRelegionlist.equals("Muslim-Abbasi") || strRelegionlist.equals("Muslim-Brailvi")
                         || strRelegionlist.equals("Muslim-Deobandi") || strRelegionlist.equals("Muslim-Others")
-                        || strRelegionlist.equals("Muslim-Shia") || strRelegionlist.equals("Muslim-Wahabi")
+                        || strRelegionlist.equals("Muslim-Shia") || strRelegionlist.equals("Muslim-Wahabi")||
+                        strRelegionlist.equals("Muslim-Sunnis")
                 ) {
 
                     new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Clan")
@@ -504,7 +505,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        citizenshipEt.setOnClickListener(new View.OnClickListener() {
+        citizenshipEt.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -546,7 +547,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        employedInEt.setOnClickListener(new View.OnClickListener() {
+        employedInEt.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -593,13 +594,93 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                step1Cl.setVisibility(View.GONE);
-                step2Cl.setVisibility(View.VISIBLE);
-                step3Cl.setVisibility(View.GONE);
+                if (TextUtils.isEmpty(nameEt.getEditText().getText().toString())){
 
-                layoutstep1.setVisibility(View.INVISIBLE);
-                layoutstep2.setVisibility(View.VISIBLE);
-                layoutsteplogin.setVisibility(View.INVISIBLE);
+                    nameEt.setError("Enter Name");
+
+                }
+
+                if (TextUtils.isEmpty(dobEt.getEditText().getText().toString())){
+
+                    dobEt.setError("Enter Date of birth");
+
+                }
+
+                if (TextUtils.isEmpty(emailEt.getEditText().getText().toString())){
+
+                    emailEt.setError("Enter Email");
+
+                }
+
+                if (TextUtils.isEmpty(passwordEt.getEditText().getText().toString())){
+
+                    passwordEt.setError("Enter Password");
+
+                }
+
+                if (TextUtils.isEmpty(confirmPassEt.getEditText().getText().toString())){
+
+                    confirmPassEt.setError("Confirm Password");
+
+                }
+
+                if(TextUtils.isEmpty(motherTongueEt.getEditText().getText().toString())){
+
+                    motherTongueEt.setError("Enter Your Mother Tongue");
+                }
+
+
+                if(TextUtils.isEmpty(phoneEt.getEditText().getText().toString())){
+
+                    phoneEt.setError("Confirm Password");
+
+                }
+
+                if(TextUtils.isEmpty(religionEt.getEditText().getText().toString())){
+
+                    religionEt.setError("Enter Your Relegion");
+
+                }
+
+                if(TextUtils.isEmpty(clanEt.getEditText().getText().toString())){
+
+                    clanEt.setError("Enter your clan");
+
+                }
+
+                if (!TextUtils.isEmpty(nameEt.getEditText().getText().toString()) && !TextUtils.isEmpty(dobEt.getEditText().getText().toString())
+                        && !TextUtils.isEmpty(emailEt.getEditText().getText().toString()) && !TextUtils.isEmpty(passwordEt.getEditText().getText().toString())
+                        && !TextUtils.isEmpty(confirmPassEt.getEditText().getText().toString())
+                        && !TextUtils.isEmpty(motherTongueEt.getEditText().getText().toString())
+                        && !TextUtils.isEmpty(phoneEt.getEditText().getText().toString())
+                        && !TextUtils.isEmpty(religionEt.getEditText().getText().toString())
+                        && !TextUtils.isEmpty(clanEt.getEditText().getText().toString()))
+                {
+
+                    if (passwordEt.getEditText().getText().toString().equals(confirmPassEt.getEditText().getText().toString())) {
+
+
+                        step1Cl.setVisibility(View.GONE);
+                        step2Cl.setVisibility(View.VISIBLE);
+                        step3Cl.setVisibility(View.GONE);
+
+                        layoutstep1.setVisibility(View.INVISIBLE);
+                        layoutstep2.setVisibility(View.VISIBLE);
+                        layoutsteplogin.setVisibility(View.INVISIBLE);
+
+
+                    } else {
+
+                        confirmPassEt.setError("Password doesn't match");
+
+                    }
+
+                }
+
+
+
+
+
 
 
             }
@@ -611,13 +692,55 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                step1Cl.setVisibility(View.GONE);
-                step2Cl.setVisibility(View.GONE);
-                step3Cl.setVisibility(View.VISIBLE);
 
-                layoutstep1.setVisibility(View.INVISIBLE);
-                layoutstep2.setVisibility(View.INVISIBLE);
-                layoutsteplogin.setVisibility(View.VISIBLE);
+                if (TextUtils.isEmpty(countryEt.getEditText().getText().toString())){
+
+                    countryEt.setError("Enter Country Name");
+
+                }
+
+                if (TextUtils.isEmpty(stateEt.getEditText().getText().toString())){
+
+                    stateEt.setError("Enter Your State");
+
+                }
+
+                if (TextUtils.isEmpty(cityEt.getEditText().getText().toString())){
+
+                    cityEt.setError("Enter Your City");
+
+                }
+
+                if (TextUtils.isEmpty(citizenshipEt.getEditText().getText().toString())){
+
+                    citizenshipEt.setError("Enter Your CitizenShip");
+
+                }
+
+
+
+
+
+
+
+                if (!TextUtils.isEmpty(countryEt.getEditText().getText().toString()) && !TextUtils.isEmpty(stateEt.getEditText().getText().toString())
+                        && !TextUtils.isEmpty(cityEt.getEditText().getText().toString()) && !TextUtils.isEmpty(citizenshipEt.getEditText().getText().toString()))
+
+                {
+                    step1Cl.setVisibility(View.GONE);
+                    step2Cl.setVisibility(View.GONE);
+                    step3Cl.setVisibility(View.VISIBLE);
+
+                    layoutstep1.setVisibility(View.INVISIBLE);
+                    layoutstep2.setVisibility(View.INVISIBLE);
+                    layoutsteplogin.setVisibility(View.VISIBLE);
+
+                }else{
+
+                    Toast.makeText(getApplicationContext(), "Enter all fields ", Toast.LENGTH_SHORT).show();
+                }
+
+
 
             }
         });
@@ -653,9 +776,82 @@ public class RegisterActivity extends AppCompatActivity {
                 aboutMe = aboutMeEt.getEditText().getText().toString();
 
 
-                addUsers(profileCreator, gender, name, dob, email, password, confirmPass, phone, motherTongue,
-                        religion, clan, maritalStatus, country, state, city, citizenShip, height, education,
-                        employedIn, occupation, salary, physicalStatus, religiousValue, ethnicity, aboutMe, currentDate, activatedstatus);
+
+
+
+                if (TextUtils.isEmpty(heightEt.getEditText().getText().toString())){
+
+                    heightEt.setError("Enter Your Height");
+
+                }
+
+                if (TextUtils.isEmpty(educationEt.getEditText().getText().toString())){
+
+                    educationEt.setError("Enter Your Education Status");
+
+                }
+
+                if (TextUtils.isEmpty(employedInEt.getEditText().getText().toString())){
+
+                    employedInEt.setError("Enter Your Employed Status");
+
+                }
+
+                if (TextUtils.isEmpty(salaryEt.getEditText().getText().toString())){
+
+                    salaryEt.setError("Enter Your Salary");
+
+                }
+
+                if (TextUtils.isEmpty(ethnicityEt.getEditText().getText().toString())){
+
+                    ethnicityEt.setError("Enter Your Ethnicity");
+
+                }
+
+
+                if (TextUtils.isEmpty(aboutMeEt.getEditText().getText().toString())){
+
+                    aboutMeEt.setError("Enter Your Description");
+
+                }
+
+
+                if (TextUtils.isEmpty(religiousValueEt.getEditText().getText().toString())){
+
+                   religiousValueEt.setError("Enter Your Relegious Values");
+
+                }
+
+
+
+
+
+
+
+                if (!TextUtils.isEmpty(heightEt.getEditText().getText().toString()) && !TextUtils.isEmpty(educationEt.getEditText().getText().toString())
+                        && !TextUtils.isEmpty(employedInEt.getEditText().getText().toString()) && !TextUtils.isEmpty(salaryEt.getEditText().getText().toString())
+                        && !TextUtils.isEmpty(ethnicityEt.getEditText().getText().toString())
+                        && !TextUtils.isEmpty(aboutMeEt.getEditText().getText().toString())
+                        && !TextUtils.isEmpty(religiousValueEt.getEditText().getText().toString()))
+
+                {
+
+
+                    addUsers(profileCreator, gender, name, dob, email, password, confirmPass, phone, motherTongue,
+                            religion, clan, maritalStatus, country, state, city, citizenShip, height, education,
+                            employedIn, occupation, salary, physicalStatus, religiousValue, ethnicity, aboutMe, currentDate, activatedstatus);
+
+
+
+                }else{
+
+
+                    Toast.makeText(getApplicationContext(), "Enter all above fields ", Toast.LENGTH_SHORT).show();
+
+
+                }
+
 
 
             }

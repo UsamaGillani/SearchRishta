@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.techroof.searchrishta.R;
 
@@ -27,11 +28,11 @@ import java.util.Map;
 
 public class BasicDetailsPref extends AppCompatActivity {
 
-    private EditText etMaritalstatus,etAge,etHeight,etMotherTongue,etPhysicalStatus;
-    private String maritalStatus, age, Height, motherTongue, physicalStatus, uId;
+    private EditText etAge,etHeight,etMotherTongue,etPhysicalStatus,etProfileCreatedFor;
+    private String profileCreatedFor, age, Height, motherTongue, physicalStatus, uId;
     private FirebaseFirestore firestore;
     private Button btnBasicdetails;
-    String[] maritalList, ageList, heightList,motherTongueList, physicalStatusList;
+    String[]  ageList, heightList,motherTongueList, physicalStatusList,profileCreatedForList;
 
 
 
@@ -40,26 +41,28 @@ public class BasicDetailsPref extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_details_pref);
         uId = FirebaseAuth.getInstance().getUid();
-        etMaritalstatus = findViewById(R.id.et_marital_preferences);
+        etProfileCreatedFor = findViewById(R.id.et_edit_profile_created_for_prf);
         etAge = findViewById(R.id.et_age_preferences);
         etHeight = findViewById(R.id.et_height_preferences);
-        etMotherTongue = findViewById(R.id.et_mothertongue_preferences);
+        etMotherTongue = findViewById(R.id.et_edit_mother_tongue_prf);
         etPhysicalStatus = findViewById(R.id.et_physicalstatus_preferences);
         btnBasicdetails = findViewById(R.id.btn_update_basic_preffer_details);
         firestore = FirebaseFirestore.getInstance();
-        maritalList = getResources().getStringArray(R.array.marital_status);
+        profileCreatedForList = getResources().getStringArray(R.array.profile_creator);
         ageList = getResources().getStringArray(R.array.age);
         heightList = getResources().getStringArray(R.array.height);
         motherTongueList = getResources().getStringArray(R.array.mother_tongue);
         physicalStatusList = getResources().getStringArray(R.array.physical_status);
 
 
-        etMaritalstatus.setOnClickListener(new View.OnClickListener() {
+        getDataBasicDetails();
+
+        etProfileCreatedFor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                new AlertDialog.Builder(BasicDetailsPref.this).setTitle("Select Your Basic Preference")
-                        .setSingleChoiceItems(maritalList, 0, null)
+                new AlertDialog.Builder(BasicDetailsPref.this).setTitle("Select Your Profile Created For")
+                        .setSingleChoiceItems(profileCreatedForList, 0, null)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -67,8 +70,10 @@ public class BasicDetailsPref extends AppCompatActivity {
                                 dialog.dismiss();
 
                                 int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                                etMaritalstatus.setText(maritalList[selectedPosition]);
-                                maritalStatus = maritalList[selectedPosition];
+                                etProfileCreatedFor.setText(profileCreatedForList[selectedPosition]);
+                                profileCreatedFor = profileCreatedForList[selectedPosition];
+
+
                             }
                         })
                         .show();
@@ -111,8 +116,8 @@ public class BasicDetailsPref extends AppCompatActivity {
                                 dialog.dismiss();
 
                                 int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                                etMotherTongue.setText(heightList[selectedPosition]);
-                                Height = heightList[selectedPosition];
+                                etMotherTongue.setText(motherTongueList[selectedPosition]);
+                                motherTongue = motherTongueList[selectedPosition];
                             }
                         })
                         .show();
@@ -168,23 +173,23 @@ public class BasicDetailsPref extends AppCompatActivity {
         btnBasicdetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UpdateBasicDetails(maritalStatus,age,Height,motherTongue,physicalStatus);
+                UpdateBasicDetails(profileCreatedFor,age,Height,motherTongue,physicalStatus);
             }
         });
 
     }
 
-    private void UpdateBasicDetails(String maritalStatus, String age, String Height, String motherTongue, String physicalStatus) {
+    private void UpdateBasicDetails(String profileCreatedFor, String age, String Height, String motherTongue, String physicalStatus) {
 
         Map<String, Object> userbasicDetailprefMap = new HashMap<>();
-        userbasicDetailprefMap.put("maritalStatus", maritalStatus);
+        userbasicDetailprefMap.put("profileCreatedFor", profileCreatedFor);
         userbasicDetailprefMap.put("age", age);
         userbasicDetailprefMap.put("Height", Height);
         userbasicDetailprefMap.put("motherTongue", motherTongue);
         userbasicDetailprefMap.put("physicalStatus", physicalStatus);
 
-        firestore.collection("users").document(uId).collection("Preferrences").document("preferences")
-                .update(userbasicDetailprefMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        firestore.collection("users").document(uId).collection("Preferrences").document("BasicDetailsPref")
+                .set(userbasicDetailprefMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
@@ -199,6 +204,36 @@ public class BasicDetailsPref extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    public void getDataBasicDetails(){
+
+
+        firestore.collection("users").document(uId).collection("Preferrences").document("BasicDetailsPref").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                 profileCreatedFor=task.getResult().getString("profileCreatedFor");
+                 age= task.getResult().getString("age");
+                 Height= task.getResult().getString("Height");
+                 motherTongue= task.getResult().getString("motherTongue");
+                 physicalStatus=task.getResult().getString("physicalStatus");
+
+                etProfileCreatedFor.setText(profileCreatedFor);
+                etAge.setText(age);
+                etHeight.setText(Height);
+                etMotherTongue.setText(motherTongue);
+                etPhysicalStatus.setText(physicalStatus);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
 
 
     }

@@ -211,7 +211,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="100dp"
             android:layout_marginTop="10dp"
-            android:text="Name"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/label_basic_details" />
@@ -222,7 +222,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="21"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_Age"
             app:layout_constraintTop_toBottomOf="@+id/label_Name" />
@@ -233,7 +233,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="21"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_Profile_created_for"
             app:layout_constraintTop_toBottomOf="@+id/label_Age" />
@@ -244,7 +244,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="male"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_Profile_created_for"
             app:layout_constraintTop_toBottomOf="@+id/label_Profile_created_for" />
@@ -256,7 +256,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="21"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_height"
             app:layout_constraintTop_toBottomOf="@+id/tv_gender" />
@@ -267,7 +267,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="21"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_marital_status"
             app:layout_constraintTop_toBottomOf="@+id/tv_height" />
@@ -278,7 +278,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="21"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_mother_tongue"
             app:layout_constraintTop_toBottomOf="@+id/tv_marital_status" />
@@ -289,7 +289,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="21"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_physical_status"
             app:layout_constraintTop_toBottomOf="@+id/tv_mother_tongue" />
@@ -401,7 +401,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="Non Specified"
+            android:text="Educated"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_education_details"
             app:layout_constraintTop_toBottomOf="@+id/label_education" />
@@ -423,7 +423,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="21"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_occupation"
             app:layout_constraintTop_toBottomOf="@+id/tv_employed" />
@@ -528,7 +528,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="21"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_country"
             app:layout_constraintTop_toBottomOf="@+id/label_location" />
@@ -539,21 +539,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="Non Specified"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_citizenship"
             app:layout_constraintTop_toBottomOf="@+id/tv_country" />
-
-        <TextView
-            android:id="@+id/tv_city"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="10dp"
-            android:text="21"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/label_city"
-            app:layout_constraintTop_toBottomOf="@+id/tv_citizenship" />
 
         <TextView
             android:id="@+id/tv_state"
@@ -561,10 +550,21 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="21"
+            android:text="-"
             android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/label_state"
-            app:layout_constraintTop_toBottomOf="@+id/tv_city" />
+            app:layout_constraintStart_toEndOf="@+id/label_city"
+            app:layout_constraintTop_toBottomOf="@+id/tv_citizenship" />
+
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="10dp"
+            android:text="-"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/label_city"
+            app:layout_constraintTop_toBottomOf="@+id/tv_state" />
 
         <!--relegious information-->
 
@@ -590,7 +590,7 @@
             android:backgroundTint="@color/black"
             android:src="@drawable/edit"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_state" />
+            app:layout_constraintTop_toBottomOf="@id/tv_city" />
 
 
         <TextView
@@ -632,7 +632,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="21"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_relegion"
             app:layout_constraintTop_toBottomOf="@+id/label_relegious_information" />
@@ -738,7 +738,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:text="Employed In :"
+            android:text="Family Origin:"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/label_mothers_occupation" />
@@ -795,7 +795,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="21"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_Family_Orogin"
             app:layout_constraintTop_toBottomOf="@+id/tv_mother_occupation" />
@@ -818,7 +818,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="10dp"
-            android:text="Not Specified"
+            android:text="-"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/label_no_of_brothers"
             app:layout_constraintTop_toBottomOf="@+id/label_no_of_sisters" />

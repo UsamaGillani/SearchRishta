@@ -53,7 +53,6 @@ import java.util.Map;
 public class HomeActivity extends AppCompatActivity {
 
     private static final int REQUEST_CHECK_CODE =8989 ;
-    private FirebaseAuth mAuth;
     BottomNavigationView bottomNavigationView;
     private ProgressDialog pd;
     private Snackbar snackbar;
@@ -74,13 +73,33 @@ public class HomeActivity extends AppCompatActivity {
         //intializing Firebase auth
 
         firebaseAuth=FirebaseAuth.getInstance();
+
         //uId=firebaseAuth.getUid();
 
         //initializing Firestore
 
         firestore=FirebaseFirestore.getInstance();
 
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
+        if (user == null) {
+
+            Intent login = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivity(login);
+            finish();
+
+        }else{
+
+            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new HomeFragment()).commit();
+            }
+
+
+        }
 
         //load progressbar
 
@@ -93,15 +112,8 @@ public class HomeActivity extends AppCompatActivity {
         //initializing progressbar
 
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new HomeFragment()).commit();
-        }
 
-        mAuth = FirebaseAuth.getInstance();
 //        uId=mAuth.getCurrentUser().getUid();
         //Toast.makeText(getApplicationContext(), "" + mAuth.getUid(), Toast.LENGTH_SHORT).show();
     }
@@ -142,7 +154,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
         if (user == null) {
 

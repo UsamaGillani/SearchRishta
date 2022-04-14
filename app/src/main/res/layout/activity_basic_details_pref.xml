@@ -11,7 +11,7 @@
         android:id="@+id/label_Professional_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ENTER YOUR HOBBIES PREFERENCES FROM BELOW"
+        android:text="ENTER YOUR BASIC DETAILS FROM BELOW"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -21,16 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <EditText
-        android:id="@+id/et_marital_preferences"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@drawable/roundedittext"
-        android:hint="ENTER YOUR MARITAL STATUS PREFERENCES"
-        android:layout_marginTop="50dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        app:layout_constraintTop_toBottomOf="@id/label_Professional_details"/>
 
     <EditText
         android:id="@+id/et_age_preferences"
@@ -41,7 +31,9 @@
         android:layout_marginTop="50dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        app:layout_constraintTop_toBottomOf="@id/et_marital_preferences"/>
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintTop_toBottomOf="@id/label_Professional_details"/>
 
     <EditText
         android:id="@+id/et_height_preferences"
@@ -52,6 +44,8 @@
         android:layout_marginTop="50dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         app:layout_constraintTop_toBottomOf="@id/et_age_preferences"/>
 
     <EditText
@@ -62,6 +56,8 @@
         android:hint="ENTER YOUR MOTHER TONGUE PREFERENCES"
         android:layout_marginTop="50dp"
         android:layout_marginRight="20dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:layout_marginLeft="20dp"
         app:layout_constraintTop_toBottomOf="@id/et_height_preferences"/>
 
@@ -75,7 +71,36 @@
         android:layout_marginTop="50dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
+        android:focusableInTouchMode="false"
+        android:focusable="false"
         app:layout_constraintTop_toBottomOf="@id/et_height_preferences"/>
+
+    <EditText
+        android:id="@+id/et_edit_profile_created_for_prf"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/roundedittext"
+        android:hint="ENTER YOUR PROFILE CREATED FOR"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintTop_toBottomOf="@id/et_physicalstatus_preferences"/>
+
+    <EditText
+        android:id="@+id/et_edit_mother_tongue_prf"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/roundedittext"
+        android:hint="ENTER YOUR MOTHER TONGUE"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintTop_toBottomOf="@id/et_edit_profile_created_for_prf"/>
+
     <Button
         android:id="@+id/btn_update_basic_preffer_details"
         android:layout_width="match_parent"
@@ -83,7 +108,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/et_physicalstatus_preferences"
+        app:layout_constraintTop_toBottomOf="@+id/et_edit_mother_tongue_prf"
         android:text="UPDATE BASIC PREFFERED DETAILS"
         android:background="@drawable/roundedbutton"/>
 

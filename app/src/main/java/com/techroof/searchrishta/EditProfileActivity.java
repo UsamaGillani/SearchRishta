@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.method.CharacterPickerDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +22,17 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.techroof.searchrishta.Authentication.RegisterActivity;
+import com.techroof.searchrishta.EditProfile.EditBasicDetailsActivity;
+import com.techroof.searchrishta.EditProfile.EditProfessionalInformationActivity;
 import com.techroof.searchrishta.Preferences.BasicDetailsPref;
+import com.techroof.searchrishta.Preferences.HabitsPrefActivity;
+import com.techroof.searchrishta.Preferences.LocationPrefActivity;
 import com.techroof.searchrishta.Preferences.PartnerDescription;
 import com.techroof.searchrishta.Preferences.ProfessionalPrefActivity;
 
@@ -45,9 +47,10 @@ public class EditProfileActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firestore;
     CollapsingToolbarLayout toolbarLayout;
-    ImageView imgPrfdesc,imgPrfbasicdetails,imgRelegiousdetails,imgProfessionaldetails,imgPhone,imgMail;
+    ImageView imgPrfdesc,imgPrfbasicdetails,imgRelegiousdetails,imgProfessionaldetails,imgLocationpref,imgHabitspref,imgPhone,imgMail,imgedit,imgEditProfessionalInformation;
     String Uid;
-    TextView tvAboutmyself,tvname,dateOfBirth,tvProfileCreated,tvGender,tvHeight, tvMaritalstatus,tvMothertongue,tvPhysicalStatus,tvEducation,tvEmployed,tvOccupation,tvAnnualIncome;
+    TextView tvAboutmyself,tvname,dateOfBirth,tvProfileCreated,tvGender,tvHeight,tvMaritalstatus,tvMothertongue,tvPhysicalStatus,tvEducation,tvEmployed,tvOccupation,tvAnnualIncome,tvCountry,tvState,tvCitizenShip,tvCity,tvRelegion,tvRelegiousValues,tvClan,tvFatherOccupation,tvMotherOccupation,tvFamilyOrigin,tvNumberOfSisters,tvNumberOfBrothers;
+    TextView tvAgePref,tvHeightPref,tvProfileCreatorPref,tvPhysicalStatusPref,tvMotherTonguePref,tvRelegionPref,tvOccupationPref,tvEducationpref,tvAnnualIncomePref,tvCountryPref,tvCitizenShipPrf,tvResidentStatusPrf,tvEatingHabitsPref,tvDrinkingHabitsPref,tvSmokingHAbitsPref;
     //private CollapsingToolbarLayout toolbar;
     private Dialog dialog,dialogPhone,dialogMail;
     private String[] relegiousValues;
@@ -74,12 +77,50 @@ public class EditProfileActivity extends AppCompatActivity {
         tvEmployed=findViewById(R.id.tv_employed);
         tvOccupation=findViewById(R.id.tv_occupation);
         tvAnnualIncome=findViewById(R.id.tv_annual_income);
+        tvCountry=findViewById(R.id.tv_country);
+        tvCitizenShip=findViewById(R.id.tv_citizenship);
+        tvState=findViewById(R.id.tv_state);
+        tvCity=findViewById(R.id.tv_city);
+        tvRelegiousValues=findViewById(R.id.tv_relegious_values);
+        tvRelegion=findViewById(R.id.tv_relegion);
+        tvClan=findViewById(R.id.tv_sect);
+        tvFatherOccupation=findViewById(R.id.tv_annual_income);
+        tvMotherOccupation=findViewById(R.id.tv_country);
+        tvFamilyOrigin=findViewById(R.id.tv_family_origin);
+        tvNumberOfSisters=findViewById(R.id.tv_no_of_sisters);
+        tvNumberOfBrothers=findViewById(R.id.tv_no_brothers);
+
+        //TextView Preferences
+        tvAgePref=findViewById(R.id.tv_age_prf);
+        tvHeightPref=findViewById(R.id.tv_height_prf);
+        tvProfileCreatorPref=findViewById(R.id.tv_marital_status_prf);
+        tvPhysicalStatusPref=findViewById(R.id.tv_physical_status_prf);
+        tvMotherTonguePref=findViewById(R.id.tv_mother_tongue_prf);
+
+        tvRelegionPref=findViewById(R.id.tv_relegion_prf);
+
+        tvOccupationPref=findViewById(R.id.tv_occupation_prf);
+        tvEducationpref=findViewById(R.id.tv_education_prf);
+        tvAnnualIncomePref=findViewById(R.id.tv_annual_income_prf);
+
+        tvCountryPref=findViewById(R.id.tv_country_prf);
+        tvCitizenShipPrf=findViewById(R.id.tv_citizenship_prf);
+        tvResidentStatusPrf=findViewById(R.id.tv_resident_status_prf);
+
+        tvEatingHabitsPref=findViewById(R.id.tv_eating_habits_prf);
+        tvDrinkingHabitsPref=findViewById(R.id.tv_drinking_habits_prf);
+        tvResidentStatusPrf=findViewById(R.id.tv_resident_status_prf);
+
         imgPrfdesc=findViewById(R.id.edit_partner_description);
         imgPrfbasicdetails=findViewById(R.id.edit_basic_details_prf);
         imgRelegiousdetails=findViewById(R.id.edit_relegious_information_prf);
         imgProfessionaldetails=findViewById(R.id.edit_professional_details_preferences_prf);
         imgPhone=findViewById(R.id.img_call);
         imgMail=findViewById(R.id.img_mail);
+        imgedit=findViewById(R.id.edit);
+        imgLocationpref=findViewById(R.id.edit_professional_location_prf);
+        imgHabitspref=findViewById(R.id.edit_habits_prf);
+        imgEditProfessionalInformation=findViewById(R.id.edit_professional_details);
 
         relegiousValues=getResources().getStringArray(R.array.RelegiousValues);
 
@@ -93,7 +134,6 @@ public class EditProfileActivity extends AppCompatActivity {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.setCancelable(false); //Optional
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //Setting the animations to dialog
-
 
 
         //dialogbox phone
@@ -253,6 +293,41 @@ public class EditProfileActivity extends AppCompatActivity {
 
            }
        });
+       imgEditProfessionalInformation.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+
+               Intent moveEditPrfprofessionaldetails=new Intent(getApplicationContext(), EditProfessionalInformationActivity.class);
+               startActivity(moveEditPrfprofessionaldetails);
+           }
+       });
+
+
+
+       imgedit.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent moveEditBasicDetails=new Intent(getApplicationContext(), EditBasicDetailsActivity.class);
+               startActivity(moveEditBasicDetails);
+           }
+       });
+
+       imgLocationpref.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent moveEditLocationPref=new Intent(getApplicationContext(), LocationPrefActivity.class);
+               startActivity(moveEditLocationPref);
+           }
+       });
+
+       imgHabitspref.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent moveHabitspref=new Intent(getApplicationContext(), HabitsPrefActivity.class);
+               startActivity(moveHabitspref);
+           }
+       });
+
 
 
         setSupportActionBar(toolbar);
@@ -316,6 +391,8 @@ public class EditProfileActivity extends AppCompatActivity {
                         tvAnnualIncome.setText(salary);
 
                     }
+
+                    getdataProfessionalInformation();
                 } else {
                     Log.d("d", "Error getting documents: ", task.getException());
 
@@ -331,14 +408,273 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
+    // get professional data
+
+    private void getdataProfessionalInformation() {
+
+        firestore.collection("users")
+                .whereEqualTo("userId", Uid).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+
+                        String education = document.getString("education");
+                        String employedIn = document.getString("employedIn");
+                        String salary = document.getString("salary");
+                        String occupation=document.getString("occupation");
+
+                        tvEducation.setText(education);
+                        tvEmployed.setText(employedIn);
+                        tvOccupation.setText(occupation);
+                        tvAnnualIncome.setText(salary);
+
+                    }
+                    GetLocation();
+                } else {
+                    Log.d("d", "Error getting documents: ", task.getException());
+
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+
+    //getLocation
+
+
+    private void GetLocation() {
+
+        firestore.collection("users")
+                .whereEqualTo("userId", Uid).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+
+                        String country = document.getString("country");
+                        String citizenship = document.getString("citizenShip");
+                        String state = document.getString("state");
+                        String city=document.getString("city");
+
+                        tvCountry.setText(country);
+                        tvCitizenShip.setText(citizenship);
+                        tvState.setText(state);
+                        tvCity.setText(city);
+
+                    }
+                    GetRelegiousInformation();
+                } else {
+                    Log.d("d", "Error getting documents: ", task.getException());
+
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+
+    // get Relegious Information
+
+
+    private void GetRelegiousInformation() {
+
+        firestore.collection("users")
+                .whereEqualTo("userId", Uid).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+
+                        String relegion = document.getString("religion");
+                        String religiousvaluess = document.getString("religiousValue");
+                        String clan = document.getString("clan");
+
+                        tvRelegion.setText(relegion);
+                        tvRelegiousValues.setText(religiousvaluess);
+                        tvClan.setText(clan);
+
+                    }
+                    ShowBasicDetailsPref();
+                } else {
+                    Log.d("d", "Error getting documents: ", task.getException());
+
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+
+    //show Basic Details Prefferences Data
+
+
+    private void ShowBasicDetailsPref(){
+
+
+        firestore.collection("users").document(uId).collection("Preferrences").document("BasicDetailsPref").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                String profileCreatorPref=task.getResult().getString("profileCreatedFor");
+                String agepref=task.getResult().getString("age");
+                String motherTonguepref=task.getResult().getString("motherTongue");
+                String physicalStatuspref=task.getResult().getString("physicalStatus");
+                String heightpref=task.getResult().getString("Height");
+
+                tvProfileCreatorPref.setText(profileCreatorPref);
+                tvAgePref.setText(agepref);
+                tvMotherTonguePref.setText(motherTonguepref);
+                tvPhysicalStatusPref.setText(physicalStatuspref);
+                tvHeightPref.setText(heightpref);
+                RelegiousPref();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+
+
+    private void RelegiousPref(){
+
+
+        firestore.collection("users").document(uId).collection("Preferrences").document("RelegiousDetailsPref").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                String RelegiousPref=task.getResult().getString("RelegiousValues");
+
+
+               tvRelegionPref.setText(RelegiousPref);
+
+                ProfessionalPref();
+            }
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+
+
+    private void ProfessionalPref(){
+
+
+        firestore.collection("users").document(uId).collection("Preferrences").document("ProfessionalDetailsPref").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                String occupationPref=task.getResult().getString("Occupation");
+                String educationpref=task.getResult().getString("education");
+                String AnnualIncomepref=task.getResult().getString("income");
+
+                tvOccupationPref.setText(occupationPref);
+                tvEducationpref.setText(educationpref);
+                tvAnnualIncomePref.setText(AnnualIncomepref);
+
+                LocationPref();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+
+    private void LocationPref(){
+
+
+        firestore.collection("users").document(uId).collection("Preferrences").document("LocationDetailsPref").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                String countryPref=task.getResult().getString("Country");
+                String citizenshipPref=task.getResult().getString("Citizenship");
+                String residentStatusPref=task.getResult().getString("ResidentStatus");
+
+                tvOccupationPref.setText(countryPref);
+                tvEducationpref.setText(citizenshipPref);
+                tvAnnualIncomePref.setText(residentStatusPref);
+
+                HabitsPref();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+
+
+
+    private void HabitsPref(){
+
+
+        firestore.collection("users").document(uId).collection("Preferrences").document("HabitsDetailPref").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                String countryPref=task.getResult().getString("Eating");
+                String citizenshipPref=task.getResult().getString("Drinking");
+                String residentStatusPref=task.getResult().getString("Smoking");
+
+                tvOccupationPref.setText(countryPref);
+                tvEducationpref.setText(citizenshipPref);
+                tvAnnualIncomePref.setText(residentStatusPref);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+
+
+
 
     private void AddRelegiousValues(String relegiousValues){
 
         Map<String, Object> userDescMap = new HashMap<>();
         userDescMap.put("RelegiousValues", relegiousValues);
 
-        firestore.collection("users").document(uId).collection("Preferrences").document("preferences")
-                .update(userDescMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        firestore.collection("users").document(uId).collection("Preferrences").document("RelegiousDetailsPref")
+                .set(userDescMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
@@ -408,7 +744,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
             }
         });
-
 
 
     }

@@ -121,7 +121,6 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
                         double lati = lat * Math.PI / 180.0;
                         double latii = latitude * Math.PI / 180.0;
 
-
                         double a = Math.sin(dLat / 2.0) * Math.sin(dLat / 2.0) +
                                 Math.sin(dLon / 2.0) * Math.sin(dLon / 2.0) * Math.cos(lati) * Math.cos(latii);
                         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));

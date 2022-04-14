@@ -118,6 +118,8 @@
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_outline_calendar_today_24"
                     android:drawableRight="@drawable/ic_outline_calendar_today_24"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:inputType="text|textCapWords" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -320,6 +322,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:inputType="text|textCapWords" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -336,7 +340,6 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_outline_calendar_today_24"
                     android:inputType="text|textCapWords" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -353,7 +356,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="text|textCapWords"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -368,7 +371,9 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -401,7 +406,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="text|textCapWords"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -417,8 +424,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_outline_calendar_today_24"
-                    android:inputType="text|textCapWords" />
+                    android:inputType="text|textCapWords"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -451,7 +459,9 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -482,7 +492,9 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -528,6 +540,7 @@
                     android:layout_height="wrap_content"
                     android:scrollbars="horizontal"
                     app:layout_constraintTop_toBottomOf="@id/physical_status" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/religious_value_et"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -539,7 +552,9 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

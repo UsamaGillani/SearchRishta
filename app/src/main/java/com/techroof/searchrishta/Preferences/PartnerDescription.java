@@ -54,7 +54,7 @@ public class PartnerDescription extends AppCompatActivity {
         Map<String, Object> userDescMap = new HashMap<>();
         userDescMap.put("PartnerDescription", desc);
 
-        firestore.collection("users").document(uId).collection("Preferrences").document("preferences")
+        firestore.collection("users").document(uId).collection("Preferrences").document("PartnerDescriptionPref")
                 .update(userDescMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
