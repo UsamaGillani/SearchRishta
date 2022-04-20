@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +47,7 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
     private FirebaseAuth firebaseAuth;
     private LinearLayoutManager layoutManagerdashboard;
     FirebaseAuth.AuthStateListener authStateListener;
+    private ArrayList<String> storedId;
     private ShortlistedViewModel getViewmodel;
     private String longt = null, latt = null;
     private String uId;
@@ -97,6 +99,7 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
         btnFilter=view.findViewById(R.id.btn_filter);
         tvStartPoint=view.findViewById(R.id.startpoint);
         tvEndPoint=view.findViewById(R.id.endpoint);
+        storedId = new ArrayList();
         rangeSlider.addOnChangeListener(new RangeSlider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
@@ -122,6 +125,24 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
         firebaseAuth = FirebaseAuth.getInstance();
         uId = firebaseAuth.getUid();
+        getViewmodel = new ViewModelProvider(this).get(ShortlistedViewModel.class);
+
+        getViewmodel.getAllshortlisted().observe(getViewLifecycleOwner(), new Observer<List<Shortlisted>>() {
+            @Override
+            public void onChanged(List<Shortlisted> shortlisteds) {
+
+                for (int i = 0; i < shortlisteds.size(); i++) {
+
+
+                    storedId.add(shortlisteds.get(i).getUserid());
+                    //storedId= String.valueOf(shortlisteds.get(i).getUserid());
+
+
+                }
+                //Toast.makeText(getContext(), ""+storedId.size(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,6 +188,8 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
     @Override
     public void onRemoveClick(String userId, String name, String dob, String height, String relegion, String education, String maritalstatus, String city, String province, String country) {
 
+        getViewmodel.deletenote(userId);
+
     }
 
     private void getData(String currentUserLatt, String currentUserLong) {
@@ -188,7 +211,7 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
                 nearByRv.setLayoutManager(layoutManagerdashboard);
 
                 recyclerViewAdapter = new NearByMatchesFragmentRecyclerViewAdapter(userArrayList,
-                        getContext(), dasboardClickListener, Double.parseDouble(currentUserLatt), Double.parseDouble(currentUserLong),st,ed);
+                        getContext(), dasboardClickListener, Double.parseDouble(currentUserLatt), Double.parseDouble(currentUserLong),st,ed,storedId);
                 nearByRv.setAdapter(recyclerViewAdapter);
 
             }
@@ -228,8 +251,6 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
 
     private void checkStatus(){
 
-        Toast.makeText(getContext(), "yes"+uId, Toast.LENGTH_SHORT).show();
-
         firestore.collection("users").whereEqualTo("userId",uId).whereEqualTo("activatedstatus","activated").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -253,7 +274,5 @@ public class NearedByMatchesFragment extends Fragment implements DasboardClickLi
         });
 
     }
-
-
 
 }

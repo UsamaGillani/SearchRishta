@@ -8,5 +8,5 @@
         android:radius="5dp"
         />
     <solid
-        android:color="@color/whitebiege"/>
+        android:color="@color/white"/>
 </shape>

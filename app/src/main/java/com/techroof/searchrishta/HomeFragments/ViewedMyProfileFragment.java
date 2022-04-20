@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,11 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -30,21 +33,26 @@ import com.techroof.searchrishta.Shortlisted;
 import com.techroof.searchrishta.ViewModel.ShortlistedViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ViewedMyProfileFragment extends Fragment implements DasboardClickListener {
 
     private static final String TAG = "MainActivity";
     private ArrayList<Users> userArrayList;
-    private ViewMyProfileFragmentRecyclerViewAdapter recyclerViewAdapter;
+    private DashboardFragmentRecyclerViewAdapter recyclerViewAdapter;
     RecyclerView viewedMyprofileRv;
     private FirebaseFirestore firestore;
     private LinearLayoutManager layoutManagerdashboard;
     private FirebaseAuth firebaseAuth;
     FirebaseAuth.AuthStateListener authStateListener;
     private ShortlistedViewModel getViewmodel;
-    String uId;
+    private ArrayList<String> storedId;
+    private String uId;
+    private FirebaseUser currentFirebaseUser;
+
     private ProgressDialog progressDialog;
+
 
     public ViewedMyProfileFragment() {
         // Required empty public constructor
@@ -83,22 +91,48 @@ public class ViewedMyProfileFragment extends Fragment implements DasboardClickLi
 
         viewedMyprofileRv = view.findViewById(R.id.viewed_my_profile_rv);
         firestore = FirebaseFirestore.getInstance();
-        firebaseAuth=FirebaseAuth.getInstance();
-        uId=firebaseAuth.getCurrentUser().getUid();
 
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
-
 
         //arraylist decleration
         userArrayList = new ArrayList<>();
-        recyclerViewAdapter = new ViewMyProfileFragmentRecyclerViewAdapter(userArrayList, getContext(),this);
 
-        //methods
+        progressDialog=new ProgressDialog(getContext());
+        progressDialog.setMessage("Loading Please Wait...");
+        progressDialog.show();
+
+
+        storedId = new ArrayList();
+
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        uId=currentFirebaseUser.getUid();
+        getViewmodel = new ViewModelProvider(this).get(ShortlistedViewModel.class);
+        getViewmodel.getAllshortlisted().observe(getViewLifecycleOwner(), new Observer<List<Shortlisted>>() {
+            @Override
+            public void onChanged(List<Shortlisted> shortlisteds) {
+
+                for (int i = 0; i < shortlisteds.size(); i++) {
+
+
+                    storedId.add(shortlisteds.get(i).getUserid());
+                    //storedId= String.valueOf(shortlisteds.get(i).getUserid());
+
+
+                }
+                //Toast.makeText(getContext(), ""+storedId.size(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        recyclerViewAdapter = new DashboardFragmentRecyclerViewAdapter(userArrayList,
+                requireActivity(), this, storedId);
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         getData();
-       return view;
     }
 
     @Override
@@ -114,54 +148,45 @@ public class ViewedMyProfileFragment extends Fragment implements DasboardClickLi
 
     }
 
-    private void getData(){
+    private void getData() {
 
-        firestore.collection("ViewedProfile").whereEqualTo("Viewed",uId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+        firestore.collection("ViewedProfile").whereEqualTo("Viewed",uId)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                if(task.isSuccessful()){
+                if(task.getResult().isEmpty()){
 
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "No record found yet...", Toast.LENGTH_SHORT).show();
+                }
+                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
 
-
-                        String Viewer=document.getString("Viewer");
-
-                        firestore.collection("users").whereEqualTo("userId",Viewer)
-                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-
-                                    Users listData = documentSnapshot.toObject(Users.class);
-                                    userArrayList.add(listData);
-
-                                }
-
-                                layoutManagerdashboard = new LinearLayoutManager(getContext(),
-                                        LinearLayoutManager.VERTICAL, false);
-                                viewedMyprofileRv.setLayoutManager(layoutManagerdashboard);
-                                viewedMyprofileRv.setAdapter(recyclerViewAdapter);
-
-                                progressDialog.dismiss();
-                            }
-                        });
+                    Users listData = documentSnapshot.toObject(Users.class);
+                    userArrayList.add(listData);
 
 
-                    }
+                }
 
-                    }
+
+                layoutManagerdashboard = new LinearLayoutManager(getContext(),
+                        LinearLayoutManager.VERTICAL, false);
+                viewedMyprofileRv.setLayoutManager(layoutManagerdashboard);
+                /*recyclerViewAdapter = new DashboardFragmentRecyclerViewAdapter(userArrayList,
+                        requireActivity(), recyclerViewAdapter.mlistener);*/
+                viewedMyprofileRv.setAdapter(recyclerViewAdapter);
+
+
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
 
             }
         });
 
-
     }
-
 }

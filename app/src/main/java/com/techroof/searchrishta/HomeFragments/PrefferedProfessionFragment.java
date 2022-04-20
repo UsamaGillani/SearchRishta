@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.techroof.searchrishta.Adapter.DashboardFragmentRecyclerViewAdapter;
 import com.techroof.searchrishta.Adapter.EducationalPreferenceAdapter;
 import com.techroof.searchrishta.Adapter.PrefferedEducationRecyclerViewAdapter;
+import com.techroof.searchrishta.Adapter.PrefferedProfessionRecyclerViewAdapter;
 import com.techroof.searchrishta.Interfaces.ClickListener;
 import com.techroof.searchrishta.Interfaces.DasboardClickListener;
 import com.techroof.searchrishta.Model.Users;
@@ -42,7 +44,7 @@ public class PrefferedProfessionFragment extends Fragment implements ClickListen
 
     private static final String TAG = "MainActivity";
     private ArrayList<Users> userArrayList;
-    private PrefferedEducationRecyclerViewAdapter recyclerViewAdapter;
+    private PrefferedProfessionRecyclerViewAdapter recyclerViewAdapter;
     public EducationalPreferenceAdapter educationalPreferenceAdapter;
     RecyclerView prefferedProfessionRv, getPrefferedProfessionlist;
     private FirebaseFirestore firestore;
@@ -56,6 +58,10 @@ public class PrefferedProfessionFragment extends Fragment implements ClickListen
     public PrefferedEducationFragment prefferedEducationFragment;
     FirebaseUser currentFirebaseUser;
     private ShortlistedViewModel getViewmodel;
+    private ArrayList<String> storedId;
+    DasboardClickListener dasboardClickListener;
+
+
 
     public PrefferedProfessionFragment() {
         // Required empty public constructor
@@ -96,6 +102,7 @@ public class PrefferedProfessionFragment extends Fragment implements ClickListen
         firestore = FirebaseFirestore.getInstance();
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         uId = currentFirebaseUser.getUid();
+        storedId = new ArrayList();
         /////////------Profile creator layout manager-------/////////
 
         layoutManagereducation = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
@@ -110,8 +117,8 @@ public class PrefferedProfessionFragment extends Fragment implements ClickListen
 
         //arraylist decleration
         userArrayList = new ArrayList<>();
-        recyclerViewAdapter = new PrefferedEducationRecyclerViewAdapter(userArrayList,
-                getContext(), this);
+        /*recyclerViewAdapter = new PrefferedEducationRecyclerViewAdapter(userArrayList,
+                getContext(), this);*/
         /*btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,11 +136,33 @@ public class PrefferedProfessionFragment extends Fragment implements ClickListen
 
         //methods
         //getData();
+
+        getViewmodel = new ViewModelProvider(this).get(ShortlistedViewModel.class);
+        getViewmodel.getAllshortlisted().observe(getViewLifecycleOwner(), new Observer<List<Shortlisted>>() {
+            @Override
+            public void onChanged(List<Shortlisted> shortlisteds) {
+
+                for (int i = 0; i < shortlisteds.size(); i++) {
+
+
+                    storedId.add(shortlisteds.get(i).getUserid());
+                    //storedId= String.valueOf(shortlisteds.get(i).getUserid());
+
+
+                }
+                //Toast.makeText(getContext(), ""+storedId.size(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
         return view;
     }
 
     @Override
     public void onItemclick(String click) {
+
+
         userArrayList.clear();
         professionStatus = click;
         //Toast.makeText(getContext(), "yes" + uId, Toast.LENGTH_SHORT).show();
@@ -154,6 +183,8 @@ public class PrefferedProfessionFragment extends Fragment implements ClickListen
                 layoutManagerdashboard = new LinearLayoutManager(getContext());
                 prefferedProfessionRv.setLayoutManager(layoutManagerdashboard);
                 prefferedProfessionRv.setAdapter(recyclerViewAdapter);
+                recyclerViewAdapter= new PrefferedProfessionRecyclerViewAdapter(userArrayList,requireContext(),
+                        dasboardClickListener,storedId);
                 recyclerViewAdapter.notifyDataSetChanged();
 
 
@@ -172,6 +203,8 @@ public class PrefferedProfessionFragment extends Fragment implements ClickListen
 
     @Override
     public void onRemoveClick(String userId, String name, String dob, String height, String relegion, String education, String maritalstatus, String city, String province, String country) {
+
+        getViewmodel.deletenote(userId);
 
     }
 }

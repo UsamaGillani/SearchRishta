@@ -159,7 +159,7 @@ public class HomeFragment extends Fragment {
     private void CheckNotification() {
 
         uId= firebaseAuth.getCurrentUser().getUid();
-        Toast.makeText(getContext(), ""+uId, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), ""+uId, Toast.LENGTH_SHORT).show();
 
         firebaseFirestore.collection("SentInterests").whereEqualTo("InterestSent", uId).whereEqualTo("Status", "Unseen").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

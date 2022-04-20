@@ -4,25 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Layout;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -30,15 +23,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.flexbox.AlignSelf;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexWrap;
-import com.google.android.flexbox.FlexboxLayout;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
@@ -50,15 +36,14 @@ import com.techroof.searchrishta.Adapter.GenderAttributeAdapter;
 import com.techroof.searchrishta.Adapter.MaritalStatusAttributeAdapter;
 import com.techroof.searchrishta.Adapter.PhysicalStatusAdapter;
 import com.techroof.searchrishta.Adapter.ProfileCreatorAttributesAdapter;
-import com.techroof.searchrishta.HomeActivity;
+import com.techroof.searchrishta.Interfaces.JsonPlaceHolderAPI;
+import com.techroof.searchrishta.Model.City;
+import com.techroof.searchrishta.Model.CountryStateCity;
+import com.techroof.searchrishta.Model.States;
 import com.techroof.searchrishta.R;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.Year;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -68,7 +53,26 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class RegisterActivity extends AppCompatActivity {
+    private String BASE_URL = "https://api.countrystatecity.in/v1/";
+
+    private List<CountryStateCity> countryArraylist;
+    private List<States> statesList;
+    private List<String> countryNameList;
+    private List<String> statesnameList;
+    private List<String> cityNameList;
+    private List<City> cityArrayList;
+    private List<String> genderArrayList, profileCreatorArrayList, phoneList, maritalStatusList, physicalStatusList;
+
+    //List<CountryStateCity> countryStateCities;
+    //List<States> statess;
+
 
     private View layoutstep1, layoutstep2, layoutsteplogin;
 
@@ -78,7 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
     private MaritalStatusAttributeAdapter maritalStatusAttributeAdapter;
     private PhysicalStatusAdapter physicalStatusAdapter;
 
-    private List<String> genderArrayList, profileCreatorArrayList, phoneList, maritalStatusList, physicalStatusList;
 
     private RecyclerView.LayoutManager layoutManager1, layoutManager2, layoutManager3, layoutManager4;
 
@@ -95,10 +98,10 @@ public class RegisterActivity extends AppCompatActivity {
     final Calendar myCalendar = Calendar.getInstance();
     private ConstraintLayout step1Cl, step2Cl, step3Cl;
     private String gender, profileCreator, name, dob, email, password, confirmPass, phone, religion,
-            maritalStatus, clan, country, state, city, citizenShip, height, education, employedIn, occupation, salary,
-            physicalStatus, religiousValue, ethnicity, aboutMe, motherTongue, activatedstatus = "normal";
+            maritalStatus, clan, country=null, state=null, city, citizenShip, height, education, employedIn, occupation, salary,
+            physicalStatus, religiousValue, ethnicity, aboutMe, motherTongue,stateId, activatedstatus = "normal";
 
-    int year, age;
+    private  int year, age,countryId;
     private String currentDate, strmotherTongue, strRelegionlist, strClanislam, strClanchristian, strClanhindu,
             strClanparsi;
     private String[] motherTonguelist;
@@ -122,6 +125,11 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        List<String> items = new ArrayList<String>();
+        items.add("this");
+        items.add("that");
+
+
         genderArrayList = new ArrayList<>();
         profileCreatorArrayList = new ArrayList<>();
         phoneList = new ArrayList<>();
@@ -142,10 +150,10 @@ public class RegisterActivity extends AppCompatActivity {
         ethnicityList = getResources().getStringArray(R.array.Ethnicity);
         countryList = getResources().getStringArray(R.array.countries);
         occupationList = getResources().getStringArray(R.array.Occupation);
-        heightList=getResources().getStringArray(R.array.height);
-        nationalityList=getResources().getStringArray(R.array.citizenship);
-        employedInList=getResources().getStringArray(R.array.employed_in);
-        relegiousValuesList=getResources().getStringArray(R.array.RelegiousValues);
+        heightList = getResources().getStringArray(R.array.height);
+        nationalityList = getResources().getStringArray(R.array.citizenship);
+        employedInList = getResources().getStringArray(R.array.employed_in);
+        relegiousValuesList = getResources().getStringArray(R.array.RelegiousValues);
         // motherTonguelist = Arrays.asList(getResources().getStringArray(R.array.mother_tongue));
         profileCreatedByRv = findViewById(R.id.profile_created_rv);
         genderRv = findViewById(R.id.gender_rv);
@@ -321,6 +329,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
                                 religionEt.getEditText().setText(relegionList[selectedPosition]);
                                 strRelegionlist = relegionList[selectedPosition];
+                                clanEt.getEditText().getText().clear();
+
                                 //clanEt.requestFocus();
                             }
                         })
@@ -333,7 +343,7 @@ public class RegisterActivity extends AppCompatActivity {
         clanEt.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (strRelegionlist==null) {
+                if (strRelegionlist == null) {
 
                     Toast.makeText(getApplicationContext(), "please fill above fields", Toast.LENGTH_SHORT).show();
 
@@ -355,10 +365,10 @@ public class RegisterActivity extends AppCompatActivity {
                             .show();
 
 
-                    Toast.makeText(getApplicationContext(), "yes", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(), "yes", Toast.LENGTH_SHORT).show();
                 } else if (strRelegionlist.equals("Muslim-Abbasi") || strRelegionlist.equals("Muslim-Brailvi")
                         || strRelegionlist.equals("Muslim-Deobandi") || strRelegionlist.equals("Muslim-Others")
-                        || strRelegionlist.equals("Muslim-Shia") || strRelegionlist.equals("Muslim-Wahabi")||
+                        || strRelegionlist.equals("Muslim-Shia") || strRelegionlist.equals("Muslim-Ahle Hadith") ||
                         strRelegionlist.equals("Muslim-Sunnis")
                 ) {
 
@@ -468,7 +478,12 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Country")
-                        .setSingleChoiceItems(countryList, 0, null)
+                        .setSingleChoiceItems(countryNameList.toArray(new String[countryNameList.size()]), 0, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -476,13 +491,135 @@ public class RegisterActivity extends AppCompatActivity {
                                 dialog.dismiss();
 
                                 int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                                countryEt.getEditText().setText(countryList[selectedPosition]);
+                                countryEt.getEditText().setText(countryNameList.get(selectedPosition));
+                                country = countryNameList.get(selectedPosition);
+                                countryId=countryArraylist.get(selectedPosition).getId();
+
+                                statesnameList=new ArrayList<>();
+                                statesList=new ArrayList<>();
+
+                                getStates(countryId);
+                               // getCountryid();
+
+
+                                //int countryId=countryStateCities.get(selectedPosition).getId();
+                                //getStates(countryId);
+                                //Toast.makeText(getApplicationContext(), "id"+countryStateCities.get(selectedPosition).getId(), Toast.LENGTH_SHORT).show();
+
+
                                 //strClanislam = relegionList[selectedPosition];
                             }
+
+
                         })
                         .show();
+
+/*                for(CountryStateCity countryStateCity:countryStateCities){
+
+                    if(countryStateCity.getName().contains(country)){
+
+                        int id= countryStateCity.getId();
+
+                        Toast.makeText(getApplicationContext(), ""+id, Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                }*/
             }
+
         });
+
+        stateEt.getEditText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (TextUtils.isEmpty(country)) {
+
+                    stateEt.setEnabled(false);
+
+                    Toast.makeText(getApplicationContext(), "Please select your country first", Toast.LENGTH_SHORT).show();
+
+
+                    //getCountryid();
+                }else {
+
+
+                    new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your State")
+                            .setSingleChoiceItems(statesnameList.toArray(new String[statesnameList.size()]), 0, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            })
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+
+                                    dialog.dismiss();
+
+                                    int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                    stateEt.getEditText().setText(statesnameList.get(selectedPosition));
+                                    state = statesnameList.get(selectedPosition);
+
+                                   stateId= statesList.get(selectedPosition).getIso2();
+
+                                    cityNameList=new ArrayList<>();
+                                    cityArrayList=new ArrayList<>();
+
+                                    getCities(countryId,stateId);
+                                    //getCityid();
+                                    //strClanislam = relegionList[selectedPosition];
+                                }
+
+
+                            })
+                            .show();
+
+                }
+            }
+
+        });
+
+        cityEt.getEditText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(TextUtils.isEmpty(country)&&TextUtils.isEmpty(state)) {
+
+                    cityEt.setEnabled(false);
+                    Toast.makeText(getApplicationContext(), "please select your country and state first", Toast.LENGTH_SHORT).show();
+
+                }else {
+
+                        new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your City")
+                                .setSingleChoiceItems(cityNameList.toArray(new String[cityNameList.size()]), 0, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        //Toast.makeText(getApplicationContext(), "clicked", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                                        dialog.dismiss();
+
+                                        int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                        cityEt.getEditText().setText(cityNameList.get(selectedPosition));
+                                        city = cityNameList.get(selectedPosition);
+
+                                        //strClanislam = relegionList[selectedPosition];
+                                    }
+
+
+                                })
+                                .show();
+                    }}
+
+        });
+
 
         occupationEt.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -506,9 +643,12 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         citizenshipEt.getEditText().setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View view) {
 
+                //Toast.makeText(getApplicationContext(), ""+country, Toast.LENGTH_SHORT).show();
                 new AlertDialog.Builder(RegisterActivity.this).setTitle("Select Your Nationality")
                         .setSingleChoiceItems(nationalityList, 0, null)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -526,6 +666,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+
 
         heightEt.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -594,55 +735,55 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (TextUtils.isEmpty(nameEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(nameEt.getEditText().getText().toString())) {
 
                     nameEt.setError("Enter Name");
 
                 }
 
-                if (TextUtils.isEmpty(dobEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(dobEt.getEditText().getText().toString())) {
 
                     dobEt.setError("Enter Date of birth");
 
                 }
 
-                if (TextUtils.isEmpty(emailEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(emailEt.getEditText().getText().toString())) {
 
                     emailEt.setError("Enter Email");
 
                 }
 
-                if (TextUtils.isEmpty(passwordEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(passwordEt.getEditText().getText().toString())) {
 
                     passwordEt.setError("Enter Password");
 
                 }
 
-                if (TextUtils.isEmpty(confirmPassEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(confirmPassEt.getEditText().getText().toString())) {
 
                     confirmPassEt.setError("Confirm Password");
 
                 }
 
-                if(TextUtils.isEmpty(motherTongueEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(motherTongueEt.getEditText().getText().toString())) {
 
                     motherTongueEt.setError("Enter Your Mother Tongue");
                 }
 
 
-                if(TextUtils.isEmpty(phoneEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(phoneEt.getEditText().getText().toString())) {
 
                     phoneEt.setError("Confirm Password");
 
                 }
 
-                if(TextUtils.isEmpty(religionEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(religionEt.getEditText().getText().toString())) {
 
                     religionEt.setError("Enter Your Relegion");
 
                 }
 
-                if(TextUtils.isEmpty(clanEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(clanEt.getEditText().getText().toString())) {
 
                     clanEt.setError("Enter your clan");
 
@@ -654,8 +795,7 @@ public class RegisterActivity extends AppCompatActivity {
                         && !TextUtils.isEmpty(motherTongueEt.getEditText().getText().toString())
                         && !TextUtils.isEmpty(phoneEt.getEditText().getText().toString())
                         && !TextUtils.isEmpty(religionEt.getEditText().getText().toString())
-                        && !TextUtils.isEmpty(clanEt.getEditText().getText().toString()))
-                {
+                        && !TextUtils.isEmpty(clanEt.getEditText().getText().toString())) {
 
                     if (passwordEt.getEditText().getText().toString().equals(confirmPassEt.getEditText().getText().toString())) {
 
@@ -678,11 +818,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
 
-
-
-
-
-
             }
 
         });
@@ -693,40 +828,33 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                if (TextUtils.isEmpty(countryEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(countryEt.getEditText().getText().toString())) {
 
                     countryEt.setError("Enter Country Name");
 
                 }
 
-                if (TextUtils.isEmpty(stateEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(stateEt.getEditText().getText().toString())) {
 
                     stateEt.setError("Enter Your State");
 
                 }
 
-                if (TextUtils.isEmpty(cityEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(cityEt.getEditText().getText().toString())) {
 
                     cityEt.setError("Enter Your City");
 
                 }
 
-                if (TextUtils.isEmpty(citizenshipEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(citizenshipEt.getEditText().getText().toString())) {
 
                     citizenshipEt.setError("Enter Your CitizenShip");
 
                 }
 
 
-
-
-
-
-
                 if (!TextUtils.isEmpty(countryEt.getEditText().getText().toString()) && !TextUtils.isEmpty(stateEt.getEditText().getText().toString())
-                        && !TextUtils.isEmpty(cityEt.getEditText().getText().toString()) && !TextUtils.isEmpty(citizenshipEt.getEditText().getText().toString()))
-
-                {
+                        && !TextUtils.isEmpty(cityEt.getEditText().getText().toString()) && !TextUtils.isEmpty(citizenshipEt.getEditText().getText().toString())) {
                     step1Cl.setVisibility(View.GONE);
                     step2Cl.setVisibility(View.GONE);
                     step3Cl.setVisibility(View.VISIBLE);
@@ -735,11 +863,10 @@ public class RegisterActivity extends AppCompatActivity {
                     layoutstep2.setVisibility(View.INVISIBLE);
                     layoutsteplogin.setVisibility(View.VISIBLE);
 
-                }else{
+                } else {
 
                     Toast.makeText(getApplicationContext(), "Enter all fields ", Toast.LENGTH_SHORT).show();
                 }
-
 
 
             }
@@ -776,66 +903,62 @@ public class RegisterActivity extends AppCompatActivity {
                 aboutMe = aboutMeEt.getEditText().getText().toString();
 
 
-
-
-
-                if (TextUtils.isEmpty(heightEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(heightEt.getEditText().getText().toString())) {
 
                     heightEt.setError("Enter Your Height");
 
                 }
 
-                if (TextUtils.isEmpty(educationEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(educationEt.getEditText().getText().toString())) {
 
                     educationEt.setError("Enter Your Education Status");
 
                 }
 
-                if (TextUtils.isEmpty(employedInEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(employedInEt.getEditText().getText().toString())) {
 
                     employedInEt.setError("Enter Your Employed Status");
 
                 }
 
-                if (TextUtils.isEmpty(salaryEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(salaryEt.getEditText().getText().toString())) {
 
                     salaryEt.setError("Enter Your Salary");
 
                 }
 
-                if (TextUtils.isEmpty(ethnicityEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(ethnicityEt.getEditText().getText().toString())) {
 
                     ethnicityEt.setError("Enter Your Ethnicity");
 
                 }
 
 
-                if (TextUtils.isEmpty(aboutMeEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(aboutMeEt.getEditText().getText().toString())) {
 
                     aboutMeEt.setError("Enter Your Description");
 
                 }
 
 
-                if (TextUtils.isEmpty(religiousValueEt.getEditText().getText().toString())){
+                if (TextUtils.isEmpty(religiousValueEt.getEditText().getText().toString())) {
 
-                   religiousValueEt.setError("Enter Your Relegious Values");
+                    religiousValueEt.setError("Enter Your Relegious Values");
 
                 }
+                if (TextUtils.isEmpty(occupationEt.getEditText().getText().toString())) {
 
+                    occupationEt.setError("Enter Your Occupation");
 
-
-
-
+                }
 
 
                 if (!TextUtils.isEmpty(heightEt.getEditText().getText().toString()) && !TextUtils.isEmpty(educationEt.getEditText().getText().toString())
                         && !TextUtils.isEmpty(employedInEt.getEditText().getText().toString()) && !TextUtils.isEmpty(salaryEt.getEditText().getText().toString())
                         && !TextUtils.isEmpty(ethnicityEt.getEditText().getText().toString())
                         && !TextUtils.isEmpty(aboutMeEt.getEditText().getText().toString())
-                        && !TextUtils.isEmpty(religiousValueEt.getEditText().getText().toString()))
-
-                {
+                        && !TextUtils.isEmpty(religiousValueEt.getEditText().getText().toString())
+                        && !TextUtils.isEmpty(occupationEt.getEditText().getText().toString())) {
 
 
                     addUsers(profileCreator, gender, name, dob, email, password, confirmPass, phone, motherTongue,
@@ -843,8 +966,7 @@ public class RegisterActivity extends AppCompatActivity {
                             employedIn, occupation, salary, physicalStatus, religiousValue, ethnicity, aboutMe, currentDate, activatedstatus);
 
 
-
-                }else{
+                } else {
 
 
                     Toast.makeText(getApplicationContext(), "Enter all above fields ", Toast.LENGTH_SHORT).show();
@@ -853,9 +975,15 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
 
-
             }
         });
+
+        //request api
+
+        getCountries();
+        //getCities();
+        //getStates();
+        /////////------------------------\\\\\\\\\\\
 
     }
 
@@ -911,6 +1039,7 @@ public class RegisterActivity extends AppCompatActivity {
                     userMap.put("aboutMe", aboutMe);
                     userMap.put("dateOfRegistration", currentDate);
                     userMap.put("activatedstatus", activatedstatus);
+                    userMap.put("img","https://firebasestorage.googleapis.com/v0/b/searchrishta-cc25a.appspot.com/o/blank-profile-p[…]?alt=media&token=281c40f6-bf51-410c-9ea8-023b957f0cb5");
 
                     firebaseFirestore.collection("users")
                             .document(mAuth.getCurrentUser().getUid())
@@ -923,16 +1052,16 @@ public class RegisterActivity extends AppCompatActivity {
                                         //progressDialog.dismiss();
                                         Toast.makeText(getApplicationContext(), "User Added", Toast.LENGTH_SHORT).show();
                                         //Intent to home or previous activity
-                                        //Intent previousActivity = new Intent(getApplicationContext(), RegisterActivity.class);
-                                        //startActivity(previousActivity);
+                                        /*Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+                                        startActivity(loginActivity);*/
                                     }
 
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d("y", "onFailure: ");
-
+                            pd.dismiss();
+                            Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -944,6 +1073,8 @@ public class RegisterActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                pd.dismiss();
+                Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -1008,7 +1139,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Email = edtEmail.getText().toString();
                             PhoneNumber = etPhoneNumber.getText().toString();
                             addData(Name, Email, PhoneNumber);*/
-                            Intent home = new Intent(RegisterActivity.this, HomeActivity.class);
+                            Intent home = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(home);
                             finish();
 
@@ -1044,5 +1175,173 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    private void getCountries() {
+
+        countryArraylist=new ArrayList<>();
+        countryNameList = new ArrayList<>();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
+
+        JsonPlaceHolderAPI jsonPlaceHolderAPI = retrofit.create(JsonPlaceHolderAPI.class);
+        Call<List<CountryStateCity>> call = jsonPlaceHolderAPI.getCountryStateCity();
+
+        call.enqueue(new Callback<List<CountryStateCity>>() {
+            @Override
+            public void onResponse(Call<List<CountryStateCity>> call, Response<List<CountryStateCity>> response) {
+
+                if (!response.isSuccessful()) {
+
+                    Toast.makeText(getApplicationContext(), "" + response.code(), Toast.LENGTH_LONG).show();
+
+                    return;
+                }
+
+                //countryArraylist = response.body();
+
+                List<CountryStateCity> countriesList=response.body();
+
+               // List<String> names = new ArrayList<String>();
+                //Toast.makeText(getApplicationContext(), ""+countryArraylist, Toast.LENGTH_SHORT).show();
+                for (CountryStateCity countryStateCity : countriesList) {
+                    //names.add(countryStateCity.getName());
+                    //countryStateCitieslist.add(countryStateCity);
+                    countryNameList.add(countryStateCity.getName());
+                    countryArraylist.add(countryStateCity);
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<CountryStateCity>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "" + t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
+
+
+    private void getStates(int id) {
+
+        pd.show();
+
+       // Toast.makeText(getApplicationContext(), "Please wait while the states are getting", Toast.LENGTH_LONG).show();
+
+        //countryArraylist = new ArrayList<>();
+
+       // statesList=new ArrayList<>();
+        //statesnameList = new ArrayList<>();
+
+        stateEt.setEnabled(false);
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
+
+        JsonPlaceHolderAPI jsonPlaceHolderAPI = retrofit.create(JsonPlaceHolderAPI.class);
+        Call<List<States>> callstates = jsonPlaceHolderAPI.getStates(id);
+
+        callstates.enqueue(new Callback<List<States>>() {
+            @Override
+            public void onResponse(Call<List<States>> call, Response<List<States>> response) {
+
+                if (!response.isSuccessful()) {
+
+                    Toast.makeText(getApplicationContext(), "" + response.code(), Toast.LENGTH_LONG).show();
+                    stateEt.setEnabled(false);
+                    pd.dismiss();
+
+                    return;
+                }
+
+                List<States> states = response.body();
+                //String content = "";
+
+                for (States states1 : states) {
+                    //names.add(countryStateCity.getName());
+                    //countryStateCitieslist.add(countryStateCity);
+                    statesnameList.add(states1.getName());
+                    //countryStateCities.add(countryStateCity);
+                    statesList.add(states1);
+                }
+               // Toast.makeText(getApplicationContext(), "size"+states.size(), Toast.LENGTH_SHORT).show();
+                stateEt.setEnabled(true);
+                cityEt.setEnabled(false);
+                pd.dismiss();
+               // Toast.makeText(getApplicationContext(), "now you can select states", Toast.LENGTH_SHORT).show();
+
+                /* for (States states : statess) {
+
+
+
+                 *//*content += "id:" + states.getId() + "\n";
+                    content += "name:" + states.getName() + "\n";
+                    content += "state:" + states.getIso2() + "\n";*//*
+
+
+                }*/
+
+                //Toast.makeText(getApplicationContext(), "" + content, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(Call<List<States>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "" + t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+    }
+
+    private void getCities(int countryId, String stateName) {
+
+        pd.show();
+
+       // countryArraylist = new ArrayList<>();
+        cityNameList =new ArrayList<>();
+        //cityArrayList=new ArrayList<>();
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
+
+        JsonPlaceHolderAPI jsonPlaceHolderAPI = retrofit.create(JsonPlaceHolderAPI.class);
+        Call<List<City>> callcity = jsonPlaceHolderAPI.getCities(countryId, stateName);
+
+        callcity.enqueue(new Callback<List<City>>() {
+            @Override
+            public void onResponse(Call<List<City>> call, Response<List<City>> response) {
+
+                if (!response.isSuccessful()) {
+
+                    Toast.makeText(getApplicationContext(), "" + response.code(), Toast.LENGTH_LONG).show();
+                    pd.dismiss();
+                    return;
+                }
+
+                List<City> cities = response.body();
+                String content = "";
+                for (City cityy : cities) {
+
+
+                    cityNameList.add(cityy.getName());
+                    //content += "id:" + cities.getId() + "\n";
+                    //content += "name:" + cityy.getName() + "\n";
+                    //content += "state:" + states.getIso2() + "\n";
+
+                }
+                pd.dismiss();
+                cityEt.setEnabled(true);
+               // Toast.makeText(getApplicationContext(), "Now you can select cities", Toast.LENGTH_SHORT).show();
+
+                //Toast.makeText(getApplicationContext(), "" + content, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(Call<List<City>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "" + t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+
+    }
 }
 

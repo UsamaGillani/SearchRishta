@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.techroof.searchrishta.Adapter.DashboardFragmentRecyclerViewAdapter;
 import com.techroof.searchrishta.Adapter.EducationalPreferenceAdapter;
 import com.techroof.searchrishta.Adapter.PrefferedEducationRecyclerViewAdapter;
+import com.techroof.searchrishta.Adapter.PrefferedProfessionRecyclerViewAdapter;
 import com.techroof.searchrishta.Adapter.ProfileCreatorAttributesAdapter;
 import com.techroof.searchrishta.Authentication.RegisterActivity;
 import com.techroof.searchrishta.Interfaces.ClickListener;
@@ -55,6 +57,8 @@ public class PrefferedEducationFragment extends Fragment implements ClickListene
     public PrefferedEducationFragment prefferedEducationFragment;
     FirebaseUser currentFirebaseUser;
     private ShortlistedViewModel getViewmodel;
+    private ArrayList<String> storedId;
+    DasboardClickListener dasboardClickListener;
 
 
 
@@ -112,8 +116,25 @@ public class PrefferedEducationFragment extends Fragment implements ClickListene
 
         //arraylist decleration
         userArrayList = new ArrayList<>();
-        recyclerViewAdapter = new PrefferedEducationRecyclerViewAdapter(userArrayList,
-                getContext(), this);
+        storedId = new ArrayList();
+
+        getViewmodel = new ViewModelProvider(this).get(ShortlistedViewModel.class);
+        getViewmodel.getAllshortlisted().observe(getViewLifecycleOwner(), new Observer<List<Shortlisted>>() {
+            @Override
+            public void onChanged(List<Shortlisted> shortlisteds) {
+
+                for (int i = 0; i < shortlisteds.size(); i++) {
+
+
+                    storedId.add(shortlisteds.get(i).getUserid());
+                    //storedId= String.valueOf(shortlisteds.get(i).getUserid());
+
+
+                }
+                //Toast.makeText(getContext(), ""+storedId.size(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
         /*btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,6 +211,8 @@ public class PrefferedEducationFragment extends Fragment implements ClickListene
                 layoutManagerdashboard = new LinearLayoutManager(getContext());
                 prefferedEducationRv.setLayoutManager(layoutManagerdashboard);
                 prefferedEducationRv.setAdapter(recyclerViewAdapter);
+                recyclerViewAdapter= new PrefferedEducationRecyclerViewAdapter(userArrayList,requireContext(),
+                        dasboardClickListener,storedId);
                 recyclerViewAdapter.notifyDataSetChanged();
 
 
@@ -213,6 +236,8 @@ public class PrefferedEducationFragment extends Fragment implements ClickListene
 
     @Override
     public void onRemoveClick(String userId, String name, String dob, String height, String relegion, String education, String maritalstatus, String city, String province, String country) {
+
+        getViewmodel.deletenote(userId);
 
     }
 }

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,15 +55,6 @@ public class PremiumFragment extends Fragment implements DasboardClickListener {
     //progress dialog
 
     private ProgressDialog progressDialog;
-
-    //imageviewNotification
-    private ImageView imgViewNotification;
-
-    private TextView tvNotificationCounter;
-
-
-
-
 
 
     public PremiumFragment() {
@@ -192,11 +184,16 @@ public class PremiumFragment extends Fragment implements DasboardClickListener {
 
     private void getData() {
 
-        firestore.collection("users").whereNotEqualTo("userId",uId).whereEqualTo("activatedstatus","Activated")
+        firestore.collection("users").whereNotEqualTo("userId",uId).whereEqualTo("activatedstatus","activated")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
+                if(task.getResult().isEmpty()){
+
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "No record found yet...", Toast.LENGTH_SHORT).show();
+                }
                 for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
 
                     Users listData = documentSnapshot.toObject(Users.class);

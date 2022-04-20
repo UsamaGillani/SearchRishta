@@ -29,7 +29,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.techroof.searchrishta.EditProfile.EditBasicDetailsActivity;
+import com.techroof.searchrishta.EditProfile.EditLocationActivity;
 import com.techroof.searchrishta.EditProfile.EditProfessionalInformationActivity;
+import com.techroof.searchrishta.EditProfile.FamilyDetailsActivity;
+import com.techroof.searchrishta.EditProfile.RelegiousInformationActivity;
 import com.techroof.searchrishta.Preferences.BasicDetailsPref;
 import com.techroof.searchrishta.Preferences.HabitsPrefActivity;
 import com.techroof.searchrishta.Preferences.LocationPrefActivity;
@@ -47,7 +50,7 @@ public class EditProfileActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firestore;
     CollapsingToolbarLayout toolbarLayout;
-    ImageView imgPrfdesc,imgPrfbasicdetails,imgRelegiousdetails,imgProfessionaldetails,imgLocationpref,imgHabitspref,imgPhone,imgMail,imgedit,imgEditProfessionalInformation;
+    ImageView imgPrfdesc,imgPrfbasicdetails,imgRelegiousdetails,imgProfessionaldetails,imgLocationpref,imgHabitspref,imgPhone,imgMail,imgedit,imgEditProfessionalInformation,imgeditLocation,imgeditRelegious,imgeditFamilyDetails;
     String Uid;
     TextView tvAboutmyself,tvname,dateOfBirth,tvProfileCreated,tvGender,tvHeight,tvMaritalstatus,tvMothertongue,tvPhysicalStatus,tvEducation,tvEmployed,tvOccupation,tvAnnualIncome,tvCountry,tvState,tvCitizenShip,tvCity,tvRelegion,tvRelegiousValues,tvClan,tvFatherOccupation,tvMotherOccupation,tvFamilyOrigin,tvNumberOfSisters,tvNumberOfBrothers;
     TextView tvAgePref,tvHeightPref,tvProfileCreatorPref,tvPhysicalStatusPref,tvMotherTonguePref,tvRelegionPref,tvOccupationPref,tvEducationpref,tvAnnualIncomePref,tvCountryPref,tvCitizenShipPrf,tvResidentStatusPrf,tvEatingHabitsPref,tvDrinkingHabitsPref,tvSmokingHAbitsPref;
@@ -55,6 +58,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private Dialog dialog,dialogPhone,dialogMail;
     private String[] relegiousValues;
     private String relegiousvalues,uId,editPhone,editMail;
+    EditText edtPhone,edtMail,AccountNo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,13 +120,16 @@ public class EditProfileActivity extends AppCompatActivity {
         imgPrfbasicdetails=findViewById(R.id.edit_basic_details_prf);
         imgRelegiousdetails=findViewById(R.id.edit_relegious_information_prf);
         imgProfessionaldetails=findViewById(R.id.edit_professional_details_preferences_prf);
+
         imgPhone=findViewById(R.id.img_call);
         imgMail=findViewById(R.id.img_mail);
         imgedit=findViewById(R.id.edit);
         imgLocationpref=findViewById(R.id.edit_professional_location_prf);
         imgHabitspref=findViewById(R.id.edit_habits_prf);
         imgEditProfessionalInformation=findViewById(R.id.edit_professional_details);
-
+        imgeditLocation=findViewById(R.id.edit_location);
+        imgeditRelegious=findViewById(R.id.edit_relegious_information);
+        imgeditFamilyDetails=findViewById(R.id.edit_label_family_details);
         relegiousValues=getResources().getStringArray(R.array.RelegiousValues);
 
         uId=FirebaseAuth.getInstance().getUid();
@@ -166,9 +174,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
         Button Okay = dialog.findViewById(R.id.btn_okay);
         Button Cancel = dialog.findViewById(R.id.btn_cancel);
-        EditText AccountNo=dialog.findViewById(R.id.et_relegious_pref);
-        EditText edtPhone=dialogPhone.findViewById(R.id.et_edit_phonenumber);
-        EditText edtMail=dialogMail.findViewById(R.id.et_edit_mail);
+        AccountNo=dialog.findViewById(R.id.et_relegious_pref);
+        edtPhone=dialogPhone.findViewById(R.id.et_edit_phonenumber);
+        edtMail=dialogMail.findViewById(R.id.et_edit_mail);
 
         AccountNo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,6 +221,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 dialogPhone.show();
+                getPhone();
             }
         });
 
@@ -240,7 +249,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 dialogMail.show();
-
+                getMail();
             }
         });
 
@@ -311,6 +320,36 @@ public class EditProfileActivity extends AppCompatActivity {
                startActivity(moveEditBasicDetails);
            }
        });
+
+
+       imgeditRelegious.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+
+               Intent moveEditrelegiousDetails=new Intent(getApplicationContext(), RelegiousInformationActivity.class);
+               startActivity(moveEditrelegiousDetails);
+           }
+       });
+
+       imgeditLocation.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+
+               Intent moveEditlocationDetails=new Intent(getApplicationContext(), EditLocationActivity.class);
+               startActivity(moveEditlocationDetails);
+           }
+       });
+
+       imgeditFamilyDetails.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+
+               Intent moveFamilyDetails=new Intent(getApplicationContext(), FamilyDetailsActivity.class);
+               startActivity(moveFamilyDetails);
+           }
+       });
+
+
 
        imgLocationpref.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -488,6 +527,43 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
     }
+
+    //get FamilyDetails
+
+    private void GetFamilyDetails(){
+
+
+
+
+        firestore.collection("users").document(uId).collection("Preferrences").document("FamilyDetails").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+               String fatherProfession=task.getResult().getString("FatherProfession");
+               String mothersProfession= task.getResult().getString("MothersProfession");
+               String familyOrigin= task.getResult().getString("FamilyOrigin");
+               String noOfBrothers= task.getResult().getString("NumberOfBrothers");
+               String noOfSisters= task.getResult().getString("NumbersOfSisters");
+
+                tvFatherOccupation.setText(fatherProfession);
+                tvMotherOccupation.setText(mothersProfession);
+                tvFamilyOrigin.setText(familyOrigin);
+                tvNumberOfSisters.setText(noOfSisters);
+                tvNumberOfBrothers.setText(noOfBrothers);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+
+
+            }
+        });
+
+    }
+
+
 
     // get Relegious Information
 
@@ -745,6 +821,54 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void getMail(){
+
+        firestore.collection("users").document(uId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                editMail=task.getResult().getString("email");
+
+                edtMail.setText(editMail);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
+
+    }
+
+    private void getPhone(){
+
+
+
+        firestore.collection("users").document(uId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                editPhone=task.getResult().getString("phone");
+
+                edtPhone.setText(editPhone);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

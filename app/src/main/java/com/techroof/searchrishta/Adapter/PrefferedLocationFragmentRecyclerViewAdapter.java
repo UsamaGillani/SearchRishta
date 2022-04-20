@@ -1,23 +1,38 @@
 package com.techroof.searchrishta.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.techroof.searchrishta.ChatBot.ChatActivity;
 import com.techroof.searchrishta.Interfaces.DasboardClickListener;
 import com.techroof.searchrishta.Model.Users;
 import com.techroof.searchrishta.R;
 import com.techroof.searchrishta.ViewModel.ShortlistedViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PrefferedLocationFragmentRecyclerViewAdapter extends RecyclerView.Adapter<PrefferedLocationFragmentRecyclerViewAdapter.ViewAdapter> {
     private static final String TAG = "RecyclerViewAdapter";
@@ -28,10 +43,34 @@ public class PrefferedLocationFragmentRecyclerViewAdapter extends RecyclerView.A
     private ArrayList<Users> UserlistData;
     private Context context;
 
-    public PrefferedLocationFragmentRecyclerViewAdapter(ArrayList<Users> UserlistData, Context context, DasboardClickListener listener) {
+    private ArrayList<String> storedId;
+
+    //firebase initialization
+
+    private FirebaseFirestore firestore;
+
+    private FirebaseAuth firebaseAuth;
+
+    //----------------------------------//
+
+
+    //Uid initialization
+
+    private String uId;
+
+    //status initialization
+
+    private String statuss = null;
+
+    //----------------------------------//
+
+
+    public PrefferedLocationFragmentRecyclerViewAdapter(ArrayList<Users> UserlistData, Context context, DasboardClickListener listener, ArrayList<String> storedId) {
         this.UserlistData = UserlistData;
         this.context = context;
         this.mlistener = listener;
+        this.storedId = storedId;
+
 
 
 
@@ -51,18 +90,79 @@ public class PrefferedLocationFragmentRecyclerViewAdapter extends RecyclerView.A
 
         Log.d(TAG, "onBindViewHolder: called");
         Users ld = UserlistData.get(position);
-        holder.textViewid.setText(ld.getUserId());
-        holder.textViewState.setText(ld.getState());
-        holder.textviewHeight.setText(ld.getHeight());
-        holder.textViewCountry.setText(ld.getCountry());
-        holder.textViewCity.setText(ld.getCity());
-        holder.textViewdob.setText(ld.getDob());
-        holder.textViewrelegion.setText(ld.getReligion());
-        holder.textViewStatus.setText(ld.getMaritalStatus());
-        holder.textViewEducation.setText(ld.getEducation());
-        holder.textViewname.setText(ld.getName());
-        //notifyDataSetChanged();
-        //Glide.with(context).load(ld.getImage()).into(holder.imageView);
+
+        firestore.collection("users").whereEqualTo("userId",uId).whereEqualTo("activatedstatus","activated").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+
+                if(task.getResult().isEmpty()){
+
+                    statuss="not activated";
+
+                }else{
+
+                    statuss="activated";
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+        if (storedId.contains(UserlistData.get(position).getUserId())) {
+
+            Log.d(TAG, "onBindViewHolder: called");
+            holder.textViewid.setText(ld.getUserId());
+            holder.textViewState.setText(ld.getState());
+            holder.textviewHeight.setText(ld.getHeight());
+            holder.textViewCountry.setText(ld.getCountry());
+            holder.textViewCity.setText(ld.getCity());
+            holder.textViewdob.setText(ld.getDob());
+            holder.textViewrelegion.setText(ld.getReligion());
+            holder.textViewStatus.setText(ld.getMaritalStatus());
+            holder.textViewEducation.setText(ld.getEducation());
+            holder.textViewname.setText(ld.getName());
+            Glide.with(context)
+                    .load(ld.getUserId()).placeholder(R.drawable.userimg) // image url
+                    .override(200, 200) // resizing
+                    .centerCrop()
+                    .into(holder.circleImageView);
+            //UserlistData.set(i,holder.imgShortlisted.setImageDrawable(context.getResources().getDrawable(R.drawable.shortlist)));
+            holder.imgShortlisted.setImageDrawable(
+                    context.getResources().getDrawable(R.drawable.shortlist));
+            //flag = "true";
+            //Toast.makeText(context.getApplicationContext(), "yes", Toast.LENGTH_LONG).show();
+            holder.btnremove.setVisibility(View.VISIBLE);
+
+        } else {
+
+            Log.d(TAG, "onBindViewHolder: called");
+            holder.textViewid.setText(ld.getUserId());
+            holder.textViewState.setText(ld.getState());
+            holder.textviewHeight.setText(ld.getHeight());
+            holder.textViewCountry.setText(ld.getCountry());
+            holder.textViewCity.setText(ld.getCity());
+            holder.textViewdob.setText(ld.getDob());
+            holder.textViewrelegion.setText(ld.getReligion());
+            holder.textViewStatus.setText(ld.getMaritalStatus());
+            holder.textViewEducation.setText(ld.getEducation());
+            holder.textViewname.setText(ld.getName());
+            Glide.with(context)
+                    .load(ld.getUserId()).placeholder(R.drawable.userimg) // image url
+                    .override(200, 200) // resizing
+                    .centerCrop()
+                    .into(holder.circleImageView);
+
+            holder.imgShortlisted.setImageDrawable(context.getResources().getDrawable(R.drawable.star_border));
+            // flag = "false";
+            //Toast.makeText(context.getApplicationContext(), "no", Toast.LENGTH_SHORT).show();
+            holder.btnremove.setVisibility(View.INVISIBLE);
+
+        }
+
 
 
         holder.imgShortlisted.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +198,120 @@ public class PrefferedLocationFragmentRecyclerViewAdapter extends RecyclerView.A
                 intent.putExtra("content", movecategory);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);*/
+                holder.btnremove.setVisibility(View.GONE);
 
+                String userId = ld.getUserId();
+                String name = ld.getName();
+                String dob = ld.getDob();
+                String height = ld.getHeight();
+                String relegion = ld.getReligion();
+                String education = ld.getEducation();
+                String maritalstatus = ld.getMaritalStatus();
+                String city = ld.getCity();
+                String province = ld.getState();
+                String country = ld.getCountry();
+
+                mlistener.onRemoveClick
+                        (userId, name, dob, height,
+                                relegion, education, maritalstatus, city, province, country);
+
+
+                notifyDataSetChanged();
+
+
+            }
+        });
+
+        holder.imgChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                if(statuss.equals("activated")){
+
+                    String userId = ld.getUserId();
+                    String name = ld.getName();
+                    String dob = ld.getDob();
+                    String height = ld.getHeight();
+                    String relegion = ld.getReligion();
+                    String education = ld.getEducation();
+                    String maritalstatus = ld.getMaritalStatus();
+                    String city = ld.getCity();
+                    String province = ld.getState();
+                    String country = ld.getCountry();
+
+                    Intent moveChat = new Intent(context.getApplicationContext(), ChatActivity.class);
+                    moveChat.putExtra("userId", userId);
+                    moveChat.putExtra("userName", name);
+                    context.startActivity(moveChat);
+
+                }else if(statuss.equals("not activated")){
+
+                    Toast.makeText(context.getApplicationContext(), "switch to our premium account to enable chat system", Toast.LENGTH_SHORT).show();
+
+
+                }
+
+            }
+        });
+
+        holder.imgSendInterest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                //function
+                Map<String, Object> ViewerMap = new HashMap<>();
+                ViewerMap.put("InterestSent", ld.getUserId());
+                ViewerMap.put("InterestedPerson", uId);
+
+                //firestorestatus check
+
+                firestore.collection("SentInterests")
+                        .whereEqualTo("InterestSent", ld.getUserId()).whereEqualTo("InterestedPerson", uId)
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.getResult().isEmpty()) {
+
+                            firestore.collection("SentInterests")
+                                    .document()
+                                    .set(ViewerMap)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(context.getApplicationContext(), "Interest Sent", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(context.getApplicationContext(), ""+e.toString(), Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+
+                        }else{
+
+
+                            Toast.makeText(context.getApplicationContext(), "You Have Already Sent Interest", Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
+
+
+                //--------------------\\
 
             }
         });
@@ -116,6 +329,8 @@ public class PrefferedLocationFragmentRecyclerViewAdapter extends RecyclerView.A
         textViewCountry,textviewHeight;
         CardView cardViewview;
         ImageView imgShortlisted,imgChat,imgSendInterest;
+        Button btnremove;
+        CircleImageView circleImageView;
 
         public ViewAdapter(@NonNull View itemView) {
             super(itemView);
@@ -134,6 +349,8 @@ public class PrefferedLocationFragmentRecyclerViewAdapter extends RecyclerView.A
             imgShortlisted=itemView.findViewById(R.id.img_shortlisted);
             imgChat=itemView.findViewById(R.id.img_chat);
             imgSendInterest=itemView.findViewById(R.id.img_send_interest);
+            btnremove=itemView.findViewById(R.id.btn_remove);
+            circleImageView=itemView.findViewById(R.id.img_icons);
 
         }
     }

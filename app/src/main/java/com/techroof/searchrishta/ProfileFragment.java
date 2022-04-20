@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -67,10 +68,10 @@ public class ProfileFragment extends Fragment {
     private String userId,memberShip,userName,userImage;
 
     private String[] name = {"Matches", "Chat", "Daily Matches", "Edit Profile"
-            , "Upgrade Now", "log out"};
+            , "Upgrade Now","Notifications", "log out"};
 
     private int[] images = {R.drawable.matches, R.drawable.email, R.drawable.dailymatches, R.drawable.editprofile,
-            R.drawable.upgradeprofile, R.drawable.logout};
+            R.drawable.upgradeprofile,R.drawable.notifications, R.drawable.logout};
 
     // Folder path for Firebase Storage.
     String Storage_Path = "All_User_Images_Uploads/";
@@ -249,6 +250,8 @@ public class ProfileFragment extends Fragment {
                             progressDialog.dismiss();
                             Toast.makeText(getContext(), "Image Submitted Successfully", Toast.LENGTH_SHORT).show();
 
+                            checkProfileCompleted();
+
                         }
 
                     }
@@ -265,108 +268,106 @@ public class ProfileFragment extends Fragment {
 
     private void checkProfileCompleted(){
 
+firestore.collection("users").document(uId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    @Override
+    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+        if(task.isComplete()){
 
 
-        firestore.collection("users")
-                .whereEqualTo("userId", uId).
-                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-
-                        checkProfilephone = document.getString("phone");
-                        checkProfileimg = document.getString("img");
-                        checkProfilephysicalStatus = document.getString("physicalStatus");
-                        checkprofileemail = document.getString("email");
-                        checkProfileRelegion = document.getString("religion");
-                        userId=document.getString("userId");
-                        memberShip=document.getString("activatedstatus");
-                        userName=document.getString("name");
-                        userImage=document.getString("img");
+            checkProfilephone = task.getResult().getString("phone");
+            checkProfileimg = task.getResult().getString("img");
+            checkProfilephysicalStatus = task.getResult().getString("physicalStatus");
+            checkprofileemail = task.getResult().getString("email");
+            checkProfileRelegion = task.getResult().getString("religion");
+            userId=task.getResult().getString("userId");
+            memberShip=task.getResult().getString("activatedstatus");
+            userName=task.getResult().getString("name");
+            userImage=task.getResult().getString("img");
 
 
 
-                    }
+            tvId.setText(userId);
+            tvName.setText(userName);
 
-                    tvId.setText(userId);
-                    tvName.setText(userName);
-
-                    Glide.with(getActivity())
-                            .load(userImage) // image url
-                            .override(200, 200) // resizing
-                            .centerCrop()
-                            .into(userImg);  // imageview object
-                    if(memberShip.equals("normal")){
+            Glide.with(getActivity())
+                    .load(userImage) // image url
+                    .override(200, 200) // resizing
+                    .centerCrop()
+                    .into(userImg);  // imageview object
 
 
-                        tvMemberShip.setText("MemberShip-free");
-                    }else if(memberShip.equals("Activated")){
 
-                        tvMemberShip.setText("Premium Account");
+            if(memberShip.equals("normal")){
 
-                    }
+                tvMemberShip.setText("Membership-free");
+
+            }else if(memberShip.equals("Activated")){
+
+                tvMemberShip.setText("Premium Account");
+
+            }
 
 
 
                   /*  if(checkProfileRelegion.&&checkProfilephysicalStatus&&checkProfileimg&&checkProfilephone
                     &&checkprofileemail!=null)*/
-                    if(!TextUtils.isEmpty(checkprofileemail) && !TextUtils.isEmpty(checkProfilephone) &&
-                            !TextUtils.isEmpty(checkProfileimg) &&!TextUtils.isEmpty(checkProfilephysicalStatus) &&
-                            !TextUtils.isEmpty(checkProfileRelegion)){
+            if(!TextUtils.isEmpty(checkprofileemail) && !TextUtils.isEmpty(checkProfilephone) &&
+                    !TextUtils.isEmpty(checkProfileimg) &&!TextUtils.isEmpty(checkProfilephysicalStatus) &&
+                    !TextUtils.isEmpty(checkProfileRelegion)){
 
 
-                        progressBar.setProgress(100);
-                        tvProgressbarstatus.setText("Your Profile Score is 100%");
+                progressBar.setProgress(100);
+                tvProgressbarstatus.setText("Your Profile Score is 100%");
 
-                    }else if(!TextUtils.isEmpty(checkprofileemail) && !TextUtils.isEmpty(checkProfilephone) &&
-                            TextUtils.isEmpty(checkProfileimg) &&!TextUtils.isEmpty(checkProfilephysicalStatus) &&
-                            !TextUtils.isEmpty(checkProfileRelegion)){
+            }else if(!TextUtils.isEmpty(checkprofileemail) && !TextUtils.isEmpty(checkProfilephone) &&
+                    TextUtils.isEmpty(checkProfileimg) &&!TextUtils.isEmpty(checkProfilephysicalStatus) &&
+                    !TextUtils.isEmpty(checkProfileRelegion)){
 
-                        progressBar.setProgress(80);
-                        tvProgressbarstatus.setText("Your Profile Score is 90%");
+                progressBar.setProgress(80);
+                tvProgressbarstatus.setText("Your Profile Score is 90%");
 
-                    }else if(TextUtils.isEmpty(checkprofileemail) && TextUtils.isEmpty(checkProfilephone) &&
-                            TextUtils.isEmpty(checkProfileimg) &&!TextUtils.isEmpty(checkProfilephysicalStatus) &&
-                            !TextUtils.isEmpty(checkProfileRelegion)){
+            }else if(TextUtils.isEmpty(checkprofileemail) && TextUtils.isEmpty(checkProfilephone) &&
+                    TextUtils.isEmpty(checkProfileimg) &&!TextUtils.isEmpty(checkProfilephysicalStatus) &&
+                    !TextUtils.isEmpty(checkProfileRelegion)){
 
-                        progressBar.setProgress(60);
-                        tvProgressbarstatus.setText("Your Profile Score is 60%");
+                progressBar.setProgress(60);
+                tvProgressbarstatus.setText("Your Profile Score is 60%");
 
-                    }else if(TextUtils.isEmpty(checkprofileemail) && TextUtils.isEmpty(checkProfilephone) &&
-                            TextUtils.isEmpty(checkProfileimg) &&TextUtils.isEmpty(checkProfilephysicalStatus) &&
-                            !TextUtils.isEmpty(checkProfileRelegion)){
+            }else if(TextUtils.isEmpty(checkprofileemail) && TextUtils.isEmpty(checkProfilephone) &&
+                    TextUtils.isEmpty(checkProfileimg) &&TextUtils.isEmpty(checkProfilephysicalStatus) &&
+                    !TextUtils.isEmpty(checkProfileRelegion)){
 
-                        progressBar.setProgress(30);
-                        tvProgressbarstatus.setText("Your Profile Score is 30%");
+                progressBar.setProgress(30);
+                tvProgressbarstatus.setText("Your Profile Score is 30%");
 
-                    }else if(TextUtils.isEmpty(checkprofileemail) && TextUtils.isEmpty(checkProfilephone) &&
-                            TextUtils.isEmpty(checkProfileimg) &&TextUtils.isEmpty(checkProfilephysicalStatus) &&
-                            TextUtils.isEmpty(checkProfileRelegion)){
+            }else if(TextUtils.isEmpty(checkprofileemail) && TextUtils.isEmpty(checkProfilephone) &&
+                    TextUtils.isEmpty(checkProfileimg) &&TextUtils.isEmpty(checkProfilephysicalStatus) &&
+                    TextUtils.isEmpty(checkProfileRelegion)){
 
-                        progressBar.setProgress(0);
-                        tvProgressbarstatus.setText("Your Profile Score is 0%");
+                progressBar.setProgress(0);
+                tvProgressbarstatus.setText("Your Profile Score is 0%");
 
-                    }
-
-                } else {
-                    Log.d("d", "Error getting documents: ", task.getException());
-
-                }
             }
+
+        } else {
+            Log.d("d", "Error getting documents: ", task.getException());
+
+        }
+    }
+
+
         }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+    @Override
+    public void onFailure(@NonNull Exception e) {
 
-            }
-        });
-
+        Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+});
 
 
 
 
     }
-
 
 }

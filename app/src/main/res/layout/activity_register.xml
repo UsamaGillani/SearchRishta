@@ -271,7 +271,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/btn_bg_1"
+                app:backgroundTint="@null"
+                android:background="@drawable/roundedbutton"
                 android:text="Continue"
                 app:layout_constraintTop_toBottomOf="@id/clan_et" />
 
@@ -335,11 +336,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:hint="State"
+
                 app:layout_constraintTop_toBottomOf="@id/country_et">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:inputType="text|textCapWords" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -356,6 +360,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:inputType="text|textCapWords"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -382,7 +388,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/btn_bg_1"
+                app:backgroundTint="@null"
+                android:background="@drawable/roundedbutton"
                 android:text="Continue"
                 app:layout_constraintTop_toBottomOf="@id/citizenship_et" />
 
@@ -499,6 +506,41 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/religious_value_et"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="Religious Value"
+                app:layout_constraintTop_toBottomOf="@id/ethnicity_et">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/physical_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Physical Status"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/religious_value_et" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/physical_status_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/physical_status" />
+
+
             <TextView
                 android:id="@+id/about_me_text"
                 android:layout_width="match_parent"
@@ -506,7 +548,7 @@
                 android:layout_margin="10dp"
                 android:hint="About Me"
                 android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@id/ethnicity_et"/>
+                app:layout_constraintTop_toBottomOf="@id/physical_status_rv"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/about_me_et"
@@ -522,54 +564,17 @@
                     android:layout_height="100dp"
                     android:gravity="start"/>
 
-
-
-                <TextView
-                    android:id="@+id/physical_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="Physical Status"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/about_me_et" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/physical_status_rv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="horizontal"
-                    app:layout_constraintTop_toBottomOf="@id/physical_status" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/religious_value_et"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:hint="Religious Value"
-                    app:layout_constraintTop_toBottomOf="@id/physical_status_rv">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
+            </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/reg_continue_btn_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:background="@drawable/btn_bg_1"
+                    app:backgroundTint="@null"
+                    android:background="@drawable/roundedbutton"
                     android:text="Continue"
-                    app:layout_constraintTop_toBottomOf="@id/religious_value_et" />
-
-
-            </com.google.android.material.textfield.TextInputLayout>
+                    app:layout_constraintTop_toBottomOf="@id/about_me_et" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

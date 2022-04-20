@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,6 +52,8 @@ public class PrefferedLocationFragment extends Fragment implements ClickListener
     private RecyclerView.LayoutManager layoutManagerlocation;
     PrefferedLocationFragment prefferedLocationFragment;
     private ShortlistedViewModel getViewmodel;
+    private ArrayList<String> storedId;
+    DasboardClickListener dasboardClickListener;
 
 
     public PrefferedLocationFragment() {
@@ -93,7 +96,6 @@ public class PrefferedLocationFragment extends Fragment implements ClickListener
 
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");//arraylist decleration
         userArrayList = new ArrayList<>();
-        recyclerViewAdapter = new PrefferedLocationFragmentRecyclerViewAdapter(userArrayList, getContext(),this);
 
         /////////------Profile creator layout manager-------/////////
 
@@ -104,6 +106,26 @@ public class PrefferedLocationFragment extends Fragment implements ClickListener
         //adapter
         locationPreferenceAdapter = new LocationPreferenceAdapter(getContext(), educationPreferArrayList,this);
         getPrefferedLocationlist.setAdapter(locationPreferenceAdapter);
+
+        storedId = new ArrayList();
+
+        getViewmodel = new ViewModelProvider(this).get(ShortlistedViewModel.class);
+        getViewmodel.getAllshortlisted().observe(getViewLifecycleOwner(), new Observer<List<Shortlisted>>() {
+            @Override
+            public void onChanged(List<Shortlisted> shortlisteds) {
+
+                for (int i = 0; i < shortlisteds.size(); i++) {
+
+
+                    storedId.add(shortlisteds.get(i).getUserid());
+                    //storedId= String.valueOf(shortlisteds.get(i).getUserid());
+
+
+                }
+                //Toast.makeText(getContext(), ""+storedId.size(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
 
@@ -145,7 +167,6 @@ public class PrefferedLocationFragment extends Fragment implements ClickListener
 
     @Override
     public void onItemclick(String click) {
-        Toast.makeText(getContext(), ""+click, Toast.LENGTH_SHORT).show();
 
         firestore.collection("users").whereEqualTo("country",click)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -163,6 +184,8 @@ public class PrefferedLocationFragment extends Fragment implements ClickListener
                         LinearLayoutManager.HORIZONTAL, false);
                 prefferedLocationRv.setLayoutManager(layoutManagerdashboard);
                 prefferedLocationRv.setAdapter(recyclerViewAdapter);
+                recyclerViewAdapter=new PrefferedLocationFragmentRecyclerViewAdapter(userArrayList,getContext(),
+                        dasboardClickListener,storedId);
                 locationPreferenceAdapter.notifyDataSetChanged();
 
 
@@ -173,7 +196,6 @@ public class PrefferedLocationFragment extends Fragment implements ClickListener
     @Override
     public void onItemclickk(String userId, String name, String dob, String height, String relegion, String education, String maritalstatus, String city, String province, String country) {
 
-        Toast.makeText(getContext(), "yes"+userId+name, Toast.LENGTH_SHORT).show();
         getViewmodel= new ViewModelProvider(this).get(ShortlistedViewModel.class);
         Shortlisted shortlisted=new Shortlisted(userId,name,dob,height,relegion,
                 education,maritalstatus,city,province,country);
@@ -182,6 +204,8 @@ public class PrefferedLocationFragment extends Fragment implements ClickListener
 
     @Override
     public void onRemoveClick(String userId, String name, String dob, String height, String relegion, String education, String maritalstatus, String city, String province, String country) {
+
+        getViewmodel.deletenote(userId);
 
     }
 }

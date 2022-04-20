@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -31,6 +32,8 @@ import com.techroof.searchrishta.ViewModel.ShortlistedViewModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapter<MatchesFragmentRecyclerViewAdapter.ViewAdapter> {
     private static final String TAG = "RecyclerViewAdapter";
@@ -137,6 +140,11 @@ public class MatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapter<Mat
             holder.textViewStatus.setText(ld.getMaritalStatus());
             holder.textViewEducation.setText(ld.getEducation());
             holder.textViewname.setText(ld.getName());
+            Glide.with(context)
+                    .load(ld.getUserId()).placeholder(R.drawable.userimg) // image url
+                    .override(200, 200) // resizing
+                    .centerCrop()
+                    .into(holder.circleImageView);
             //UserlistData.set(i,holder.imgShortlisted.setImageDrawable(context.getResources().getDrawable(R.drawable.shortlist)));
             holder.imgShortlisted.setImageDrawable(
                     context.getResources().getDrawable(R.drawable.shortlist));
@@ -157,6 +165,11 @@ public class MatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapter<Mat
             holder.textViewStatus.setText(ld.getMaritalStatus());
             holder.textViewEducation.setText(ld.getEducation());
             holder.textViewname.setText(ld.getName());
+            Glide.with(context)
+                    .load(ld.getUserId()).placeholder(R.drawable.userimg) // image url
+                    .override(200, 200) // resizing
+                    .centerCrop()
+                    .into(holder.circleImageView);
 
             holder.imgShortlisted.setImageDrawable(context.getResources().getDrawable(R.drawable.star_border));
             // flag = "false";
@@ -350,6 +363,7 @@ public class MatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapter<Mat
         CardView cardViewview;
         ImageView imgShortlisted, imgChat, imgSendInterest;
         Button btnremove;
+        CircleImageView circleImageView;
 
         public ViewAdapter(@NonNull View itemView) {
             super(itemView);
@@ -370,6 +384,7 @@ public class MatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapter<Mat
             imgSendInterest = itemView.findViewById(R.id.img_send_interest);
             btnremove = itemView.findViewById(R.id.btn_remove);
             imgChat = itemView.findViewById(R.id.img_chat);
+            circleImageView=itemView.findViewById(R.id.img_icons);
 
         }
     }

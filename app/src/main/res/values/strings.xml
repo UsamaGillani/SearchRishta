@@ -10,8 +10,7 @@
         <item>Friend</item>
 
     </string-array>
-
-
+    
     <string-array name="gender">
 
         <item>Male</item>
@@ -33,6 +32,10 @@
 
         <item>Normal</item>
         <item>Physically Challenged</item>
+        <item>Over Weight</item>
+        <item>Slim</item>
+
+
 
     </string-array>
 
@@ -40,6 +43,8 @@
 
         <item>Govt Sector</item>
         <item>Private Sector</item>
+        <item>Own Business</item>
+
 
     </string-array>
 
@@ -55,6 +60,8 @@
         <item>Pushto</item>
         <item>Punjabi</item>
         <item>English</item>
+        <item>Others</item>
+
 
 
     </string-array>
@@ -69,38 +76,95 @@
         <item>Muslim-Others</item>
         <item>Muslim-Shia</item>
         <item>Muslim-Sunnis</item>
-        <item>Muslim-Wahabi</item>
+        <item>Muslim-Ahle Hadith</item>
         <item>Parsi</item>
 
 
     </string-array>
 
+    <string-array name="RelegionInformation">
+
+        <item>Christian</item>
+        <item>Hindu</item>
+        <item>Muslim</item>
+        <item>Parsi</item>
+
+
+    </string-array>
+
+
     <string-array name="ClanIslam">
 
+        <item>Abbasi</item>
+        <item>Alvi</item>
+        <item>Ansari</item>
         <item>Aheer</item>
         <item>Arain</item>
         <item>Awan </item>
         <item>Baloch</item>
+        <item>Bhatti</item>
+        <item>Brahui</item>
+        <item>Butt</item>
+        <item>Chughtai</item>
         <item>Chaudhry</item>
+        <item>Dar</item>
         <item>Dogar</item>
         <item>Ghakar</item>
         <item>Gondal</item>
-        <item>Gujjars</item>
+        <item>Gujjar</item>
         <item>Hashmi</item>
         <item>Jatt</item>
+        <item>Kakay Zai</item>
+        <item>Kamboh</item>
+        <item>Khan Yousafzai</item>
+        <item>Khawaja</item>
         <item>Khateek</item>
         <item>Khattar</item>
         <item>Khokkar</item>
         <item>Maliar</item>
+        <item>Malik</item>
+        <item>Mehar</item>
+        <item>Meo</item>
+        <item>Mir</item>
         <item>Mughal</item>
+        <item>Naqvi</item>
+        <item>Others</item>
+        <item>Pathan</item>
         <item>Paracha</item>
         <item>Pashtuns</item>
         <item>Qureshi</item>
-        <item>Rajput</item>
+        <item>Rajpoot</item>
         <item>Rawns</item>
-        <item>Rehmanis and Maliks</item>
+        <item>Rizvi</item>
+        <item>Rehmanis</item>
         <item>Sheikh</item>
+        <item>Sardar</item>
+        <item>Siddiqui</item>
+        <item>Siyaal</item>
         <item>Syed</item>
+        <item>Syed Hashmi</item>
+        <item>Syed Kazmi</item>
+        <item>Syed Bukhari</item>
+        <item>Sunni Syed</item>
+        <item>Shia Syed</item>
+        <item>Tanoli Khan</item>
+        <item>Urdu Speaking</item>
+        <item>Zaidi</item>
+
+
+
+
+    </string-array>
+
+    <string-array name="sectIslam">
+
+        <item>Muslim-Abbasi</item>
+        <item>Muslim-Brailvi</item>
+        <item>Muslim-Deobandi</item>
+        <item>Muslim-Shia</item>
+        <item>Muslim-Sunnis</item>
+        <item>Muslim-Ahle Hadees</item>
+        <item>Muslim-Others</item>
 
     </string-array>
 
@@ -137,6 +201,15 @@
         <item>Professional Certifications</item>
         <item>Diploma</item>
         <item>Higher Secondar/Secondary</item>
+        <item>Matric</item>
+        <item>Intermediate</item>
+        <item>MBBS</item>
+        <item>Engineering</item>
+        <item>Others</item>
+
+
+
+
 
     </string-array>
 
@@ -167,6 +240,8 @@
         <item>Urdu</item>
         <item>Pashtun</item>
         <item>Kashmiri</item>
+        <item>Others</item>
+
 
 
     </string-array>
@@ -506,6 +581,16 @@
 
     <string-array name="height">
 
+        <item>4-3</item>
+        <item>4-4</item>
+        <item>4-5</item>
+        <item>4-6</item>
+        <item>4-7</item>
+        <item>4-8</item>
+        <item>4-9</item>
+        <item>4-10</item>
+        <item>4-11</item>
+        <item>5-0</item>
         <item>5-1</item>
         <item>5-2</item>
         <item>5-3</item>
@@ -542,6 +627,69 @@
 
 
     </string-array>
+
+
+    <string-array name="FatherOccupation">
+
+        <item>Officer </item>
+        <item>Fashion Designer</item>
+        <item>Supervisor</item>
+        <item>Banking Service Professional</item>
+        <item>Teaching/Academician</item>
+        <item>Dietician/Nutritionist</item>
+        <item>Manager</item>
+        <item>CEO/President,Director,Chairman</item>
+        <item>Engineer-NonIt</item>
+        <item>Sportsperson</item>
+        <item>Software Professional</item>
+        <item>Administrative Professional</item>
+        <item>Hotel/Hospitatility</item>
+        <item>Web/Graphic Designer</item>
+        <item>Financial Accountant</item>
+        <item>Doctor</item>
+        <item>Data Scientist</item>
+        <item>Chartered Accountant</item>
+        <item>Retired</item>
+
+
+    </string-array>
+
+
+    <string-array name="MotherOccupation">
+
+
+        <item>HouseWife </item>
+        <item>Officer </item>
+        <item>Fashion Designer</item>
+        <item>Supervisor</item>
+        <item>Banking Service Professional</item>
+        <item>Teaching/Academician</item>
+        <item>Dietician/Nutritionist</item>
+        <item>Manager</item>
+        <item>CEO/President,Director,Chairman</item>
+        <item>Engineer-NonIt</item>
+        <item>Sportsperson</item>
+        <item>Software Professional</item>
+        <item>Administrative Professional</item>
+        <item>Hotel/Hospitatility</item>
+        <item>Web/Graphic Designer</item>
+        <item>Financial Accountant</item>
+        <item>Doctor</item>
+        <item>Data Scientist</item>
+        <item>Chartered Accountant</item>
+        <item>Retired</item>
+
+
+    </string-array>
+
+    <string-array name="FamilyOrigin">
+
+        <item>Foreign</item>
+        <item>Local Resident</item>
+
+    </string-array>
+
+
     <string name="title_activity_register3">RegisterActivity3</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

@@ -78,9 +78,11 @@ public class HomeActivity extends AppCompatActivity {
 
         //initializing Firestore
 
+
         firestore=FirebaseFirestore.getInstance();
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
+
 
         if (user == null) {
 
@@ -90,8 +92,15 @@ public class HomeActivity extends AppCompatActivity {
 
         }else{
 
+            uId=firebaseAuth.getCurrentUser().getUid();
+
             BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
             bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+            pd = new ProgressDialog(this);
+            pd.setMessage("Updating your location...");
+            pd.setCanceledOnTouchOutside(false);
+            checkLocationPermission();
 
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -104,11 +113,8 @@ public class HomeActivity extends AppCompatActivity {
         //load progressbar
 
 
-        /*pd = new ProgressDialog(this);
-        pd.setMessage("Updating your location...");
-        pd.setCanceledOnTouchOutside(false);*/
 
-        //checkLocationPermission();
+
         //initializing progressbar
 
 
@@ -161,6 +167,9 @@ public class HomeActivity extends AppCompatActivity {
             Intent login = new Intent(HomeActivity.this, LoginActivity.class);
             startActivity(login);
             finish();
+
+        }else{
+
 
         }
     }
@@ -379,6 +388,7 @@ public class HomeActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                                     startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+
                                 }
                             })
                     .setNegativeButton("Cancel", null)
@@ -390,6 +400,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void AddLocation(String Longititude,String Latitude){
+
 
         Map<String, Object> userLoctionMap = new HashMap<>();
         userLoctionMap.put("Longitude", Longititude);
@@ -414,17 +425,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
 
-
-
-
-
-
-
 }
+
+
+
 
 
 

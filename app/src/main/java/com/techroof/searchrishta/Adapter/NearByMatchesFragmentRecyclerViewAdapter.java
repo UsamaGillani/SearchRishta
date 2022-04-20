@@ -2,11 +2,13 @@ package com.techroof.searchrishta.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,13 +19,19 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.techroof.searchrishta.ChatBot.ChatActivity;
 import com.techroof.searchrishta.Interfaces.DasboardClickListener;
 import com.techroof.searchrishta.Model.Users;
 import com.techroof.searchrishta.R;
+import com.techroof.searchrishta.UserProfile;
 import com.techroof.searchrishta.ViewModel.ShortlistedViewModel;
 
 import java.text.DecimalFormat;
@@ -31,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,8 +52,9 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
 
     private ArrayList<Users> UserlistData,arraylist;
     private Context context;
-
+    private ArrayList<String> storedId;
     private FirebaseFirestore db;
+    private FirebaseAuth firebaseAuth;
     private double latitude, longitude,startValue,endValue;
     private String distance;
 
@@ -51,11 +62,23 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
 
     Users users =new Users();
 
-    public NearByMatchesFragmentRecyclerViewAdapter(ArrayList<Users> UserlistData, Context context, DasboardClickListener listener,double latitude, double longitude,double startValue,double endValue) {
+    //Uid initialization
+
+    private String uId;
+
+    //status initialization
+
+    private String statuss=null;
+
+    //----------------------------------//
+
+    public NearByMatchesFragmentRecyclerViewAdapter(ArrayList<Users> UserlistData, Context context, DasboardClickListener listener,double latitude, double longitude,double startValue,double endValue,ArrayList<String> storedId) {
         this.UserlistData = UserlistData;
         this.context = context;
         this.mlistener = listener;
         this.arraylist=UserlistData;
+        this.storedId = storedId;
+
 
         this.latitude = latitude;
         this.longitude = longitude;
@@ -70,7 +93,10 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
 
         distanceCollections=new ArrayList<>();
 
-        Toast.makeText(context.getApplicationContext(), ""+UserlistData, Toast.LENGTH_SHORT).show();
+        firebaseAuth=FirebaseAuth.getInstance();
+
+        uId=firebaseAuth.getCurrentUser().getUid();
+        //Toast.makeText(context.getApplicationContext(), ""+UserlistData, Toast.LENGTH_SHORT).show();
 
 
     }
@@ -87,9 +113,86 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
     @Override
     public void onBindViewHolder(@NonNull NearByMatchesFragmentRecyclerViewAdapter.ViewAdapter holder, @SuppressLint("RecyclerView") int position) {
 
+        db.collection("users").whereEqualTo("userId",uId).whereEqualTo("activatedstatus","activated").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+
+                if(task.getResult().isEmpty()){
+
+                    statuss="not activated";
+
+                }else{
+
+                    statuss="activated";
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
 
 
         Users ld = UserlistData.get(position);
+
+
+        if (storedId.contains(UserlistData.get(position).getUserId())) {
+
+            Log.d(TAG, "onBindViewHolder: called");
+            holder.textViewid.setText(ld.getUserId());
+            holder.textViewState.setText(ld.getState());
+            holder.textviewHeight.setText(ld.getHeight());
+            holder.textViewCountry.setText(ld.getCountry());
+            holder.textViewCity.setText(ld.getCity());
+            holder.textViewdob.setText(ld.getDob());
+            holder.textViewrelegion.setText(ld.getReligion());
+            holder.textViewStatus.setText(ld.getMaritalStatus());
+            holder.textViewEducation.setText(ld.getEducation());
+            holder.textViewname.setText(ld.getName());
+            //UserlistData.set(i,holder.imgShortlisted.setImageDrawable(context.getResources().getDrawable(R.drawable.shortlist)));
+            holder.imgShortlisted.setImageDrawable(
+                    context.getResources().getDrawable(R.drawable.shortlist));
+            //flag = "true";
+            //Toast.makeText(context.getApplicationContext(), "yes", Toast.LENGTH_LONG).show();
+            holder.btnremove.setVisibility(View.VISIBLE);
+            Glide.with(context)
+                    .load(ld.getUserId()).placeholder(R.drawable.userimg) // image url
+                    .override(200, 200) // resizing
+                    .centerCrop()
+                    .into(holder.prflimage);
+
+        } else {
+
+            Log.d(TAG, "onBindViewHolder: called");
+            holder.textViewid.setText(ld.getUserId());
+            holder.textViewState.setText(ld.getState());
+            holder.textviewHeight.setText(ld.getHeight());
+            holder.textViewCountry.setText(ld.getCountry());
+            holder.textViewCity.setText(ld.getCity());
+            holder.textViewdob.setText(ld.getDob());
+            holder.textViewrelegion.setText(ld.getReligion());
+            holder.textViewStatus.setText(ld.getMaritalStatus());
+            holder.textViewEducation.setText(ld.getEducation());
+            holder.textViewname.setText(ld.getName());
+
+            holder.imgShortlisted.setImageDrawable(context.getResources().getDrawable(R.drawable.star_border));
+            // flag = "false";
+            //Toast.makeText(context.getApplicationContext(), "no", Toast.LENGTH_SHORT).show();
+            holder.btnremove.setVisibility(View.INVISIBLE);
+            Glide.with(context)
+                    .load(ld.getUserId()).placeholder(R.drawable.userimg) // image url
+                    .override(200, 200) // resizing
+                    .centerCrop()
+                    .into(holder.prflimage);
+
+        }
+
+
+
+
         /*      String imgProfile=ld.getImg();
         Glide.with(context)
                 .load(imgProfile) // image url
@@ -230,7 +333,33 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
                 //users locations
 
 
+            }
+        });
 
+
+        holder.btnremove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                holder.btnremove.setVisibility(View.GONE);
+
+                String userId = ld.getUserId();
+                String name = ld.getName();
+                String dob = ld.getDob();
+                String height = ld.getHeight();
+                String relegion = ld.getReligion();
+                String education = ld.getEducation();
+                String maritalstatus = ld.getMaritalStatus();
+                String city = ld.getCity();
+                String province = ld.getState();
+                String country = ld.getCountry();
+
+                mlistener.onRemoveClick
+                        (userId, name, dob, height,
+                                relegion, education, maritalstatus, city, province, country);
+
+
+                notifyDataSetChanged();
 
             }
         });
@@ -250,6 +379,113 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);*/
 
+                String moveid = ld.getUserId();
+                Intent intent = new Intent(context.getApplicationContext(), UserProfile.class);
+                intent.putExtra("content", moveid);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+
+
+            }
+        });
+
+
+        holder.imgChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                if(statuss.equals("activated")){
+
+                    String userId = ld.getUserId();
+                    String name = ld.getName();
+                    String dob = ld.getDob();
+                    String height = ld.getHeight();
+                    String relegion = ld.getReligion();
+                    String education = ld.getEducation();
+                    String maritalstatus = ld.getMaritalStatus();
+                    String city = ld.getCity();
+                    String province = ld.getState();
+                    String country = ld.getCountry();
+
+                    Intent moveChat = new Intent(context.getApplicationContext(), ChatActivity.class);
+                    moveChat.putExtra("userId", userId);
+                    moveChat.putExtra("userName", name);
+                    context.startActivity(moveChat);
+
+                }else if(statuss.equals("not activated")){
+
+                    Toast.makeText(context.getApplicationContext(), "switch to our premium account to enable chat system", Toast.LENGTH_SHORT).show();
+
+
+                }
+
+            }
+        });
+
+        holder.imgSendInterest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                //function
+                Map<String, Object> ViewerMap = new HashMap<>();
+                ViewerMap.put("InterestSent", ld.getUserId());
+                ViewerMap.put("InterestedPerson", uId);
+
+                //firestorestatus check
+
+                db.collection("SentInterests")
+                        .whereEqualTo("InterestSent", ld.getUserId()).whereEqualTo("InterestedPerson", uId)
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.getResult().isEmpty()) {
+
+                            db.collection("SentInterests")
+                                    .document()
+                                    .set(ViewerMap)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(context.getApplicationContext(), "Interest Sent", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(context.getApplicationContext(), ""+e.toString(), Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+
+                        }else{
+
+
+                            Toast.makeText(context.getApplicationContext(), "You Have Already Sent Interest", Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
+
+
+                //--------------------\\
+
+
+
+
+
+
 
             }
         });
@@ -268,6 +504,7 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
         CardView cardViewview;
         ImageView imgShortlisted,imgChat,imgSendInterest;
         CircleImageView prflimage;
+        Button btnremove;
 
         public ViewAdapter(@NonNull View itemView) {
             super(itemView);
@@ -288,6 +525,7 @@ public class NearByMatchesFragmentRecyclerViewAdapter extends RecyclerView.Adapt
             imgSendInterest=itemView.findViewById(R.id.img_send_interest);
             prflimage=itemView.findViewById(R.id.img_icons);
             textViewdistance=itemView.findViewById(R.id.tv_distance);
+            btnremove=itemView.findViewById(R.id.btn_remove);
 
         }
     }

@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelStore;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -39,6 +40,8 @@ import com.techroof.searchrishta.ViewModel.ShortlistedViewModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<DashboardFragmentRecyclerViewAdapter.ViewAdapter> {
     private static final String TAG = "RecyclerViewAdapter";
@@ -149,6 +152,11 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
             //flag = "true";
             //Toast.makeText(context.getApplicationContext(), "yes", Toast.LENGTH_LONG).show();
             holder.btnremove.setVisibility(View.VISIBLE);
+            Glide.with(context)
+                    .load(ld.getUserId()).placeholder(R.drawable.userimg) // image url
+                    .override(200, 200) // resizing
+                    .centerCrop()
+                    .into(holder.circleImageView);
 
         } else {
 
@@ -168,6 +176,12 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
             // flag = "false";
             //Toast.makeText(context.getApplicationContext(), "no", Toast.LENGTH_SHORT).show();
             holder.btnremove.setVisibility(View.INVISIBLE);
+
+            Glide.with(context)
+                    .load(ld.getUserId()).placeholder(R.drawable.userimg) // image url
+                    .override(200, 200) // resizing
+                    .centerCrop()
+                    .into(holder.circleImageView);
 
         }
         //  }
@@ -393,6 +407,7 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
         CardView cardViewview;
         ImageView imgShortlisted, imgChat, imgSendInterest;
         Button btnremove;
+        CircleImageView circleImageView;
 
         public ViewAdapter(@NonNull View itemView) {
             super(itemView);
@@ -413,6 +428,7 @@ public class DashboardFragmentRecyclerViewAdapter extends RecyclerView.Adapter<D
             imgSendInterest = itemView.findViewById(R.id.img_send_interest);
             btnremove = itemView.findViewById(R.id.btn_remove);
             imgChat = itemView.findViewById(R.id.img_chat);
+            circleImageView=itemView.findViewById(R.id.img_icons);
 
         }
     }

@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.techroof.searchrishta.Authentication.LoginActivity;
 import com.techroof.searchrishta.ChatBot.ConvActivity;
 import com.techroof.searchrishta.EditProfileActivity;
+import com.techroof.searchrishta.Notification.NotificationActivity;
 import com.techroof.searchrishta.R;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
@@ -40,6 +41,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             // Store the item subviews in member variables
             rowName = itemView.findViewById(R.id.tv_icon);
             rowImage = itemView.findViewById(R.id.img_icons);
+
+
         }
     }
 
@@ -65,7 +68,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 TextView rowName = v.findViewById(R.id.tv_icon);
-                Toast.makeText(context, "Clicked Item: " + rowName.getText().toString(), Toast.LENGTH_SHORT).show();
 
                 if (rowName.getText().toString() == "Edit Profile") {
 
@@ -84,6 +86,13 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
                     Intent intent = new Intent(context.getApplicationContext(), LoginActivity.class);
                     context.startActivity(intent);
+                }
+                if(rowName.getText().toString()=="Notifications"){
+
+                    Intent intent = new Intent(context.getApplicationContext(), NotificationActivity.class);
+                    context.startActivity(intent);
+
+
                 }
 
                 //if(rowName.getText().toString())

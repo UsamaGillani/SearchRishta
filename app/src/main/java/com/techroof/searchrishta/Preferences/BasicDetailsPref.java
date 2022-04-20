@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -33,6 +35,8 @@ public class BasicDetailsPref extends AppCompatActivity {
     private FirebaseFirestore firestore;
     private Button btnBasicdetails;
     String[]  ageList, heightList,motherTongueList, physicalStatusList,profileCreatedForList;
+    private ImageView imgBack;
+    private ProgressDialog pd;
 
 
 
@@ -46,6 +50,7 @@ public class BasicDetailsPref extends AppCompatActivity {
         etHeight = findViewById(R.id.et_height_preferences);
         etMotherTongue = findViewById(R.id.et_edit_mother_tongue_prf);
         etPhysicalStatus = findViewById(R.id.et_physicalstatus_preferences);
+        imgBack=findViewById(R.id.edit_profile_back_btn);
         btnBasicdetails = findViewById(R.id.btn_update_basic_preffer_details);
         firestore = FirebaseFirestore.getInstance();
         profileCreatedForList = getResources().getStringArray(R.array.profile_creator);
@@ -54,8 +59,20 @@ public class BasicDetailsPref extends AppCompatActivity {
         motherTongueList = getResources().getStringArray(R.array.mother_tongue);
         physicalStatusList = getResources().getStringArray(R.array.physical_status);
 
+        pd = new ProgressDialog(this);
+        pd.setMessage("Loading...");
+        pd.setCanceledOnTouchOutside(false);
+        pd.show();
 
         getDataBasicDetails();
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                BasicDetailsPref.super.onBackPressed();
+            }
+        });
 
         etProfileCreatedFor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,23 +231,34 @@ public class BasicDetailsPref extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                 profileCreatedFor=task.getResult().getString("profileCreatedFor");
-                 age= task.getResult().getString("age");
-                 Height= task.getResult().getString("Height");
-                 motherTongue= task.getResult().getString("motherTongue");
-                 physicalStatus=task.getResult().getString("physicalStatus");
+                if(task.isComplete()) {
+                    if (task.getResult().exists()) {
 
-                etProfileCreatedFor.setText(profileCreatedFor);
-                etAge.setText(age);
-                etHeight.setText(Height);
-                etMotherTongue.setText(motherTongue);
-                etPhysicalStatus.setText(physicalStatus);
+                        pd.dismiss();
+                    } else {
 
+                        pd.dismiss();
+                    }
+                    profileCreatedFor = task.getResult().getString("profileCreatedFor");
+                    age = task.getResult().getString("age");
+                    Height = task.getResult().getString("Height");
+                    motherTongue = task.getResult().getString("motherTongue");
+                    physicalStatus = task.getResult().getString("physicalStatus");
+
+                    etProfileCreatedFor.setText(profileCreatedFor);
+                    etAge.setText(age);
+                    etHeight.setText(Height);
+                    etMotherTongue.setText(motherTongue);
+                    etPhysicalStatus.setText(physicalStatus);
+                    pd.dismiss();
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
 
+                Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                pd.dismiss();
             }
         });
 

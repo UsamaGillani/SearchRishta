@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -31,20 +33,25 @@ import com.techroof.searchrishta.Shortlisted;
 import com.techroof.searchrishta.ViewModel.ShortlistedViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ShortlistedMeFragment extends Fragment implements DasboardClickListener {
-
     private static final String TAG = "MainActivity";
     private ArrayList<Users> userArrayList;
-    private ShortlistedMeRecyclerViewAdapter recyclerViewAdapter;
-    RecyclerView shortlistedmeRv;
+    private DashboardFragmentRecyclerViewAdapter recyclerViewAdapter;
+    RecyclerView shortlistedMerv;
     private FirebaseFirestore firestore;
     private LinearLayoutManager layoutManagerdashboard;
     private FirebaseAuth firebaseAuth;
     FirebaseAuth.AuthStateListener authStateListener;
+    //private String storedId;
     private ShortlistedViewModel getViewmodel;
-    String uId;
+    private ArrayList<String> storedId;
+    private String uId;
+    private FirebaseUser currentFirebaseUser;
+    //progress dialog
+
     private ProgressDialog progressDialog;
 
     public ShortlistedMeFragment() {
@@ -79,30 +86,49 @@ public class ShortlistedMeFragment extends Fragment implements DasboardClickList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shortlisted_me, container, false);
-        shortlistedmeRv = view.findViewById(R.id.shortlisted_me_rv);
+        shortlistedMerv = view.findViewById(R.id.shortlisted_me_rv);
         firestore = FirebaseFirestore.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        uId = firebaseAuth.getCurrentUser().getUid();
 
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
 
         //arraylist decleration
         userArrayList = new ArrayList<>();
-        recyclerViewAdapter = new ShortlistedMeRecyclerViewAdapter(userArrayList, getContext(), this);
 
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Loading...");
+        progressDialog=new ProgressDialog(getContext());
+        progressDialog.setMessage("Loading Please Wait...");
         progressDialog.show();
 
-        //methods
-        getData();
+
+        storedId = new ArrayList();
+
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        uId=currentFirebaseUser.getUid();
+        getViewmodel = new ViewModelProvider(this).get(ShortlistedViewModel.class);
+        getViewmodel.getAllshortlisted().observe(getViewLifecycleOwner(), new Observer<List<Shortlisted>>() {
+            @Override
+            public void onChanged(List<Shortlisted> shortlisteds) {
+
+                for (int i = 0; i < shortlisteds.size(); i++) {
+
+
+                    storedId.add(shortlisteds.get(i).getUserid());
+                    //storedId= String.valueOf(shortlisteds.get(i).getUserid());
+
+
+                }
+                //Toast.makeText(getContext(), ""+storedId.size(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        recyclerViewAdapter = new DashboardFragmentRecyclerViewAdapter(userArrayList,
+                requireActivity(), this, storedId);
+
         return view;
     }
 
     @Override
     public void onItemclickk(String userId, String name, String dob, String height, String relegion, String education, String maritalstatus, String city, String province, String country) {
 
-        Toast.makeText(getContext(), "yes" + userId + name, Toast.LENGTH_SHORT).show();
         getViewmodel = new ViewModelProvider(this).get(ShortlistedViewModel.class);
         Shortlisted shortlisted = new Shortlisted(userId, name, dob, height, relegion,
                 education, maritalstatus, city, province, country);
@@ -111,62 +137,56 @@ public class ShortlistedMeFragment extends Fragment implements DasboardClickList
 
     @Override
     public void onRemoveClick(String userId, String name, String dob, String height, String relegion, String education, String maritalstatus, String city, String province, String country) {
+        getViewmodel.deletenote(userId);
 
     }
 
+
+
     private void getData() {
 
-        //Toast.makeText(getContext(), "" + uId, Toast.LENGTH_SHORT).show();
-        firestore.collection("SentInterests").whereEqualTo("InterestSent", uId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+        firestore.collection("SentInterests").whereEqualTo("InterestSent", uId)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                if (task.isSuccessful()) {
+                if(task.getResult().isEmpty()){
 
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "No record found yet...", Toast.LENGTH_SHORT).show();
+                }
+                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
 
+                    Users listData = documentSnapshot.toObject(Users.class);
+                    userArrayList.add(listData);
 
-                        String Viewer = document.getString("InterestedPerson");
-
-                        firestore.collection("users").whereEqualTo("userId", Viewer)
-                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-
-                                    Users listData = documentSnapshot.toObject(Users.class);
-                                    userArrayList.add(listData);
-
-                                }
-
-                                layoutManagerdashboard = new LinearLayoutManager(getContext(),
-                                        LinearLayoutManager.VERTICAL, false);
-                                shortlistedmeRv.setLayoutManager(layoutManagerdashboard);
-                                shortlistedmeRv.setAdapter(recyclerViewAdapter);
-
-
-                                progressDialog.dismiss();
-                            }
-                        });
-
-
-                    }
 
                 }
+
+
+                layoutManagerdashboard = new LinearLayoutManager(getContext(),
+                        LinearLayoutManager.VERTICAL, false);
+                shortlistedMerv.setLayoutManager(layoutManagerdashboard);
+                /*recyclerViewAdapter = new DashboardFragmentRecyclerViewAdapter(userArrayList,
+                        requireActivity(), recyclerViewAdapter.mlistener);*/
+                shortlistedMerv.setAdapter(recyclerViewAdapter);
+
+
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
 
-                Toast.makeText(getContext(),""+e.toString(),Toast.LENGTH_LONG).show();
             }
         });
 
 
     }
 
+    }
 
-}
+
 
